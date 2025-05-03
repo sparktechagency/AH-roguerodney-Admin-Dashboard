@@ -5,7 +5,7 @@ import MakeAdmin from '../pages/dashboard/MakeAdmin';
 import Login from '../pages/authentication/Login';
 import ErrorPage from '../pages/error/ErrorPage';
 import Brands from '../pages/dashboard/Brands';
-import Categories from '../pages/dashboard/Categories';
+import Services from '../pages/dashboard/Services';
 import Review from '../pages/dashboard/Review';
 import Campaign from '../pages/dashboard/Campaign';
 import TermsCondition from '../pages/dashboard/TermsCondition';
@@ -26,13 +26,13 @@ const router = createBrowserRouter([
         element: <App />,
         errorElement: <ErrorPage />,
         children: [
-            { path: '', element: <Dashboard /> }, 
-            { path: 'users/clients', element: <Clients  /> },
-            { path: 'users/artist', element: <Artist  /> }, 
+            { path: '', element: <Dashboard /> },
+            { path: 'users/clients', element: <Clients /> },
+            { path: 'users/artist', element: <Artist /> },
             { path: 'user-details', element: <UserDetails /> },
             { path: 'brands', element: <Brands /> },
             { path: 'subscriber', element: <MainSubscriber /> },
-            { path: 'categories', element: <Categories /> },
+            { path: 'services', element: <Services /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
             { path: 'make-admin', element: <MakeAdmin /> },

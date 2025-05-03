@@ -4,7 +4,6 @@ import { TSidebarItem } from './generateSidebarItems';
 import { AiOutlineFileText, AiOutlineQuestionCircle, AiOutlineStar } from 'react-icons/ai';
 import { CiMedal } from 'react-icons/ci';
 import { IoBarChartOutline } from 'react-icons/io5';
-import { RiUserStarLine } from 'react-icons/ri';
 import { BsMegaphone, BsPersonGear } from 'react-icons/bs';
 import { TbLogout, TbUserDollar } from 'react-icons/tb';
 import { Contact, Users } from 'lucide-react';
@@ -47,9 +46,9 @@ const sidebarItems: TSidebarItem[] = [
         icon: <TbUserDollar size={24} />,
     },
     {
-        key: 'categories',
-        label: 'Categories',
-        path: 'categories',
+        key: 'services',
+        label: 'Services',
+        path: 'services',
         icon: <BiCategory size={24} />,
     },
     {
