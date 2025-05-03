@@ -21,6 +21,8 @@ import UserDetails from '../pages/dashboard/users/UserDetails';
 import MainSubscriber from '../pages/dashboard/subscriber/MainSubscriber';
 import BookingsPage from '../pages/dashboard/booking/Booking';
 import BookingDetailsPage from '../pages/dashboard/booking/BookingDetails';
+import PaymentPage from '../pages/dashboard/payment/Payment';
+import PaymentDetailsPage from '../pages/dashboard/payment/PaymentDetails';
 
 const router = createBrowserRouter([
     {
@@ -37,6 +39,8 @@ const router = createBrowserRouter([
             { path: 'services', element: <Services /> },
             { path: 'bookings', element: <BookingsPage /> },
             { path: 'bookings/:id', element: <BookingDetailsPage /> },
+            { path: 'payment', element: <PaymentPage /> },
+            { path: 'payment/:id', element: <PaymentDetailsPage /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
             { path: 'make-admin', element: <MakeAdmin /> },

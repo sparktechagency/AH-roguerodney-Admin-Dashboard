@@ -1,7 +1,7 @@
 import { ConfigProvider, Table } from 'antd';
 import { Info } from 'lucide-react';
-import { dummyBookingData } from '../../../dummyData/booking';
 import { Link } from 'react-router-dom';
+import { dummyPaymentData } from '../../../dummyData/payments';
 
 const columns = [
     {
@@ -38,11 +38,6 @@ const columns = [
         ),
     },
     {
-        title: 'Service Location',
-        dataIndex: 'serviceLocation',
-        key: 'serviceLocation',
-    },
-    {
         title: 'Price',
         dataIndex: 'price',
         key: 'price',
@@ -53,9 +48,14 @@ const columns = [
         key: 'category',
     },
     {
-        title: 'Appt. Time',
-        dataIndex: 'apptTime',
-        key: 'apptTime',
+        title: 'Service Name',
+        dataIndex: 'serviceName',
+        key: 'serviceName',
+    },
+    {
+        title: 'Booking Date',
+        dataIndex: 'bookingDate',
+        key: 'bookingDate',
     },
 
     {
@@ -66,19 +66,20 @@ const columns = [
                 <Link to={`/bookings/${record?.id}`}>
                     <Info className="text-xl text-primary" />
                 </Link>
+                <button className="bg-primary/10 text-primary p-3 py-1 rounded-lg">Payout</button>
             </div>
         ),
     },
 ];
 
-const BookingTable = () => {
+const PaymentTable = () => {
     return (
-        <div>
+        <div className='p-4'>
             <ConfigProvider>
-                <Table columns={columns} dataSource={dummyBookingData} />
+                <Table columns={columns} dataSource={dummyPaymentData} />
             </ConfigProvider>
         </div>
     );
 };
 
-export default BookingTable;
+export default PaymentTable;
