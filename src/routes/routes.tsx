@@ -19,6 +19,7 @@ import Clients from '../pages/dashboard/users/Clients';
 import Artist from '../pages/dashboard/users/Artist';
 import UserDetails from '../pages/dashboard/users/UserDetails';
 import MainSubscriber from '../pages/dashboard/subscriber/MainSubscriber';
+import BookingsPage from '../pages/dashboard/booking/Booking';
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
             { path: 'brands', element: <Brands /> },
             { path: 'subscriber', element: <MainSubscriber /> },
             { path: 'services', element: <Services /> },
+            { path: 'bookings', element: <BookingsPage /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
             { path: 'make-admin', element: <MakeAdmin /> },
