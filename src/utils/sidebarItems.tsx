@@ -6,33 +6,33 @@ import { CiMedal } from 'react-icons/ci';
 import { IoBarChartOutline } from 'react-icons/io5';
 import { BsMegaphone, BsPersonGear } from 'react-icons/bs';
 import { TbLogout, TbUserDollar } from 'react-icons/tb';
-import { Contact, Users } from 'lucide-react';
+import { CalendarRange, Contact, Users } from 'lucide-react';
 const sidebarItems: TSidebarItem[] = [
     {
         key: 'analytics',
         label: 'Analytics',
         path: '',
         icon: <IoBarChartOutline size={24} />,
-    }, 
+    },
     {
         key: 'users',
         label: 'Users',
         icon: <Users size={24} />,
         children: [
-          {
-            key: 'clients',
-            label: 'Clients',
-            path: 'users/clients',
-            icon: <Users size={20} />,
-          },
-          {
-            key: 'artist',
-            label: 'Artist',
-            path: 'users/artist',
-            icon: <Contact size={20} />,
-          },
+            {
+                key: 'clients',
+                label: 'Clients',
+                path: 'users/clients',
+                icon: <Users size={20} />,
+            },
+            {
+                key: 'artist',
+                label: 'Artist',
+                path: 'users/artist',
+                icon: <Contact size={20} />,
+            },
         ],
-      },
+    },
     {
         key: 'brands',
         label: 'Brands',
@@ -50,6 +50,12 @@ const sidebarItems: TSidebarItem[] = [
         label: 'Services',
         path: 'services',
         icon: <BiCategory size={24} />,
+    },
+    {
+        key: 'bookings',
+        label: 'Bookings',
+        path: 'bookings',
+        icon: <CalendarRange size={24} />,
     },
     {
         key: 'reviews',

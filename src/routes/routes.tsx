@@ -20,6 +20,7 @@ import Artist from '../pages/dashboard/users/Artist';
 import UserDetails from '../pages/dashboard/users/UserDetails';
 import MainSubscriber from '../pages/dashboard/subscriber/MainSubscriber';
 import BookingsPage from '../pages/dashboard/booking/Booking';
+import BookingDetailsPage from '../pages/dashboard/booking/BookingDetails';
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
             { path: 'subscriber', element: <MainSubscriber /> },
             { path: 'services', element: <Services /> },
             { path: 'bookings', element: <BookingsPage /> },
+            { path: 'bookings/:id', element: <BookingDetailsPage /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
             { path: 'make-admin', element: <MakeAdmin /> },
