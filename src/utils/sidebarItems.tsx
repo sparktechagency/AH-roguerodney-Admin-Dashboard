@@ -110,6 +110,12 @@ const sidebarItems: TSidebarItem[] = [
                 path: 'settings/terms-of-service',
                 icon: <FileCheck size={20} />,
             },
+            {
+                key: 'faq',
+                label: 'FAQ',
+                path: 'settings/faq',
+                icon: <FileCheck size={20} />,
+            },
         ],
     },
     {
