@@ -31,6 +31,7 @@ import TermsOfService from '../pages/dashboard/settings/termsOfService/TermsOfSe
 import Faq from '../pages/dashboard/settings/faq/Faq';
 import ManageAdmin from '../pages/dashboard/manageAdmin/ManageAdmin';
 import BonusAndChallanges from '../pages/dashboard/bonusAndChallenges/BonusAndChallages';
+import ReferralPage from '../pages/dashboard/referral/Referral';
 
 const router = createBrowserRouter([
     {
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
             { path: 'settings/faq', element: <Faq /> },
             { path: 'manage-admin', element: <ManageAdmin /> },
             { path: 'bonus-and-challenges', element: <BonusAndChallanges /> },
+            { path: 'referral', element: <ReferralPage /> },
             { path: 'notification', element: <Notification /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },

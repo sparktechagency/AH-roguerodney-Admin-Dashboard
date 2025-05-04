@@ -1,5 +1,5 @@
 
-import { YoutubeIcon as CubeIcon, PackageCheck, PackageSearch } from "lucide-react";
+import { PackageCheck, PackageSearch } from "lucide-react";
 
 const DashboardStats = () => {
     const stats = [

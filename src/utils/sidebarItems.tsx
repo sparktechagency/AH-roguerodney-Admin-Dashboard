@@ -1,5 +1,4 @@
 import { BiCategory } from 'react-icons/bi';
-import { TSidebarItem } from './generateSidebarItems';
 import { TbUserDollar } from 'react-icons/tb';
 import {
     CalendarRange,
@@ -19,6 +18,14 @@ import {
     Users,
     WalletMinimal,
 } from 'lucide-react';
+type TSidebarItem = {
+    key: string;
+    label: string;
+    path?: string;
+    icon?: React.ReactNode;
+    children?: TSidebarItem[];
+};
+
 const sidebarItems: TSidebarItem[] = [
     {
         key: 'analytics',

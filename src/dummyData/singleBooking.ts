@@ -13,7 +13,7 @@ export const dummySingleBookingData = {
     },
     service: {
         name: 'Ah-Traditional Loc Retwist',
-        image: 'https://play-lh.googleusercontent.com/g9q88R0vuZrOl7A8uhQ8e5TgzU-F4CDARXJJVsg9Q-LcVIpJ8Bffp8L-nfNKWcs7d6U',
+        image: 'https://play-lh.googleusercontent.com/_o_ap8ZsKD-6Sq13gZs2ucr3kY7fnQWlgQSIwl90CY4c1aBuurap9QIiP905xkKjNcA',
         category: 'Hair',
         subCategory: 'Locs',
         price: 130,
