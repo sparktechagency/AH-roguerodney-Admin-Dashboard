@@ -24,6 +24,7 @@ import BookingDetailsPage from '../pages/dashboard/booking/BookingDetails';
 import PaymentPage from '../pages/dashboard/payment/Payment';
 import PaymentDetailsPage from '../pages/dashboard/payment/PaymentDetails';
 import ChangePassword from '../pages/dashboard/profile/ChangePassword';
+import EditProfile from '../pages/dashboard/profile/EditProfile';
 
 const router = createBrowserRouter([
     {
@@ -43,13 +44,14 @@ const router = createBrowserRouter([
             { path: 'payments', element: <PaymentPage /> },
             { path: 'payments/:id', element: <PaymentDetailsPage /> },
             { path: 'settings/change-password', element: <ChangePassword /> },
+            { path: 'settings/profile', element: <Profile /> },
+            { path: 'settings/profile/edit-profile', element: <EditProfile /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
             { path: 'make-admin', element: <MakeAdmin /> },
             { path: 'terms', element: <TermsCondition /> },
             { path: 'faqs', element: <FAQs /> },
             { path: 'notification', element: <Notification /> },
-            { path: 'profile', element: <Profile /> },
         ],
     },
     { path: '/login', element: <Login /> },

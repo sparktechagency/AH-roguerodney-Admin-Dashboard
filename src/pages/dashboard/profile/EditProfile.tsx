@@ -30,10 +30,19 @@ const EditProfile: React.FC = () => {
     };
 
     return (
-        <div className="max-w-lg mx-auto">
-            <Form name="update_profile" layout="vertical" initialValues={{ remember: true }} onFinish={onFinish}>
+        <div className="p-4">
+            <div className="pb-4">
+                <h1 className="text-3xl text-primary font-semibold">Edit Profile</h1>
+            </div>
+            <Form
+                name="update_profile"
+                layout="vertical"
+                className="grid gap-4 p-10 bg-white rounded-lg"
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+            >
                 {/* Banner Image */}
-                <div className="flex justify-center">
+                <div className="mb-10">
                     <div className="w-[150px] h-[150px] relative">
                         <img
                             src={imagePreview}
@@ -59,37 +68,51 @@ const EditProfile: React.FC = () => {
 
                 <Form.Item
                     label={
-                        <label htmlFor="name" className="block text-primaryText mb-1 text-lg">
+                        <label htmlFor="name" className="block text-primaryText mb-1 text-lg font-semibold">
                             Full Name
                         </label>
                     }
                     name="name"
                     rules={[{ required: true, message: 'Please input your full name!' }]}
                 >
-                    <Input className="h-12" placeholder="Enter your name" />
+                    <Input className="h-12 rounded-lg border-none bg-zinc-100" placeholder="Enter your name" />
                 </Form.Item>
 
                 <Form.Item
                     label={
-                        <label htmlFor="email" className="block text-primaryText mb-1 text-lg">
+                        <label htmlFor="email" className="block text-primaryText mb-1 text-lg font-semibold">
                             Email
                         </label>
                     }
                     name="email"
                     rules={[{ required: true, message: 'Please input your email!' }]}
                 >
-                    <Input className="h-12" placeholder="Enter your email" />
+                    <Input className="h-12 rounded-lg border-none bg-zinc-100" placeholder="Enter your email" />
                 </Form.Item>
 
-                <Form.Item className="flex justify-center">
+                <Form.Item
+                    label={
+                        <label htmlFor="contactNumber" className="block text-primaryText mb-1 text-lg font-semibold">
+                            Contact number
+                        </label>
+                    }
+                    name="contactNumber"
+                    rules={[{ required: true, message: 'Please input your contact number!' }]}
+                >
+                    <Input className="h-12 rounded-lg border-none bg-zinc-100" placeholder="+99-01846875456" />
+                </Form.Item>
+
+                <Form.Item className="flex">
                     <Button
                         style={{
-                            height: 42,
+                            height: 48,
+                            padding: '4px 32px',
+                            fontSize: 16,
                         }}
                         type="primary"
                         htmlType="submit"
                     >
-                        Update Profile
+                        Save & Change
                     </Button>
                 </Form.Item>
             </Form>
