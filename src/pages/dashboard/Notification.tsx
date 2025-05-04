@@ -1,46 +1,37 @@
-import { Button } from 'antd';
+import { Bell } from 'lucide-react';
 const Notification = () => {
     return (
-        <div className="mt-5">
+        <div className="p-4">
             <div className="bg-white p-5 rounded-xl">
                 <div className="flex items-center justify-between my-4">
                     <div>
-                        <h1 className="text-2xl font-semibold text-primary">Notification</h1>
+                        <h1 className="text-2xl font-semibold text-primary">Notifications</h1>
                     </div>
-                    <div className="flex items-center gap-4">
+                    {/* <div className="flex items-center gap-4">
                         <Button
+                            type="primary"
                             style={{
                                 height: '40px',
-
-                                borderRadius: '8px',
-                                border: '2px solid #2461CB',
-
-                                background: 'white',
-
-                                color: '#2461CB',
-                                fontWeight: '400',
-                                fontSize: 14,
                             }}
                         >
                             <span>Read all</span>
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
                 <div>
                     {[1, 1, 1, 1, 1].map((_item: any, index: number) => {
                         return (
-                            <div key={index} className="w-full mx-auto p-4 my-4   min-h-20  shadow-md">
-                                <div className=" text-sm">
-                                    <div className="flex items-center gap-5">
-                                        <p className="font-semibold text-[#555555]">A new lesson has booked</p>
-                                        <div className="flex justify-between items-center gap-5 text-[#A7A7A7]">
-                                            <span className="text-xs ">04-06-2024</span>
-                                            <span className="text-xs ">10:00 AM</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-2">
-                                        <p className="text-sm text-[#818181]">Christopher Nolan</p>
+                            <div key={index} className="w-full p-4 my-2 flex gap-4">
+                                <div className="p-3 bg-[#9558B726] text-primary h-fit rounded-full">
+                                    <Bell />
+                                </div>
+                                <div className="grid gap-4">
+                                    <p className="font-semibold text-[#555555]">
+                                        Unlock beauty at your doorstep today!
+                                    </p>
+                                    <div className="flex items-center gap-5 text-[#A7A7A7]">
+                                        <span className="text-xs ">04-06-2024</span>
+                                        <span className="text-xs ">10:00 AM</span>
                                     </div>
                                 </div>
                             </div>
