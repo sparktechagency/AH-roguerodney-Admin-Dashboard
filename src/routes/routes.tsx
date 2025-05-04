@@ -14,7 +14,7 @@ import Notification from '../pages/dashboard/Notification';
 import ForgetPassword from '../pages/authentication/ForgetPassword';
 import VerifyOtp from '../pages/authentication/VerifyOtp';
 import NewPassword from '../pages/authentication/NewPassword';
-import Profile from '../pages/dashboard/profile/Profile';
+import Profile from '../pages/dashboard/settings/profile/Profile';
 import Clients from '../pages/dashboard/users/Clients';
 import Artist from '../pages/dashboard/users/Artist';
 import UserDetails from '../pages/dashboard/users/UserDetails';
@@ -23,8 +23,9 @@ import BookingsPage from '../pages/dashboard/booking/Booking';
 import BookingDetailsPage from '../pages/dashboard/booking/BookingDetails';
 import PaymentPage from '../pages/dashboard/payment/Payment';
 import PaymentDetailsPage from '../pages/dashboard/payment/PaymentDetails';
-import ChangePassword from '../pages/dashboard/profile/ChangePassword';
-import EditProfile from '../pages/dashboard/profile/EditProfile';
+import ChangePassword from '../pages/dashboard/settings/ChangePassword';
+import EditProfile from '../pages/dashboard/settings/profile/EditProfile';
+import AboutUs from '../pages/dashboard/settings/about/AboutUs';
 
 const router = createBrowserRouter([
     {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
             { path: 'settings/change-password', element: <ChangePassword /> },
             { path: 'settings/profile', element: <Profile /> },
             { path: 'settings/profile/edit-profile', element: <EditProfile /> },
+            { path: 'settings/about-us', element: <AboutUs /> },
             { path: 'notification', element: <Notification /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
