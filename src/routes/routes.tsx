@@ -26,6 +26,7 @@ import PaymentDetailsPage from '../pages/dashboard/payment/PaymentDetails';
 import ChangePassword from '../pages/dashboard/settings/ChangePassword';
 import EditProfile from '../pages/dashboard/settings/profile/EditProfile';
 import AboutUs from '../pages/dashboard/settings/about/AboutUs';
+import PrivacyPolicy from '../pages/dashboard/settings/privacyPolicy/PrivacyPolicy';
 
 const router = createBrowserRouter([
     {
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
             { path: 'settings/profile', element: <Profile /> },
             { path: 'settings/profile/edit-profile', element: <EditProfile /> },
             { path: 'settings/about-us', element: <AboutUs /> },
+            { path: 'settings/privacy-policy', element: <PrivacyPolicy /> },
             { path: 'notification', element: <Notification /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
