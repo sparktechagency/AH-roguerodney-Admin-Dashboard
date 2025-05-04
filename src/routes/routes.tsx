@@ -30,6 +30,7 @@ import PrivacyPolicy from '../pages/dashboard/settings/privacyPolicy/PrivacyPoli
 import TermsOfService from '../pages/dashboard/settings/termsOfService/TermsOfService';
 import Faq from '../pages/dashboard/settings/faq/Faq';
 import ManageAdmin from '../pages/dashboard/manageAdmin/ManageAdmin';
+import BonusAndChallanges from '../pages/dashboard/bonusAndChallenges/BonusAndChallages';
 
 const router = createBrowserRouter([
     {
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
             { path: 'settings/terms-of-service', element: <TermsOfService /> },
             { path: 'settings/faq', element: <Faq /> },
             { path: 'manage-admin', element: <ManageAdmin /> },
+            { path: 'bonus-and-challenges', element: <BonusAndChallanges /> },
             { path: 'notification', element: <Notification /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },

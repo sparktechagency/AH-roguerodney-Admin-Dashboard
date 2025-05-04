@@ -125,9 +125,9 @@ const sidebarItems: TSidebarItem[] = [
         icon: <ShieldUser size={24} />,
     },
     {
-        key: 'bonus',
+        key: 'bonus-and-challenges',
         label: 'Bonus & Challenges',
-        path: 'bonus',
+        path: 'bonus-and-challenges',
         icon: <Gift size={24} />,
     },
     {
