@@ -1,7 +1,6 @@
 import {
     Button,
     ConfigProvider,
-    Flex,
     Form,
     GetProp,
     Image,
@@ -289,28 +288,21 @@ const Services = () => {
         },
     ];
     return (
-        <div>
-            <Flex className="my-2" vertical={false} gap={10} align="center" justify="space-between">
+        <div className='grid gap-4 p-4'>
+            <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl text-primary font-semibold">Manage Services</h1>
                 </div>
-
-                <div
+                <Button
+                    onClick={() => setServiceModal(true)}
                     style={{
-                        marginBottom: 10,
+                        height: 40,
                     }}
+                    type="primary"
                 >
-                    <Button
-                        onClick={() => setServiceModal(true)}
-                        style={{
-                            height: 40,
-                        }}
-                        type="primary"
-                    >
-                        Add Service
-                    </Button>
-                </div>
-            </Flex>
+                    Add Service
+                </Button>
+            </div>
 
             <ConfigProvider>
                 <Table columns={columns} dataSource={services} />

@@ -136,19 +136,19 @@ const Clients = () => {
 
 
     return (
-        <div className=" ">
-            <div className="flex justify-between items-center py-5">
+        <div className="grid gap-4 p-4">
+            <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-xl text-[#2C2C2C] font-semibold">Clients</h1>
                 </div>
-                <div className="flex items-center gap-5 justify-end mb-2">
+                <div className="flex items-center gap-5 justify-end">
                     <Input
                         style={{
                             maxWidth: 300,
                             height: 40,
                         }}
                         placeholder="Search"
-                        prefix={<Search size={20} color='#2C2C2C' />}
+                        prefix={<Search size={20} color="#2C2C2C" />}
                     />
 
                     {/* Dropdown Filter */}

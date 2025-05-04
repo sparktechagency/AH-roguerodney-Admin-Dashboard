@@ -91,7 +91,7 @@ const Sidebar = () => {
   theme="light"
   mode="inline"
 //   defaultOpenKeys={['users']}
-  defaultSelectedKeys={['analytics']}
+  // defaultSelectedKeys={['analytics']}
   items={sidebarItemsGenerator(sidebarItems)}
 />
             </Sider>
