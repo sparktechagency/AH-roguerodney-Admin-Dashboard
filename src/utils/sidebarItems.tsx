@@ -6,11 +6,16 @@ import {
     ChartPie,
     CircleDollarSignIcon,
     Contact,
+    FileCheck,
     Gem,
     Gift,
+    Info,
+    LockKeyhole,
     LogOut,
     Settings,
+    ShieldCheck,
     ShieldUser,
+    UserRound,
     Users,
     WalletMinimal,
 } from 'lucide-react';
@@ -73,8 +78,39 @@ const sidebarItems: TSidebarItem[] = [
     {
         key: 'settings',
         label: 'Settings',
-        path: 'settings',
         icon: <Settings size={24} />,
+        children: [
+            {
+                key: 'change-password',
+                label: 'Change Password',
+                path: 'settings/change-password',
+                icon: <LockKeyhole size={20} />,
+            },
+            {
+                key: 'profile',
+                label: 'Profile',
+                path: 'settings/profile',
+                icon: <UserRound size={20} />,
+            },
+            {
+                key: 'about-us',
+                label: 'About Us',
+                path: 'settings/about-us',
+                icon: <Info size={20} />,
+            },
+            {
+                key: 'privacy-policy',
+                label: 'Privacy Policy',
+                path: 'settings/privacy-policy',
+                icon: <ShieldCheck size={20} />,
+            },
+            {
+                key: 'terms-services',
+                label: 'Terms of Services',
+                path: 'settings/terms-services',
+                icon: <FileCheck size={20} />,
+            },
+        ],
     },
     {
         key: 'manage-admin',
