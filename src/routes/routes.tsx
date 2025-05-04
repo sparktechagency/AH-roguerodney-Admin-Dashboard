@@ -27,6 +27,7 @@ import ChangePassword from '../pages/dashboard/settings/ChangePassword';
 import EditProfile from '../pages/dashboard/settings/profile/EditProfile';
 import AboutUs from '../pages/dashboard/settings/about/AboutUs';
 import PrivacyPolicy from '../pages/dashboard/settings/privacyPolicy/PrivacyPolicy';
+import TermsOfService from '../pages/dashboard/settings/termsOfService/TermsOfService';
 
 const router = createBrowserRouter([
     {
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
             { path: 'settings/profile/edit-profile', element: <EditProfile /> },
             { path: 'settings/about-us', element: <AboutUs /> },
             { path: 'settings/privacy-policy', element: <PrivacyPolicy /> },
+            { path: 'settings/terms-of-service', element: <TermsOfService /> },
             { path: 'notification', element: <Notification /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },

@@ -3,14 +3,14 @@ import { Option } from 'antd/es/mentions';
 import JoditEditor from 'jodit-react';
 import { useRef, useState } from 'react';
 
-const PrivacyPolicy = () => {
+const TermsOfService = () => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
 
     return (
         <section className="p-4 grid gap-4">
             <div className="flex justify-between items-center gap-4">
-                <h1 className="text-3xl text-primary font-semibold">Privacy Policy</h1>
+                <h1 className="text-3xl text-primary font-semibold">Terms of Service</h1>
                 {/* Dropdown Filter */}
                 <Select defaultValue="All" className="w-40 h-[42px]">
                     <Option value="All">All</Option>
@@ -35,4 +35,4 @@ const PrivacyPolicy = () => {
     );
 };
 
-export default PrivacyPolicy;
+export default TermsOfService;

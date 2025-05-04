@@ -105,9 +105,9 @@ const sidebarItems: TSidebarItem[] = [
                 icon: <ShieldCheck size={20} />,
             },
             {
-                key: 'terms-services',
-                label: 'Terms of Services',
-                path: 'settings/terms-services',
+                key: 'terms-of-service',
+                label: 'Terms of Service',
+                path: 'settings/terms-of-service',
                 icon: <FileCheck size={20} />,
             },
         ],
