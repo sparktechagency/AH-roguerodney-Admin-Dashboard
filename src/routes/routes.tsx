@@ -29,6 +29,7 @@ import AboutUs from '../pages/dashboard/settings/about/AboutUs';
 import PrivacyPolicy from '../pages/dashboard/settings/privacyPolicy/PrivacyPolicy';
 import TermsOfService from '../pages/dashboard/settings/termsOfService/TermsOfService';
 import Faq from '../pages/dashboard/settings/faq/Faq';
+import ManageAdmin from '../pages/dashboard/manageAdmin/ManageAdmin';
 
 const router = createBrowserRouter([
     {
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
             { path: 'settings/privacy-policy', element: <PrivacyPolicy /> },
             { path: 'settings/terms-of-service', element: <TermsOfService /> },
             { path: 'settings/faq', element: <Faq /> },
+            { path: 'manage-admin', element: <ManageAdmin /> },
             { path: 'notification', element: <Notification /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
