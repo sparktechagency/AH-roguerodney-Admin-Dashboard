@@ -23,6 +23,7 @@ import BookingsPage from '../pages/dashboard/booking/Booking';
 import BookingDetailsPage from '../pages/dashboard/booking/BookingDetails';
 import PaymentPage from '../pages/dashboard/payment/Payment';
 import PaymentDetailsPage from '../pages/dashboard/payment/PaymentDetails';
+import ChangePassword from '../pages/dashboard/profile/ChangePassword';
 
 const router = createBrowserRouter([
     {
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
             { path: 'bookings/:id', element: <BookingDetailsPage /> },
             { path: 'payments', element: <PaymentPage /> },
             { path: 'payments/:id', element: <PaymentDetailsPage /> },
+            { path: 'settings/change-password', element: <ChangePassword /> },
             { path: 'reviews', element: <Review /> },
             { path: 'campaign', element: <Campaign /> },
             { path: 'make-admin', element: <MakeAdmin /> },
