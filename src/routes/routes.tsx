@@ -33,6 +33,10 @@ import BonusAndChallanges from '../pages/dashboard/bonusAndChallenges/BonusAndCh
 import ReferralPage from '../pages/dashboard/referral/Referral';
 import SubscriptionPlans from '../pages/dashboard/subscriptionPlans/SubscriptionPlans';
 import MainSubscriber from '../pages/dashboard/subscriber/MainSubscriber';
+import ClientAgreement from '../pages/dashboard/agreement/client/ClientAgreement';
+import ClientResponsibility from '../pages/dashboard/agreement/client/ClientResponsibility';
+import AhTistResponsibility from '../pages/dashboard/agreement/ahTist/AhTistResponsibility';
+import AhTistAgreement from '../pages/dashboard/agreement/ahTist/AhTistAgreement';
 
 const router = createBrowserRouter([
     {
@@ -59,6 +63,10 @@ const router = createBrowserRouter([
             { path: 'settings/privacy-policy', element: <PrivacyPolicy /> },
             { path: 'settings/terms-of-service', element: <TermsOfService /> },
             { path: 'settings/faq', element: <Faq /> },
+            { path: 'agreement/client-agreement', element: <ClientAgreement /> },
+            { path: 'agreement/client-responsibility', element: <ClientResponsibility /> },
+            { path: 'agreement/ah-tist-agreement', element: <AhTistAgreement /> },
+            { path: 'agreement/ah-tist-responsibility', element: <AhTistResponsibility /> },
             { path: 'manage-admin', element: <ManageAdmin /> },
             { path: 'bonus-and-challenges', element: <BonusAndChallanges /> },
             { path: 'referral', element: <ReferralPage /> },

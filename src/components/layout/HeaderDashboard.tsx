@@ -53,7 +53,7 @@ const HeaderDashboard = () => {
                     {/* profile */}
 
                     <Link
-                        to={'/profile'}
+                        to={'/settings/profile'}
                         style={{
                             height: '42px',
                             cursor: 'pointer',
@@ -82,7 +82,7 @@ const HeaderDashboard = () => {
                                 fontWeight: '600',
                             }}
                         >
-                          Admin Humphrey
+                            Admin Humphrey
                         </h2>
                     </Link>
                 </div>
