@@ -166,6 +166,7 @@ const CategoryTable = () => {
             </Form.Item>
         </Form>
     );
+
     const editServiceForm = (
         <Form
             style={{

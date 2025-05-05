@@ -97,6 +97,38 @@ const ServiceTable = () => {
                 />
             </Form.Item>
 
+            <Form.Item label="Base Price" name="price">
+                <Input
+                    type="number"
+                    style={{
+                        height: 42,
+                    }}
+                    placeholder="Enter base price"
+                />
+            </Form.Item>
+
+            <Form.Item label="Add-Ons" name="add-ons">
+                <Input
+                    style={{
+                        height: 42,
+                    }}
+                    placeholder="Enter add-ons name"
+                />
+
+                <div className="flex items-center gap-2 mt-2">
+                    <Input
+                        type="number"
+                        style={{
+                            height: 42,
+                        }}
+                        placeholder="Enter add-ons price"
+                    />
+                    <Button style={{ height: 42 }} className="text-primary border-primary">
+                        <Plus size={20} /> Add
+                    </Button>
+                </div>
+            </Form.Item>
+
             <Form.Item label="Service Image" name="image">
                 <UploadImage fileList={fileList} setFileList={setFileList} />
             </Form.Item>
@@ -108,6 +140,7 @@ const ServiceTable = () => {
                         style={{
                             height: 40,
                         }}
+                        className="w-full"
                     >
                         Add Service
                     </Button>
@@ -147,7 +180,39 @@ const ServiceTable = () => {
                 />
             </Form.Item>
 
-            <Form.Item label="Service Image" name="image">
+            <Form.Item label="Base Price" name="price">
+                <Input
+                    type="number"
+                    style={{
+                        height: 42,
+                    }}
+                    placeholder="Enter base price"
+                />
+            </Form.Item>
+
+            <Form.Item label="Add-Ons" name="add-ons">
+                <Input
+                    style={{
+                        height: 42,
+                    }}
+                    placeholder="Enter add-ons name"
+                />
+
+                <div className="flex items-center gap-2 mt-2">
+                    <Input
+                        type="number"
+                        style={{
+                            height: 42,
+                        }}
+                        placeholder="Enter add-ons price"
+                    />
+                    <Button style={{ height: 42 }} className="text-primary border-primary">
+                        <Plus size={20} /> Add
+                    </Button>
+                </div>
+            </Form.Item>
+
+            <Form.Item label="price Image" name="image">
                 <UploadImage fileList={fileList} setFileList={setFileList} />
             </Form.Item>
 
@@ -181,14 +246,14 @@ const ServiceTable = () => {
             <CustomModal
                 open={serviceModal}
                 setOpen={setServiceModal}
-                title="Add category"
+                title="Add Service"
                 width={500}
                 body={addCategoryForm}
             />
             <CustomModal
                 open={editServiceModal}
                 setOpen={setEditServiceModal}
-                title="Edit category"
+                title="Edit Service"
                 width={500}
                 body={editServiceForm}
             />
