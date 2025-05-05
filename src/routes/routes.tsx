@@ -13,7 +13,7 @@ import FAQs from '../pages/dashboard/FAQs';
 import Notification from '../pages/dashboard/Notification';
 import ForgetPassword from '../pages/authentication/ForgetPassword';
 import VerifyOtp from '../pages/authentication/VerifyOtp';
-import NewPassword from '../pages/authentication/NewPassword';
+import ResetPassword from '../pages/authentication/ResetPassword';
 import Profile from '../pages/dashboard/settings/profile/Profile';
 import Clients from '../pages/dashboard/users/Clients';
 import Artist from '../pages/dashboard/users/Artist';
@@ -81,7 +81,7 @@ const router = createBrowserRouter([
     { path: '/login', element: <Login /> },
     { path: '/forget-password', element: <ForgetPassword /> },
     { path: '/verify-otp', element: <VerifyOtp /> },
-    { path: '/new-password', element: <NewPassword /> },
+    { path: '/reset-password', element: <ResetPassword /> },
 ]);
 
 export default router;

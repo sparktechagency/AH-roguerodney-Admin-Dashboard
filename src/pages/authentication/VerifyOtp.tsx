@@ -3,11 +3,11 @@ import { FieldNamesType } from 'antd/es/cascader';
 import { useNavigate } from 'react-router-dom';
 import login from '../../assets/login.png';
 
-const ForgetPassword = () => {
+const VerifyOtp = () => {
     const navigate = useNavigate();
     const onFinish: FormProps<FieldNamesType>['onFinish'] = (values) => {
         console.log('Received values of form: ', values);
-        navigate('/verify-otp');
+        navigate('/reset-password');
     };
 
     return (
@@ -59,12 +59,11 @@ const ForgetPassword = () => {
                                 name="otp"
                                 rules={[{ required: true, message: 'Please input otp code here!' }]}
                             >
-                                <Input.OTP length={5} size='large' />
+                                <Input.OTP length={5} size="large" />
                             </Form.Item>
 
                             <Form.Item>
                                 <Button
-                                    shape="round"
                                     type="primary"
                                     htmlType="submit"
                                     style={{
@@ -72,14 +71,14 @@ const ForgetPassword = () => {
                                         width: '100%',
                                         fontWeight: 500,
                                     }}
-                                    // onClick={() => navigate('/')}
+                                    className="rounded-lg"
                                 >
-                                    Verify OTP Code
+                                    Confirm
                                 </Button>
                             </Form.Item>
                             <div className="text-center flex items-center justify-center gap-2">
                                 <p className="text-primaryText font-medium">Didn't receive the code?</p>
-                                <p className="text-primary font-medium">Resend code</p>
+                                <p className="text-primary font-medium hover:underline">Resend code</p>
                             </div>
                         </Form>
                     </div>
@@ -89,4 +88,4 @@ const ForgetPassword = () => {
     );
 };
 
-export default ForgetPassword;
+export default VerifyOtp;
