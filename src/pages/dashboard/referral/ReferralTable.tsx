@@ -1,12 +1,10 @@
-import { Button, ConfigProvider, Form, Input, Table, UploadFile } from 'antd';
+import { ConfigProvider, Table } from 'antd';
 import { dummyReferralsData } from '../../../dummyData/referrals';
-import UploadImage from '../../../components/shared/UploadImage';
 import { useState } from 'react';
 import CustomModal from '../../../components/shared/CustomModal';
 import { Info } from 'lucide-react';
 
 const ReferralTable = () => {
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [detailsModal, setDetailsModal] = useState(false);
 
     const columns = [
@@ -74,7 +72,7 @@ const ReferralTable = () => {
         },
     ];
 
-    const addCategoryForm = (
+    const referralDetailsModal = (
         <ul className="">
             <li className="grid grid-cols-3">
                 <span>Referral User Name</span>
@@ -119,7 +117,7 @@ const ReferralTable = () => {
                 setOpen={setDetailsModal}
                 title="Referral Details"
                 width={500}
-                body={addCategoryForm}
+                body={referralDetailsModal}
             />
         </div>
     );
