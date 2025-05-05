@@ -204,7 +204,7 @@ const CategoryTable = () => {
     return (
         <div className="grid gap-4 mt-2">
             <div className="flex justify-between items-center gap-4">
-                <h1 className="text-3xl text-primary font-semibold">Categories</h1>
+                <h1 className="text-2xl text-primary font-semibold">Categories</h1>
                 <Button type="primary" className="p-5 text-base" onClick={() => setCategoryModal(true)}>
                     <Plus size={20} /> Add Category
                 </Button>

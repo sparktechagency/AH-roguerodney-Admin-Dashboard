@@ -1,12 +1,18 @@
 import { ConfigProvider, Tabs } from 'antd';
 import CategoryTable from './CategoryTable';
+import SubCategoryTable from './SubCategoryTable';
 
 const Services = () => {
     const tabs = [
         {
             key: '01',
-            label: 'Category',
+            label: 'Category Management',
             children: <CategoryTable />,
+        },
+        {
+            key: '02',
+            label: 'Sub-category Management',
+            children: <SubCategoryTable />,
         },
     ];
 
