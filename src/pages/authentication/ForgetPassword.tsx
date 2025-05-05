@@ -1,6 +1,7 @@
 import { Button, ConfigProvider, Form, FormProps, Input } from 'antd';
 import { FieldNamesType } from 'antd/es/cascader';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import login from '../../assets/login.png';
 
 const ForgetPassword = () => {
     const navigate = useNavigate();
@@ -13,9 +14,9 @@ const ForgetPassword = () => {
         <ConfigProvider
             theme={{
                 token: {
-                    colorPrimary: '#DAA520',
+                    colorPrimary: '#9558b7',
 
-                    colorBgContainer: '#F1F4F9',
+                    // colorBgContainer: '#F1F4F9',
                 },
                 components: {
                     Input: {
@@ -29,46 +30,59 @@ const ForgetPassword = () => {
                 },
             }}
         >
-            <div className="flex bg-[#1A4F73] items-center justify-center h-screen">
-                <div className="bg-white w-[630px] rounded-lg shadow-lg p-10 ">
-                    <div className="text-primaryText space-y-3 text-center">
-                        <h1 className="text-3xl  font-medium text-center mt-2">Forget Password</h1>
-                    </div>
+            <div className="grid grid-cols-2  items-center">
+                <div>
+                    <img src={login} alt="" className="w-full object-cover h-screen" />
+                </div>
 
-                    <Form
-                        name="normal_ForgetPassword"
-                        className="ForgetPassword-form"
-                        layout="vertical"
-                        initialValues={{ remember: true }}
-                        onFinish={onFinish}
-                    >
-                        <Form.Item
-                            label={
-                                <label htmlFor="email" className="block text-primaryText mb-1 text-lg">
-                                    Email
-                                </label>
-                            }
-                            name="email"
-                            rules={[{ required: true, message: 'Please input your email!' }]}
+                <div className=" flex items-center justify-center bg-[#F1F1F1] min-h-screen">
+                    <div className="min-w-96">
+                        <div className="text-primaryText space-y-3 text-center pb-6">
+                            <h1 className="text-2xl text-[#111111] font-semibold text-center mt-2 ">
+                                Forgot password?
+                            </h1>
+                            <p className="text-sm text-[#929292]">Please enter your email for verification</p>
+                        </div>
+
+                        <Form
+                            name="normal_login"
+                            className=""
+                            layout="vertical"
+                            initialValues={{ remember: true }}
+                            onFinish={onFinish}
                         >
-                            <Input placeholder="Enter your email address" type="email" className="h-12" />
-                        </Form.Item>
-
-                        <Form.Item>
-                            <Button
-                                shape="round"
-                                type="primary"
-                                htmlType="submit"
-                                style={{
-                                    height: 45,
-                                    width: '100%',
-                                    fontWeight: 500,
-                                }}
+                            <Form.Item
+                                label={
+                                    <label htmlFor="email" className="block text-primaryText mb-1 font-medium">
+                                        Email
+                                    </label>
+                                }
+                                name="email"
+                                rules={[{ required: true, message: 'Please input your email!' }]}
                             >
-                                Send Code
-                            </Button>
-                        </Form.Item>
-                    </Form>
+                                <Input
+                                    placeholder="Enter your email address"
+                                    type="email"
+                                    className=" h-12  px-6 rounded-lg text-base"
+                                />
+                            </Form.Item>
+
+                            <Form.Item>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    style={{
+                                        height: 45,
+                                        width: '100%',
+                                        fontWeight: 500,
+                                    }}
+                                    className="bg-primary hover:bg-opacity-80 rounded-lg"
+                                >
+                                    Send Code
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </div>
                 </div>
             </div>
         </ConfigProvider>
