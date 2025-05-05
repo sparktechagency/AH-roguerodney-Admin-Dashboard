@@ -1,11 +1,12 @@
 import { Table, Input, Select } from 'antd';
 import { Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 // Sample data
 
 const Clients = () => {
-
+    const navigate = useNavigate();
 
     const data = [
         {
@@ -15,7 +16,7 @@ const Clients = () => {
             contact: '01867412400',
             location: '01867412400',
             plan: 'Ah Casual',
-            joiningDate: '2/11/12'
+            joiningDate: '2/11/12',
         },
         {
             key: '2450-1',
@@ -24,7 +25,7 @@ const Clients = () => {
             contact: '01867412400',
             location: '01867412400',
             plan: 'Ah Glow',
-            joiningDate: '2/11/12'
+            joiningDate: '2/11/12',
         },
         {
             key: '2450-2',
@@ -33,7 +34,7 @@ const Clients = () => {
             contact: '01867412400',
             location: '01867412400',
             plan: 'Ah Casual',
-            joiningDate: 'Nail'
+            joiningDate: 'Nail',
         },
         {
             key: '2450-3',
@@ -42,7 +43,7 @@ const Clients = () => {
             contact: '01867412400',
             location: '01867412400',
             plan: 'Ah Basic',
-            joiningDate: 'Hair'
+            joiningDate: 'Hair',
         },
         {
             key: '2450-4',
@@ -51,7 +52,7 @@ const Clients = () => {
             contact: '01867412400',
             location: '01867412400',
             plan: 'Ah Pro',
-            joiningDate: 'Makeup'
+            joiningDate: 'Makeup',
         },
         {
             key: '2465-1',
@@ -60,7 +61,7 @@ const Clients = () => {
             contact: '01867412400',
             location: '01867412400',
             plan: 'Ah Casual',
-            joiningDate: 'Hair'
+            joiningDate: 'Hair',
         },
         {
             key: '2472-2',
@@ -69,7 +70,7 @@ const Clients = () => {
             contact: '01867412400',
             location: '01867412400',
             plan: 'Ah Glow',
-            joiningDate: 'Makeup'
+            joiningDate: 'Makeup',
         },
         {
             key: '2465-2',
@@ -78,9 +79,8 @@ const Clients = () => {
             contact: '01867412400',
             location: '01867412400',
             plan: 'Ah Luxe',
-            joiningDate: 'Makeup'
+            joiningDate: 'Makeup',
         },
-       
     ];
 
     // Column definitions
@@ -124,16 +124,23 @@ const Clients = () => {
             title: 'Action',
             key: 'action',
             render: (_: any) => (
-                <Select defaultValue="Active" className="w-24 h-[35px]">
-                <Option value="All">All</Option>
-                <Option value="Active">Active</Option>
-                <Option value="Inactive">Inactive</Option>
-                <Option value="Pending">Pending</Option>
-            </Select>
+                <div className="flex items-center gap-2">
+                    <button
+                        className="text-primary font-semibold border  rounded-md w-24 h-[35px]"
+                        onClick={() => navigate('/user-details')}
+                    >
+                        view
+                    </button>
+                    <Select defaultValue="Active" className="w-24 h-[35px]">
+                        <Option value="All">All</Option>
+                        <Option value="Active">Active</Option>
+                        <Option value="Inactive">Inactive</Option>
+                        <Option value="Pending">Pending</Option>
+                    </Select>
+                </div>
             ),
         },
     ];
-
 
     return (
         <div className="grid gap-4 p-4">

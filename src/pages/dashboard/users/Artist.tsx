@@ -1,12 +1,10 @@
 import { Table, Input, Select } from 'antd';
 import { Search } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 // Sample data
 
 const Artist = () => {
-    const navigate = useNavigate();
 
     const data = [
         {
@@ -125,9 +123,7 @@ const Artist = () => {
             title: 'Action',
             key: 'action',
             render: (_: any) => (
-                <div className=' flex gap-2 items-center'>
-                    <button className='text-primary font-semibold border  rounded-md w-24 h-[35px]' onClick={() => navigate('/user-details')} > view </button>
-
+                <div className=" flex gap-2 items-center">
                     <Select defaultValue="Active" className="w-24 h-[35px]">
                         <Option value="All">All</Option>
                         <Option value="Active">Active</Option>
@@ -135,7 +131,6 @@ const Artist = () => {
                         <Option value="Pending">Pending</Option>
                     </Select>
                 </div>
-
             ),
         },
     ];
