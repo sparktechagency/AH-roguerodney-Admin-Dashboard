@@ -5,7 +5,7 @@ import MakeAdmin from '../pages/dashboard/MakeAdmin';
 import Login from '../pages/authentication/Login';
 import ErrorPage from '../pages/error/ErrorPage';
 import Brands from '../pages/dashboard/Brands';
-import Services from '../pages/dashboard/Services';
+import Services from '../pages/dashboard/services/Services';
 import Review from '../pages/dashboard/Review';
 import Campaign from '../pages/dashboard/Campaign';
 import TermsCondition from '../pages/dashboard/TermsCondition';
