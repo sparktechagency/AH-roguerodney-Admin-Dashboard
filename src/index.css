@@ -19,3 +19,7 @@
     background-color: #f1f1f9 !important;
     color: #494848 !important;
 }
+
+.ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab-active {
+    background-color: #9558B7 !important;
+}

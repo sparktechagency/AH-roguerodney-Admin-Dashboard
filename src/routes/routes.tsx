@@ -32,6 +32,7 @@ import Faq from '../pages/dashboard/settings/faq/Faq';
 import ManageAdmin from '../pages/dashboard/manageAdmin/ManageAdmin';
 import BonusAndChallanges from '../pages/dashboard/bonusAndChallenges/BonusAndChallages';
 import ReferralPage from '../pages/dashboard/referral/Referral';
+import SubscriptionPlans from '../pages/dashboard/subscriptionPlans/SubscriptionPlans';
 
 const router = createBrowserRouter([
     {
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
             { path: 'user-details', element: <UserDetails /> },
             { path: 'brands', element: <Brands /> },
             { path: 'subscriber', element: <MainSubscriber /> },
+            { path: 'subscription-plan', element: <SubscriptionPlans /> },
             { path: 'services', element: <Services /> },
             { path: 'bookings', element: <BookingsPage /> },
             { path: 'bookings/:id', element: <BookingDetailsPage /> },
