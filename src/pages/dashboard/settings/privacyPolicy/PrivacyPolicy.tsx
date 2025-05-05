@@ -1,5 +1,4 @@
-import { Button, Select } from 'antd';
-import { Option } from 'antd/es/mentions';
+import { Button } from 'antd';
 import JoditEditor from 'jodit-react';
 import { useRef, useState } from 'react';
 
@@ -11,14 +10,6 @@ const PrivacyPolicy = () => {
         <section className="p-4 grid gap-4">
             <div className="flex justify-between items-center gap-4">
                 <h1 className="text-3xl text-primary font-semibold">Privacy Policy</h1>
-                {/* Dropdown Filter */}
-                <Select defaultValue="All" className="w-40 h-[42px]">
-                    <Option value="All">All</Option>
-                    <Option value="Client Agreement">Client Agreement</Option>
-                    <Option value="Client Responsibility">Client Responsibility</Option>
-                    <Option value="Ah-tist Agreement">Ah-tist Agreement</Option>
-                    <Option value="Ah-tist Responsibility">Ah-tist Responsibility</Option>
-                </Select>
             </div>
             <div className="p-6 bg-white rounded-lg">
                 <JoditEditor

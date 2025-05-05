@@ -18,7 +18,6 @@ import Profile from '../pages/dashboard/settings/profile/Profile';
 import Clients from '../pages/dashboard/users/Clients';
 import Artist from '../pages/dashboard/users/Artist';
 import UserDetails from '../pages/dashboard/users/UserDetails';
-import MainSubscriber from '../pages/dashboard/subscriber/MainSubscriber';
 import BookingsPage from '../pages/dashboard/booking/Booking';
 import BookingDetailsPage from '../pages/dashboard/booking/BookingDetails';
 import PaymentPage from '../pages/dashboard/payment/Payment';
@@ -33,6 +32,7 @@ import ManageAdmin from '../pages/dashboard/manageAdmin/ManageAdmin';
 import BonusAndChallanges from '../pages/dashboard/bonusAndChallenges/BonusAndChallages';
 import ReferralPage from '../pages/dashboard/referral/Referral';
 import SubscriptionPlans from '../pages/dashboard/subscriptionPlans/SubscriptionPlans';
+import MainSubscriber from '../pages/dashboard/subscriber/MainSubscriber';
 
 const router = createBrowserRouter([
     {

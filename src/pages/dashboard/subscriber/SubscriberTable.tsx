@@ -120,7 +120,8 @@ const SubscriberTable = () => {
 
     const activeStatusOption = [
         { value: 'Active', label: 'Active' },
-        { value: 'Inactive', label: 'Inactive' },
+        { value: 'Expired', label: 'Expired' },
+        { value: 'Deactivate', label: 'Deactivate' },
     ];
 
     const roleOption = [
