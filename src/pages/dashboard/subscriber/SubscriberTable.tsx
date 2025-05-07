@@ -86,11 +86,6 @@ const SubscriberTable = () => {
             render: renderClient,
         },
         {
-            title: 'Role',
-            dataIndex: 'role',
-            key: 'role',
-        },
-        {
             title: 'Subscription Plan',
             dataIndex: 'plan',
             key: 'plan',
@@ -124,10 +119,6 @@ const SubscriberTable = () => {
         { value: 'Deactivate', label: 'Deactivate' },
     ];
 
-    const roleOption = [
-        { value: 'Client', label: 'Client' },
-        { value: 'Artist', label: 'Artist' },
-    ];
     return (
         <>
             <div className="flex justify-between items-center">
@@ -139,7 +130,6 @@ const SubscriberTable = () => {
                         options={subscriptionPlansOption}
                     />
                     <Select defaultValue="Active" className="w-auto h-[30px]" options={activeStatusOption} />
-                    <Select defaultValue="Role" className="w-auto h-[30px]" options={roleOption} />
                 </div>
             </div>
 
