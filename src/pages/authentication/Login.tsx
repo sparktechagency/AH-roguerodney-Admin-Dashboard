@@ -1,13 +1,49 @@
 import { Button, Checkbox, ConfigProvider, Form, FormProps, Input } from 'antd';
-import { FieldNamesType } from 'antd/es/cascader';
 import { Link, useNavigate } from 'react-router-dom';
-import login from '../../assets/login.png';
+import loginImg from '../../assets/login.png';
+import { useLoginMutation } from '../../redux/features/auth/authApi';
+import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 const Login = () => {
     const navigate = useNavigate();
-    const onFinish: FormProps<FieldNamesType>['onFinish'] = (values) => {
-        console.log('Received values of form: ', values);
-        navigate('/');
+    const [login] = useLoginMutation();
+
+    // get form data if previeously saved to local storage
+    const localFormData = JSON.parse(localStorage.getItem('loginFormData') || '{}');
+
+    const onFinish: FormProps<any>['onFinish'] = async (values) => {
+        toast.loading('Logging in...', {
+            id: 'login',
+        });
+
+        try {
+            // perform login api call
+            const res = await login(values).unwrap();
+
+            if (res?.success) {
+                toast.success(res?.message || 'Login successful', {
+                    id: 'login',
+                });
+
+                // set token to cookie
+                Cookies.set('accessToken', res?.data?.accessToken);
+                Cookies.set('refreshToken', res?.data?.refreshToken);
+
+                // save form data to local storage
+                if (values?.remember) {
+                    localStorage.setItem('loginFormData', JSON.stringify(values));
+                } else {
+                    localStorage.removeItem('loginFormData');
+                }
+                navigate('/');
+            }
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error?.data?.message || 'Failed to login', {
+                id: 'login',
+            });
+        }
     };
 
     return (
@@ -32,7 +68,7 @@ const Login = () => {
         >
             <div className="grid grid-cols-2  items-center">
                 <div>
-                    <img src={login} alt="" className="w-full object-cover h-screen" />
+                    <img src={loginImg} alt="" className="w-full object-cover h-screen" />
                 </div>
 
                 <div className=" flex items-center justify-center bg-[#F1F1F1] min-h-screen">
@@ -48,7 +84,7 @@ const Login = () => {
                             name="normal_login"
                             className=""
                             layout="vertical"
-                            initialValues={{ remember: true }}
+                            initialValues={localFormData}
                             onFinish={onFinish}
                         >
                             <Form.Item
