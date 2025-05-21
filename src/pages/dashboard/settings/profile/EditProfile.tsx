@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import { CiEdit } from 'react-icons/ci';
-import { useGetProfileQuery, useUpdateProfileMutation } from '../../../../redux/features/user/userApi';
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../../../redux/features/profile/profileApi';
 import toast from 'react-hot-toast';
 import { IMAGE_URL } from '../../../../redux/api/baseApi';
 

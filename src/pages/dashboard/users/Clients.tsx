@@ -1,99 +1,100 @@
 import { Table, Input, Select } from 'antd';
 import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useGetAllUsersQuery } from '../../../redux/features/user/userApi';
+import { useUpdateMultipleSearchParams } from '../../../utils/updateSearchParams';
 
 const { Option } = Select;
 // Sample data
 
 const Clients = () => {
     const navigate = useNavigate();
+    const udpateSearchParams = useUpdateMultipleSearchParams();
+    const { data } = useGetAllUsersQuery(undefined);
+    const usersData = data?.data;
+    const pagination = data?.data?.pagination;
 
-    const data = [
-        {
-            key: '2472-1',
-            client: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Casual',
-            joiningDate: '2/11/12',
-        },
-        {
-            key: '2450-1',
-            client: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Glow',
-            joiningDate: '2/11/12',
-        },
-        {
-            key: '2450-2',
-            client: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Casual',
-            joiningDate: 'Nail',
-        },
-        {
-            key: '2450-3',
-            client: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Basic',
-            joiningDate: 'Hair',
-        },
-        {
-            key: '2450-4',
-            client: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Pro',
-            joiningDate: 'Makeup',
-        },
-        {
-            key: '2465-1',
-            client: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Casual',
-            joiningDate: 'Hair',
-        },
-        {
-            key: '2472-2',
-            client: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Glow',
-            joiningDate: 'Makeup',
-        },
-        {
-            key: '2465-2',
-            client: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Luxe',
-            joiningDate: 'Makeup',
-        },
-    ];
+    // const data = [
+    //     {
+    //         key: '2472-1',
+    //         client: 'Candice',
+    //         email: 'candice@gmail.com',
+    //         contact: '01867412400',
+    //         location: '01867412400',
+    //         plan: 'Ah Casual',
+    //         joiningDate: '2/11/12',
+    //     },
+    //     {
+    //         key: '2450-1',
+    //         client: 'Candice',
+    //         email: 'candice@gmail.com',
+    //         contact: '01867412400',
+    //         location: '01867412400',
+    //         plan: 'Ah Glow',
+    //         joiningDate: '2/11/12',
+    //     },
+    //     {
+    //         key: '2450-2',
+    //         client: 'Candice',
+    //         email: 'candice@gmail.com',
+    //         contact: '01867412400',
+    //         location: '01867412400',
+    //         plan: 'Ah Casual',
+    //         joiningDate: 'Nail',
+    //     },
+    //     {
+    //         key: '2450-3',
+    //         client: 'Candice',
+    //         email: 'candice@gmail.com',
+    //         contact: '01867412400',
+    //         location: '01867412400',
+    //         plan: 'Ah Basic',
+    //         joiningDate: 'Hair',
+    //     },
+    //     {
+    //         key: '2450-4',
+    //         client: 'Candice',
+    //         email: 'candice@gmail.com',
+    //         contact: '01867412400',
+    //         location: '01867412400',
+    //         plan: 'Ah Pro',
+    //         joiningDate: 'Makeup',
+    //     },
+    //     {
+    //         key: '2465-1',
+    //         client: 'Candice',
+    //         email: 'candice@gmail.com',
+    //         contact: '01867412400',
+    //         location: '01867412400',
+    //         plan: 'Ah Casual',
+    //         joiningDate: 'Hair',
+    //     },
+    //     {
+    //         key: '2472-2',
+    //         client: 'Candice',
+    //         email: 'candice@gmail.com',
+    //         contact: '01867412400',
+    //         location: '01867412400',
+    //         plan: 'Ah Glow',
+    //         joiningDate: 'Makeup',
+    //     },
+    //     {
+    //         key: '2465-2',
+    //         client: 'Candice',
+    //         email: 'candice@gmail.com',
+    //         contact: '01867412400',
+    //         location: '01867412400',
+    //         plan: 'Ah Luxe',
+    //         joiningDate: 'Makeup',
+    //     },
+    // ];
 
     // Column definitions
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'key',
-            key: 'key',
-        },
-        {
             title: 'Client',
-            dataIndex: 'client',
             key: 'client',
+            render: (item: any) => <p>{item?.name}</p>,
         },
         {
             title: 'Email',
@@ -112,18 +113,18 @@ const Clients = () => {
         },
         {
             title: 'Subscription Plan',
-            dataIndex: 'plan',
             key: 'plan',
+            render: (item: any) => <a>{item?.subscription?.package?.name}</a>,
         },
         {
             title: 'Joining Date',
-            dataIndex: 'joiningDate',
             key: 'joiningDate',
+            render: (item: any) => <a>{new Date(item?.createdAt).toLocaleDateString()}</a>,
         },
         {
             title: 'Action',
             key: 'action',
-            render: (_: any) => (
+            render: (item: any) => (
                 <div className="flex items-center gap-2">
                     <button
                         className="text-primary font-semibold border  rounded-md w-24 h-[35px]"
@@ -131,11 +132,9 @@ const Clients = () => {
                     >
                         view
                     </button>
-                    <Select defaultValue="Active" className="w-24 h-[35px]">
-                        <Option value="All">All</Option>
+                    <Select defaultValue={item?.isActive ? 'Active' : 'Inactive'} className="w-24 h-[35px]">
                         <Option value="Active">Active</Option>
                         <Option value="Inactive">Inactive</Option>
-                        <Option value="Pending">Pending</Option>
                     </Select>
                 </div>
             ),
@@ -159,15 +158,18 @@ const Clients = () => {
                     />
 
                     {/* Dropdown Filter */}
-                    <Select defaultValue="Active" className="w-32 h-[40px]">
-                        <Option value="All">All</Option>
-                        <Option value="Active">Active</Option>
-                        <Option value="Inactive">Inactive</Option>
-                        <Option value="Pending">Pending</Option>
+                    <Select
+                        onSelect={(value) => udpateSearchParams({ verified: value })}
+                        defaultValue="Active"
+                        className="w-32 h-[40px]"
+                    >
+                        <Option value="">All</Option>
+                        <Option value="true">Active</Option>
+                        <Option value="false">Inactive</Option>
                     </Select>
                 </div>
             </div>
-            <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" />
+            <Table columns={columns} dataSource={usersData} rowClassName="hover:bg-gray-100" />
         </div>
     );
 };

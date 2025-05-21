@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Form, Input } from 'antd';
 import { Pencil } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useGetProfileQuery } from '../../../../redux/features/user/userApi';
+import { useGetProfileQuery } from '../../../../redux/features/profile/profileApi';
 import { IMAGE_URL } from '../../../../redux/api/baseApi';
 
 const Profile: React.FC = () => {

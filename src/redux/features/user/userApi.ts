@@ -2,26 +2,26 @@ import { baseApi } from '../../api/baseApi';
 
 const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getProfile: builder.query({
+        getAllUsers: builder.query({
             query: () => {
                 return {
-                    url: `/user/profile`,
+                    url: `/user`,
                     method: 'GET',
                 };
             },
-            providesTags: ['Profile', 'Users'],
+            providesTags: ['Users'],
         }),
-        updateProfile: builder.mutation({
-            query: (payload) => {
-                return {
-                    url: `/user`,
-                    method: 'PATCH',
-                    body: payload,
-                };
-            },
-            invalidatesTags: ['Profile', 'Users'],
-        }),
+        // updateProfile: builder.mutation({
+        //     query: (payload) => {
+        //         return {
+        //             url: `/user`,
+        //             method: 'PATCH',
+        //             body: payload,
+        //         };
+        //     },
+        //     invalidatesTags: ['Profile', 'Users'],
+        // }),
     }),
 });
 
-export const { useGetProfileQuery, useUpdateProfileMutation } = userApi;
+export const { useGetAllUsersQuery } = userApi;

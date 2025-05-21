@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import { useGetProfileQuery } from '../redux/features/user/userApi';
+import { useGetProfileQuery } from '../redux/features/profile/profileApi';
 import { logout } from '../utils/logout';
 import { useNavigate } from 'react-router-dom';
 

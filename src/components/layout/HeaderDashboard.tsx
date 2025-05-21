@@ -1,6 +1,6 @@
 import { Layout } from 'antd';
 import { Link } from 'react-router-dom';
-import { useGetProfileQuery } from '../../redux/features/user/userApi';
+import { useGetProfileQuery } from '../../redux/features/profile/profileApi';
 import { IMAGE_URL } from '../../redux/api/baseApi';
 
 const { Header } = Layout;
