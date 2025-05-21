@@ -20,7 +20,16 @@ const authApi = baseApi.injectEndpoints({
                 };
             },
         }),
+        otpVerify: builder.mutation({
+            query: (payload) => {
+                return {
+                    url: `/auth/verify-email`,
+                    method: 'POST',
+                    body: payload,
+                };
+            },
+        }),
     }),
 });
 
-export const { useLoginMutation, useForgotPasswordMutation } = authApi;
+export const { useLoginMutation, useForgotPasswordMutation, useOtpVerifyMutation } = authApi;

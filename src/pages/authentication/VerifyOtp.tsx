@@ -1,13 +1,34 @@
 import { Button, ConfigProvider, Form, FormProps, Input } from 'antd';
-import { FieldNamesType } from 'antd/es/cascader';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import login from '../../assets/login.png';
+import toast from 'react-hot-toast';
+import { useOtpVerifyMutation } from '../../redux/features/auth/authApi';
 
 const VerifyOtp = () => {
     const navigate = useNavigate();
-    const onFinish: FormProps<FieldNamesType>['onFinish'] = (values) => {
-        console.log('Received values of form: ', values);
-        navigate('/reset-password');
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const email = searchParams.get('email') || '';
+    const [otpVerify] = useOtpVerifyMutation();
+
+    const onFinish: FormProps<any>['onFinish'] = async (values) => {
+        toast.loading('Loading...', {
+            id: 'otp-verify',
+        });
+        try {
+            const res = await otpVerify({ oneTimeCode: Number(values?.oneTimeCode), email }).unwrap();
+            if (res?.success) {
+                toast.success(res?.message || 'OTP verified successfully', {
+                    id: 'otp-verify',
+                });
+                navigate(`/login`);
+            }
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Failed to verify OTP', {
+                id: 'otp-verify',
+            });
+            console.error(error);
+        }
     };
 
     return (
@@ -47,19 +68,13 @@ const VerifyOtp = () => {
                             </p>
                         </div>
 
-                        <Form
-                            name="normal_VerifyOtp"
-                            className="my-5"
-                            layout="vertical"
-                            initialValues={{ remember: true }}
-                            onFinish={onFinish}
-                        >
+                        <Form name="normal_VerifyOtp" className="my-5" layout="vertical" onFinish={onFinish}>
                             <Form.Item
                                 className="flex items-center justify-center mx-auto"
-                                name="otp"
+                                name="oneTimeCode"
                                 rules={[{ required: true, message: 'Please input otp code here!' }]}
                             >
-                                <Input.OTP length={5} size="large" />
+                                <Input.OTP length={6} size="large" />
                             </Form.Item>
 
                             <Form.Item>
