@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import { CiEdit } from 'react-icons/ci';
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../../../redux/features/user/userApi';
+import toast from 'react-hot-toast';
+import { IMAGE_URL } from '../../../../redux/api/baseApi';
 
 interface FormValues {
     name: string;
@@ -9,12 +12,37 @@ interface FormValues {
 }
 
 const EditProfile: React.FC = () => {
-    const [imagePreview, setImagePreview] = useState<string>('/user.svg');
+    const { data } = useGetProfileQuery(undefined);
+    const [updateProfile] = useUpdateProfileMutation();
+    const [imagePreview, setImagePreview] = useState<string>('');
     const [file, setFile] = useState<File | null>(null);
 
-    const onFinish = (values: FormValues) => {
-        console.log('Received values of form: ', values);
-        values.image = file;
+    const onFinish = async (values: FormValues) => {
+        toast.loading('Loading...', {
+            id: 'update-profile',
+        });
+
+        const formData = new FormData();
+        if (file) {
+            formData.append('profile', file);
+        }
+        Object.entries(values).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
+        try {
+            const res = await updateProfile(formData).unwrap();
+            if (res?.success) {
+                toast.success(res?.message || 'Profile updated successfully', {
+                    id: 'update-profile',
+                });
+            }
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Failed to update profile', {
+                id: 'update-profile',
+            });
+            console.error(error);
+        }
     };
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,14 +66,14 @@ const EditProfile: React.FC = () => {
                 name="update_profile"
                 layout="vertical"
                 className="grid gap-4 p-10 bg-white rounded-lg"
-                initialValues={{ remember: true }}
+                initialValues={data?.data}
                 onFinish={onFinish}
             >
                 {/* Banner Image */}
                 <div className="mb-10">
                     <div className="w-[150px] h-[150px] relative">
                         <img
-                            src={imagePreview}
+                            src={imagePreview || `${IMAGE_URL}${data?.data?.profile}`}
                             alt="User Profile"
                             className="w-full h-full object-cover rounded-full"
                         />
@@ -92,11 +120,11 @@ const EditProfile: React.FC = () => {
 
                 <Form.Item
                     label={
-                        <label htmlFor="contactNumber" className="block text-primaryText mb-1 text-lg font-semibold">
+                        <label htmlFor="contact" className="block text-primaryText mb-1 text-lg font-semibold">
                             Contact number
                         </label>
                     }
-                    name="contactNumber"
+                    name="contact"
                     rules={[{ required: true, message: 'Please input your contact number!' }]}
                 >
                     <Input className="h-12 rounded-lg border-none bg-zinc-100" placeholder="+99-01846875456" />

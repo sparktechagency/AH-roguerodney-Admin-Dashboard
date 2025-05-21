@@ -1,34 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Form, Input } from 'antd';
 import { Pencil } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-interface FormValues {
-    name: string;
-    email: string;
-    image: File | null;
-}
+import { useGetProfileQuery } from '../../../../redux/features/user/userApi';
+import { IMAGE_URL } from '../../../../redux/api/baseApi';
 
 const Profile: React.FC = () => {
-    const [imagePreview, setImagePreview] = useState<string>('/user.svg');
-    const [file, setFile] = useState<File | null>(null);
-
-    const onFinish = (values: FormValues) => {
-        console.log('Received values of form: ', values);
-        values.image = file;
-    };
-
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = event.target.files?.[0];
-        if (selectedFile) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setImagePreview(reader.result as string);
-                setFile(selectedFile);
-            };
-            reader.readAsDataURL(selectedFile);
-        }
-    };
+    const { data } = useGetProfileQuery(undefined);
+    const profileData = data?.data;
 
     return (
         <div className="p-4">
@@ -39,23 +18,17 @@ const Profile: React.FC = () => {
                 name="update_profile"
                 layout="vertical"
                 className="grid gap-4 p-10 bg-white rounded-lg"
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
+                initialValues={profileData}
             >
                 {/* Banner Image */}
                 <div className="w-[150px] h-[150px] relative flex gap-2 items-end">
-                    <img src={imagePreview} alt="User Profile" className="w-full h-full object-cover rounded-full" />
-
-                    <input
-                        id="imageUploadBanner"
-                        type="file"
-                        onChange={handleImageChange}
-                        style={{ display: 'none' }}
-                        accept="image/*"
-                        disabled
+                    <img
+                        src={`${IMAGE_URL}${profileData?.profile}`}
+                        alt="User Profile"
+                        className="w-full h-full object-cover rounded-full"
                     />
 
-                    <h1 className="text-3xl font-semibold">Candice</h1>
+                    <h1 className="text-3xl font-semibold whitespace-nowrap">{profileData?.name}</h1>
                 </div>
 
                 <div className="flex justify-end mb-4">
@@ -106,11 +79,11 @@ const Profile: React.FC = () => {
 
                 <Form.Item
                     label={
-                        <label htmlFor="contactNumber" className="block text-primaryText mb-1 text-lg font-semibold">
+                        <label htmlFor="contact" className="block text-primaryText mb-1 text-lg font-semibold">
                             Contact number
                         </label>
                     }
-                    name="contactNumber"
+                    name="contact"
                     rules={[{ required: true, message: 'Please input your contact number!' }]}
                 >
                     <Input className="h-12 rounded-lg border-none bg-zinc-100" placeholder="+99-01846875456" readOnly />
