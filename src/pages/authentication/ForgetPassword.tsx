@@ -1,13 +1,31 @@
 import { Button, ConfigProvider, Form, FormProps, Input } from 'antd';
-import { FieldNamesType } from 'antd/es/cascader';
 import { useNavigate } from 'react-router-dom';
 import login from '../../assets/login.png';
+import toast from 'react-hot-toast';
+import { useForgotPasswordMutation } from '../../redux/features/auth/authApi';
 
 const ForgetPassword = () => {
     const navigate = useNavigate();
-    const onFinish: FormProps<FieldNamesType>['onFinish'] = (values) => {
-        console.log('Received values of form: ', values);
-        navigate('/verify-otp');
+    const [forgotPassword] = useForgotPasswordMutation();
+
+    const onFinish: FormProps<any>['onFinish'] = async (values) => {
+        toast.loading('Loading...', {
+            id: 'forgot-password',
+        });
+        try {
+            const res = await forgotPassword(values).unwrap();
+            if (res?.success) {
+                toast.success(res?.message || 'OTP sent successfully', {
+                    id: 'forgot-password',
+                });
+                navigate(`/verify-otp?email=${values?.email}`);
+            }
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Failed to send OTP', {
+                id: 'forgot-password',
+            });
+            console.error(error);
+        }
     };
 
     return (
@@ -44,13 +62,7 @@ const ForgetPassword = () => {
                             <p className="text-sm text-[#929292]">Please enter your email for verification</p>
                         </div>
 
-                        <Form
-                            name="normal_login"
-                            className=""
-                            layout="vertical"
-                            initialValues={{ remember: true }}
-                            onFinish={onFinish}
-                        >
+                        <Form name="normal_login" className="" layout="vertical" onFinish={onFinish}>
                             <Form.Item
                                 label={
                                     <label htmlFor="email" className="block text-primaryText mb-1 font-medium">
