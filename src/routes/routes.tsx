@@ -37,11 +37,16 @@ import ClientAgreement from '../pages/dashboard/agreement/client/ClientAgreement
 import ClientResponsibility from '../pages/dashboard/agreement/client/ClientResponsibility';
 import AhTistResponsibility from '../pages/dashboard/agreement/ahTist/AhTistResponsibility';
 import AhTistAgreement from '../pages/dashboard/agreement/ahTist/AhTistAgreement';
+import PrivateRoute from './PrivateRoute';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App />,
+        element: (
+            <PrivateRoute>
+                <App />
+            </PrivateRoute>
+        ),
         errorElement: <ErrorPage />,
         children: [
             { path: '', element: <Dashboard /> },
