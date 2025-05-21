@@ -1,13 +1,34 @@
 import { Button, ConfigProvider, Form, FormProps, Input } from 'antd';
-import { FieldNamesType } from 'antd/es/cascader';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import login from '../../assets/login.png';
+import { useResetPasswordMutation } from '../../redux/features/auth/authApi';
+import toast from 'react-hot-toast';
 
 const ResetPassword = () => {
     const navigate = useNavigate();
-    const onFinish: FormProps<FieldNamesType>['onFinish'] = (values) => {
-        console.log('Received values of form: ', values);
-        navigate('/login');
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get('auth') || '';
+    const [resetPassword] = useResetPasswordMutation();
+
+    const onFinish: FormProps<any>['onFinish'] = async (values) => {
+        toast.loading('Loading...', {
+            id: 'reset-password',
+        });
+        try {
+            const res = await resetPassword({ payload: values, token }).unwrap();
+            if (res?.success) {
+                toast.success(res?.message || 'Password updated successfully', {
+                    id: 'reset-password',
+                });
+                navigate(`/login`);
+            }
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Failed to reset password', {
+                id: 'reset-password',
+            });
+            console.error(error);
+        }
     };
 
     return (
@@ -51,12 +72,15 @@ const ResetPassword = () => {
                         >
                             <Form.Item
                                 label={
-                                    <label htmlFor="password" className="block text-primaryText mb-1 font-medium">
+                                    <label htmlFor="newPassword" className="block text-primaryText mb-1 font-medium">
                                         New password
                                     </label>
                                 }
-                                name="password"
-                                rules={[{ required: true, message: 'Please input your password!' }]}
+                                name="newPassword"
+                                rules={[
+                                    { required: true, message: 'Please input your password!' },
+                                    { min: 8, message: 'Password must be at least 8 characters' },
+                                ]}
                             >
                                 <Input.Password
                                     placeholder="Enter your new password"
@@ -67,14 +91,24 @@ const ResetPassword = () => {
                             <Form.Item
                                 label={
                                     <label
-                                        htmlFor="confirm-password"
+                                        htmlFor="confirmPassword"
                                         className="block text-primaryText mb-1 font-medium"
                                     >
                                         Confirm password
                                     </label>
                                 }
-                                name="confirm-password"
-                                rules={[{ required: true, message: 'Please confirm your new password!' }]}
+                                name="confirmPassword"
+                                rules={[
+                                    { required: true, message: 'Please confirm your new password!' },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || getFieldValue('newPassword') === value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('Must be same both passwords'));
+                                        },
+                                    }),
+                                ]}
                             >
                                 <Input.Password
                                     placeholder="Enter your confirm password"

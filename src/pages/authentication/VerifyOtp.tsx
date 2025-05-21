@@ -21,7 +21,7 @@ const VerifyOtp = () => {
                 toast.success(res?.message || 'OTP verified successfully', {
                     id: 'otp-verify',
                 });
-                navigate(`/login`);
+                navigate(`/reset-password?auth=${res?.data}`);
             }
         } catch (error: any) {
             toast.error(error?.data?.message || 'Failed to verify OTP', {
