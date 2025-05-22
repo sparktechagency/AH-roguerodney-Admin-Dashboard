@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useGetSingleUserQuery, useUpdateUserMutation } from '../../../redux/features/user/userApi';
 import toast from 'react-hot-toast';
 import { Option } from 'antd/es/mentions';
+import { useUpdateSubscriptionMutation } from '../../../redux/features/subscription/subscriptionApi';
+import { differenceInMonths } from 'date-fns';
 const UserDetails = () => {
     const { id } = useParams();
     const { data } = useGetSingleUserQuery({ id });
@@ -10,61 +12,46 @@ const UserDetails = () => {
     const orderData = data?.data?.userRecentOrderData;
 
     const [updateUser] = useUpdateUserMutation();
-    console.log(userData);
+    console.log(orderData);
 
     const columns = [
-        {
-            title: 'S. no.',
-            dataIndex: 'no',
-            key: 'no',
-        },
         {
             title: 'Artist',
             dataIndex: 'artist',
             key: 'artist',
-            render: (item: any) => (
-                <div className="flex items-center gap-2">
-                    <Avatar size="small" src="https://i.pravatar.cc/100" />
-                    <div>
-                        <div className="text-sm font-medium">{item?.name}</div>
-                        <div className="text-xs text-gray-500">{item?.email}</div>
-                    </div>
-                </div>
-            ),
+            render: (item: any) => {
+                if (item?.artist) {
+                    return (
+                        <div className="flex items-center gap-2">
+                            <Avatar size="small" src={item?.profile} />
+                            <div>
+                                <div className="text-sm font-medium">{item?.name}</div>
+                                <div className="text-xs text-gray-500">{item?.email}</div>
+                            </div>
+                        </div>
+                    );
+                }
+                return null;
+            },
         },
         {
-            title: 'Provider',
-            dataIndex: 'provider',
-            key: 'provider',
-            render: (item: any) => (
-                <div className="flex items-center gap-2">
-                    <Avatar size="small" src="https://i.pravatar.cc/100" />
-                    <div>
-                        <div className="text-sm font-medium">{item?.name}</div>
-                        <div className="text-xs text-gray-500">{item?.email}</div>
-                    </div>
-                </div>
-            ),
-        },
-        {
-            title: 'Service location',
-            dataIndex: 'location',
-            key: 'location',
+            title: 'Service',
+            key: 'service',
+            render: (item: any) => <p>{item?.serviceId?.name}</p>,
         },
         {
             title: 'Price',
-            dataIndex: 'price',
-            key: 'price',
+            render: (item: any) => <p>$ {item?.price}</p>,
         },
         {
-            title: 'Category',
-            dataIndex: 'category',
-            key: 'category',
+            title: 'Location',
+            dataIndex: 'address',
+            key: 'address',
         },
         {
             title: 'Appt. time',
-            dataIndex: 'time',
             key: 'time',
+            render: (item: any) => <p>{new Date(item?.createdAt).toLocaleString()}</p>,
         },
     ];
 
@@ -81,7 +68,24 @@ const UserDetails = () => {
             console.error(error);
         }
     };
-    console.log(userData?.verified);
+
+    // handle update subscription
+    const [updateSubscription] = useUpdateSubscriptionMutation();
+    const handleUpdateSubscription = async (value: string) => {
+        toast.loading('Updating...', { id: 'update-subscription' });
+        try {
+            const res = await updateSubscription({
+                id: userData?.subscription?._id,
+                payload: { status: value },
+            }).unwrap();
+            if (res?.success) {
+                toast.success(res?.message || 'Subscription updated successfully', { id: 'update-subscription' });
+            }
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Failed to update subscription', { id: 'update-subscription' });
+            console.error(error);
+        }
+    };
 
     return (
         <div>
@@ -147,7 +151,14 @@ const UserDetails = () => {
                                 <span>{userData?.subscription?.package?.name}</span>
                             </p>
                             <p className=" flex items-center justify-between text-[16px]">
-                                <span className="font-medium">Package Validity :</span> <span> 1 month</span>
+                                <span className="font-medium">Package Validity :</span>
+                                <span>
+                                    {differenceInMonths(
+                                        userData?.subscription?.currentPeriodEnd,
+                                        userData?.subscription?.currentPeriodStart,
+                                    )}{' '}
+                                    Month
+                                </span>
                             </p>
                             <p className=" flex items-center justify-between text-[16px]">
                                 <span className="font-medium">Price :</span>
@@ -163,7 +174,11 @@ const UserDetails = () => {
                             </p>
                             <p className="flex items-center justify-between text-[16px]">
                                 <span className="font-medium">Status :</span>
-                                <Select value={userData?.subscription?.status} onSelect={(value) => console.log(value)} className="w-28 h-[35px]">
+                                <Select
+                                    value={userData?.subscription?.status}
+                                    onSelect={(value) => handleUpdateSubscription(value)}
+                                    className="w-28 h-[35px]"
+                                >
                                     <Option value={'active'}>Active</Option>
                                     <Option value={'inactive'}>Inactive</Option>
                                 </Select>
