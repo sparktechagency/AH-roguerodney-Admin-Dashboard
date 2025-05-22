@@ -2,19 +2,27 @@ import { baseApi } from '../../api/baseApi';
 
 const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+        getSingleUser: builder.query({
+            query: ({ id }) => {
+                return {
+                    url: `/user/user/${id}`,
+                    method: 'GET',
+                };
+            },
+            providesTags: ['User'],
+        }),
         getAllUsers: builder.query({
             query: ({ query }) => {
+                console.log(query);
                 return {
                     url: `/user${query}`,
                     method: 'GET',
                 };
             },
-
             providesTags: ['Users'],
         }),
         updateUser: builder.mutation({
             query: ({ payload, id }) => {
-                console.log(payload, id);
                 return {
                     url: `/user/user/${id}`,
                     method: 'PATCH',
@@ -26,4 +34,4 @@ const userApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useGetAllUsersQuery } = userApi;
+export const { useUpdateUserMutation, useGetSingleUserQuery, useGetAllUsersQuery } = userApi;

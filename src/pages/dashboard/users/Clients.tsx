@@ -1,10 +1,9 @@
 import { Table, Input, Select } from 'antd';
 import { Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useGetAllUsersQuery } from '../../../redux/features/user/userApi';
+import { useGetAllUsersQuery, useUpdateUserMutation } from '../../../redux/features/user/userApi';
 import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
 import { getSearchParams } from '../../../utils/getSearchParams';
-import { useUpdateProfileMutation } from '../../../redux/features/profile/profileApi';
 import toast from 'react-hot-toast';
 
 const { Option } = Select;
@@ -13,11 +12,13 @@ const Clients = () => {
     const { searchTerm = '', verified = '' } = getSearchParams();
     const udpateSearchParams = useUpdateSearchParams();
 
-    const { data } = useGetAllUsersQuery({ query: location.search });
+    const { data } = useGetAllUsersQuery({
+        query: `${location.search}${location.search ? '&role=USER' : '?role=USER'}`,
+    });
     const usersData = data?.data;
     const pagination = data?.pagination;
 
-    const [updateUser] = useUpdateProfileMutation();
+    const [updateUser] = useUpdateUserMutation();
 
     // Column definitions
     const columns = [
@@ -56,16 +57,16 @@ const Clients = () => {
             key: 'action',
             render: (item: any) => (
                 <div className="flex items-center gap-2">
-                    <Link to={'/user-details'}>
-                        <button className="text-primary font-semibold border  rounded-md w-24 h-[35px]">view</button>
+                    <Link to={`/user-details/${item?._id}`}>
+                        <button className="text-primary font-semibold border  rounded-md w-24 h-[35px]">View</button>
                     </Link>
                     <Select
-                        defaultValue={item?.verified}
+                        value={item?.verified ? 'true' : 'false'}
                         onSelect={(value) => handleUpdateUser(item?._id, value)}
                         className="w-24 h-[35px]"
                     >
-                        <Option value={true}>Active</Option>
-                        <Option value={false}>Inactive</Option>
+                        <Option value={'true'}>Active</Option>
+                        <Option value={'false'}>Inactive</Option>
                     </Select>
                 </div>
             ),
@@ -77,8 +78,8 @@ const Clients = () => {
         toast.loading('Updating user...', { id: 'update-user' });
         try {
             const res = await updateUser({ payload: { verified: status }, id }).unwrap();
-            if(res.success) {
-                toast.success(res.message || 'User updated successfully', {id: 'update-user'});
+            if (res.success) {
+                toast.success(res.message || 'User updated successfully', { id: 'update-user' });
             }
         } catch (error) {
             console.error('Error updating user:', error);
@@ -107,12 +108,12 @@ const Clients = () => {
                     {/* Dropdown Filter */}
                     <Select
                         onSelect={(value) => udpateSearchParams({ verified: value, page: 1 })}
-                        defaultValue={verified}
+                        value={verified}
                         className="w-32 h-[40px]"
                     >
                         <Option value="">All</Option>
-                        <Option value="true">Active</Option>
-                        <Option value="false">Inactive</Option>
+                        <Option value={'true'}>Active</Option>
+                        <Option value={'false'}>Inactive</Option>
                     </Select>
                 </div>
             </div>

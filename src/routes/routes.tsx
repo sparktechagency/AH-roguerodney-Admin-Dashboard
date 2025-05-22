@@ -52,7 +52,7 @@ const router = createBrowserRouter([
             { path: '', element: <Dashboard /> },
             { path: 'users/clients', element: <Clients /> },
             { path: 'users/artist', element: <Artist /> },
-            { path: 'user-details', element: <UserDetails /> },
+            { path: 'user-details/:id', element: <UserDetails /> },
             { path: 'brands', element: <Brands /> },
             { path: 'subscriber', element: <MainSubscriber /> },
             { path: 'subscription-plan', element: <SubscriptionPlans /> },
