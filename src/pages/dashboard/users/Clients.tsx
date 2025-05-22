@@ -1,93 +1,23 @@
 import { Table, Input, Select } from 'antd';
 import { Search } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useGetAllUsersQuery } from '../../../redux/features/user/userApi';
-import { useUpdateMultipleSearchParams } from '../../../utils/updateSearchParams';
+import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
+import { getSearchParams } from '../../../utils/getSearchParams';
+import { useUpdateProfileMutation } from '../../../redux/features/profile/profileApi';
+import toast from 'react-hot-toast';
 
 const { Option } = Select;
-// Sample data
 
 const Clients = () => {
-    const navigate = useNavigate();
-    const udpateSearchParams = useUpdateMultipleSearchParams();
-    const { data } = useGetAllUsersQuery(undefined);
-    const usersData = data?.data;
-    const pagination = data?.data?.pagination;
+    const { searchTerm = '', verified = '' } = getSearchParams();
+    const udpateSearchParams = useUpdateSearchParams();
 
-    // const data = [
-    //     {
-    //         key: '2472-1',
-    //         client: 'Candice',
-    //         email: 'candice@gmail.com',
-    //         contact: '01867412400',
-    //         location: '01867412400',
-    //         plan: 'Ah Casual',
-    //         joiningDate: '2/11/12',
-    //     },
-    //     {
-    //         key: '2450-1',
-    //         client: 'Candice',
-    //         email: 'candice@gmail.com',
-    //         contact: '01867412400',
-    //         location: '01867412400',
-    //         plan: 'Ah Glow',
-    //         joiningDate: '2/11/12',
-    //     },
-    //     {
-    //         key: '2450-2',
-    //         client: 'Candice',
-    //         email: 'candice@gmail.com',
-    //         contact: '01867412400',
-    //         location: '01867412400',
-    //         plan: 'Ah Casual',
-    //         joiningDate: 'Nail',
-    //     },
-    //     {
-    //         key: '2450-3',
-    //         client: 'Candice',
-    //         email: 'candice@gmail.com',
-    //         contact: '01867412400',
-    //         location: '01867412400',
-    //         plan: 'Ah Basic',
-    //         joiningDate: 'Hair',
-    //     },
-    //     {
-    //         key: '2450-4',
-    //         client: 'Candice',
-    //         email: 'candice@gmail.com',
-    //         contact: '01867412400',
-    //         location: '01867412400',
-    //         plan: 'Ah Pro',
-    //         joiningDate: 'Makeup',
-    //     },
-    //     {
-    //         key: '2465-1',
-    //         client: 'Candice',
-    //         email: 'candice@gmail.com',
-    //         contact: '01867412400',
-    //         location: '01867412400',
-    //         plan: 'Ah Casual',
-    //         joiningDate: 'Hair',
-    //     },
-    //     {
-    //         key: '2472-2',
-    //         client: 'Candice',
-    //         email: 'candice@gmail.com',
-    //         contact: '01867412400',
-    //         location: '01867412400',
-    //         plan: 'Ah Glow',
-    //         joiningDate: 'Makeup',
-    //     },
-    //     {
-    //         key: '2465-2',
-    //         client: 'Candice',
-    //         email: 'candice@gmail.com',
-    //         contact: '01867412400',
-    //         location: '01867412400',
-    //         plan: 'Ah Luxe',
-    //         joiningDate: 'Makeup',
-    //     },
-    // ];
+    const { data } = useGetAllUsersQuery({ query: location.search });
+    const usersData = data?.data;
+    const pagination = data?.pagination;
+
+    const [updateUser] = useUpdateProfileMutation();
 
     // Column definitions
     const columns = [
@@ -126,20 +56,35 @@ const Clients = () => {
             key: 'action',
             render: (item: any) => (
                 <div className="flex items-center gap-2">
-                    <button
-                        className="text-primary font-semibold border  rounded-md w-24 h-[35px]"
-                        onClick={() => navigate('/user-details')}
+                    <Link to={'/user-details'}>
+                        <button className="text-primary font-semibold border  rounded-md w-24 h-[35px]">view</button>
+                    </Link>
+                    <Select
+                        defaultValue={item?.verified}
+                        onSelect={(value) => handleUpdateUser(item?._id, value)}
+                        className="w-24 h-[35px]"
                     >
-                        view
-                    </button>
-                    <Select defaultValue={item?.isActive ? 'Active' : 'Inactive'} className="w-24 h-[35px]">
-                        <Option value="Active">Active</Option>
-                        <Option value="Inactive">Inactive</Option>
+                        <Option value={true}>Active</Option>
+                        <Option value={false}>Inactive</Option>
                     </Select>
                 </div>
             ),
         },
     ];
+
+    // handle update user
+    const handleUpdateUser = async (id: string, status: any) => {
+        toast.loading('Updating user...', { id: 'update-user' });
+        try {
+            const res = await updateUser({ payload: { verified: status }, id }).unwrap();
+            if(res.success) {
+                toast.success(res.message || 'User updated successfully', {id: 'update-user'});
+            }
+        } catch (error) {
+            console.error('Error updating user:', error);
+            toast.error('Failed to update user', { id: 'update-user' });
+        }
+    };
 
     return (
         <div className="grid gap-4 p-4">
@@ -155,12 +100,14 @@ const Clients = () => {
                         }}
                         placeholder="Search"
                         prefix={<Search size={20} color="#2C2C2C" />}
+                        defaultValue={searchTerm}
+                        onChange={(e) => udpateSearchParams({ searchTerm: e.target.value, page: 1 })}
                     />
 
                     {/* Dropdown Filter */}
                     <Select
-                        onSelect={(value) => udpateSearchParams({ verified: value })}
-                        defaultValue="Active"
+                        onSelect={(value) => udpateSearchParams({ verified: value, page: 1 })}
+                        defaultValue={verified}
                         className="w-32 h-[40px]"
                     >
                         <Option value="">All</Option>
@@ -169,7 +116,19 @@ const Clients = () => {
                     </Select>
                 </div>
             </div>
-            <Table columns={columns} dataSource={usersData} rowClassName="hover:bg-gray-100" />
+            <Table
+                pagination={{
+                    total: pagination?.total,
+                    pageSize: pagination?.limit,
+                    current: pagination?.page,
+                    onChange: (page) => {
+                        udpateSearchParams({ page });
+                    },
+                }}
+                columns={columns}
+                dataSource={usersData}
+                rowClassName="hover:bg-gray-100"
+            />
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 // Function to update multiple search params at once
-export const useUpdateMultipleSearchParams = () => {
+export const useUpdateSearchParams = () => {
     const navigate = useNavigate();
     const updateSearchParams = (paramsObject: any) => {
         const searchParams = new URLSearchParams(location.search);
