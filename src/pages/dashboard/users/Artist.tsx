@@ -1,98 +1,30 @@
 import { Table, Input, Select } from 'antd';
 import { Search } from 'lucide-react';
+import { useGetAllUsersQuery, useUpdateUserMutation } from '../../../redux/features/user/userApi';
+import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
+import { getSearchParams } from '../../../utils/getSearchParams';
+import toast from 'react-hot-toast';
 
 const { Option } = Select;
-// Sample data
 
-const Artist = () => {
+const Artists = () => {
+    const { searchTerm = '', verified = '' } = getSearchParams();
+    const udpateSearchParams = useUpdateSearchParams();
 
-    const data = [
-        {
-            key: '2472-1',
-            Artist: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Casual',
-            joiningDate: '2/11/12'
-        },
-        {
-            key: '2450-1',
-            Artist: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Glow',
-            joiningDate: '2/11/12'
-        },
-        {
-            key: '2450-2',
-            Artist: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Casual',
-            joiningDate: 'Nail'
-        },
-        {
-            key: '2450-3',
-            Artist: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Basic',
-            joiningDate: 'Hair'
-        },
-        {
-            key: '2450-4',
-            Artist: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Pro',
-            joiningDate: 'Makeup'
-        },
-        {
-            key: '2465-1',
-            Artist: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Casual',
-            joiningDate: 'Hair'
-        },
-        {
-            key: '2472-2',
-            Artist: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Glow',
-            joiningDate: 'Makeup'
-        },
-        {
-            key: '2465-2',
-            Artist: 'Candice',
-            email: 'candice@gmail.com',
-            contact: '01867412400',
-            location: '01867412400',
-            plan: 'Ah Luxe',
-            joiningDate: 'Makeup'
-        },
+    const { data } = useGetAllUsersQuery({
+        query: `${location.search}${location.search ? '&role=ARTIST' : '?role=ARTIST'}`,
+    });
+    const usersData = data?.data;
+    const pagination = data?.pagination;
 
-    ];
+    const [updateUser] = useUpdateUserMutation();
 
     // Column definitions
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'key',
-            key: 'key',
-        },
-        {
             title: 'Artist',
-            dataIndex: 'Artist',
-            key: 'Artist',
+            key: 'artist',
+            render: (item: any) => <p>{item?.name}</p>,
         },
         {
             title: 'Email',
@@ -111,38 +43,56 @@ const Artist = () => {
         },
         {
             title: 'Subscription Plan',
-            dataIndex: 'plan',
             key: 'plan',
+            render: (item: any) => <a>{item?.subscription?.package?.name}</a>,
         },
         {
             title: 'Joining Date',
-            dataIndex: 'joiningDate',
             key: 'joiningDate',
+            render: (item: any) => <a>{new Date(item?.createdAt).toLocaleDateString()}</a>,
         },
         {
             title: 'Action',
             key: 'action',
-            render: (_: any) => (
-                <div className=" flex gap-2 items-center">
-                    <Select defaultValue="Active" className="w-24 h-[35px]">
-                        <Option value="All">All</Option>
-                        <Option value="Active">Active</Option>
-                        <Option value="Inactive">Inactive</Option>
-                        <Option value="Pending">Pending</Option>
+            render: (item: any) => (
+                <div className="flex items-center gap-2">
+                    {/* <Link to={`/user-details/${item?._id}`}>
+                        <button className="text-primary font-semibold border  rounded-md w-24 h-[35px]">View</button>
+                    </Link> */}
+                    <Select
+                        value={item?.verified ? 'true' : 'false'}
+                        onSelect={(value) => handleUpdateUser(item?._id, value)}
+                        className="w-24 h-[35px]"
+                    >
+                        <Option value={'true'}>Active</Option>
+                        <Option value={'false'}>Inactive</Option>
                     </Select>
                 </div>
             ),
         },
     ];
 
+    // handle update user
+    const handleUpdateUser = async (id: string, status: any) => {
+        toast.loading('Updating user...', { id: 'update-user' });
+        try {
+            const res = await updateUser({ payload: { verified: status }, id }).unwrap();
+            if (res.success) {
+                toast.success(res.message || 'User updated successfully', { id: 'update-user' });
+            }
+        } catch (error) {
+            console.error('Error updating user:', error);
+            toast.error('Failed to update user', { id: 'update-user' });
+        }
+    };
 
     return (
         <div className="grid gap-4 p-4">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-xl text-[#2C2C2C] font-semibold">Artists</h1>
+                    <h1 className="text-xl text-[#2C2C2C] font-semibold">Clients</h1>
                 </div>
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-5 justify-end">
                     <Input
                         style={{
                             maxWidth: 300,
@@ -150,20 +100,37 @@ const Artist = () => {
                         }}
                         placeholder="Search"
                         prefix={<Search size={20} color="#2C2C2C" />}
+                        defaultValue={searchTerm}
+                        onChange={(e) => udpateSearchParams({ searchTerm: e.target.value, page: 1 })}
                     />
 
                     {/* Dropdown Filter */}
-                    <Select defaultValue="Active" className="w-32 h-[40px]">
-                        <Option value="All">All</Option>
-                        <Option value="Active">Active</Option>
-                        <Option value="Inactive">Inactive</Option>
-                        <Option value="Pending">Pending</Option>
+                    <Select
+                        onSelect={(value) => udpateSearchParams({ verified: value, page: 1 })}
+                        value={verified}
+                        className="w-32 h-[40px]"
+                    >
+                        <Option value="">All</Option>
+                        <Option value={'true'}>Active</Option>
+                        <Option value={'false'}>Inactive</Option>
                     </Select>
                 </div>
             </div>
-            <Table columns={columns} dataSource={data} rowClassName="hover:bg-gray-100" />
+            <Table
+                pagination={{
+                    total: pagination?.total,
+                    pageSize: pagination?.limit,
+                    current: pagination?.page,
+                    onChange: (page) => {
+                        udpateSearchParams({ page });
+                    },
+                }}
+                columns={columns}
+                dataSource={usersData}
+                rowClassName="hover:bg-gray-100"
+            />
         </div>
     );
 };
 
-export default Artist;
+export default Artists;
