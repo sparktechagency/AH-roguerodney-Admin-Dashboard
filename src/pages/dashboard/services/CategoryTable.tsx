@@ -16,13 +16,15 @@ import toast from 'react-hot-toast';
 const CategoryTable = () => {
     const [categoryModal, setCategoryModal] = useState(false);
     const [editCategoryModal, setEditCategoryModal] = useState(false);
+    const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
+    const [currentCategoryId, setCurrentCategoryId] = useState(null);
+
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [addCategory] = useCreateCategoryMutation();
     const [deleteCategory] = useDeleteCategoryMutation();
     const [form] = Form.useForm();
 
     const { data } = useGetAllCategoriesQuery(undefined);
-
     const categoryData = data?.data;
 
     const columns = [
@@ -47,16 +49,24 @@ const CategoryTable = () => {
                 </div>
             ),
         },
-
         {
             title: 'Action',
             key: 'action',
-            render: (_: any, _record: any, index: number) => (
+            render: (_: any, item: any, index: number) => (
                 <div key={index} className="flex items-center gap-3">
-                    <button onClick={() => setEditCategoryModal(true)}>
+                    <button
+                        onClick={() => {
+                            setEditCategoryModal(true);
+                        }}
+                    >
                         <AiOutlineEdit className="text-xl text-primary" />
                     </button>
-                    <button>
+                    <button
+                        onClick={() => {
+                            setDeleteCategoryModal(true);
+                            setCurrentCategoryId(item._id);
+                        }}
+                    >
                         <IoTrashOutline className="text-xl text-red-500" />
                     </button>
                 </div>
@@ -164,6 +174,20 @@ const CategoryTable = () => {
         </Form>
     );
 
+    // handle delete category
+    const handleDeleteCategory = async () => {
+        toast.loading('Deleting category...', { id: 'delete-category' });
+        try {
+            const res = await deleteCategory({ id: currentCategoryId }).unwrap();
+            if (res?.success) {
+                toast.success('Category deleted successfully', { id: 'delete-category' });
+            }
+        } catch (error) {
+            console.error('Error deleting category:', error);
+            toast.error('Failed to delete category', { id: 'delete-category' });
+        }
+    };
+
     return (
         <div className="grid gap-4 mt-2">
             <div className="flex justify-between items-center gap-4">
@@ -176,6 +200,7 @@ const CategoryTable = () => {
                 <Table columns={columns} dataSource={categoryData} />
             </ConfigProvider>
 
+            {/* add modal */}
             <CustomModal
                 open={categoryModal}
                 setOpen={setCategoryModal}
@@ -183,12 +208,51 @@ const CategoryTable = () => {
                 width={500}
                 body={addCategoryForm}
             />
+
+            {/* edit modal */}
             <CustomModal
                 open={editCategoryModal}
                 setOpen={setEditCategoryModal}
                 title="Edit category"
                 width={500}
                 body={editServiceForm}
+            />
+
+            {/* delete alert modal */}
+            <CustomModal
+                open={deleteCategoryModal}
+                setOpen={setDeleteCategoryModal}
+                title="Delete Category"
+                width={500}
+                body={
+                    <div>
+                        <h1 className="text-lg font-semibold">Are you sure you want to delete this category?</h1>
+                        <p>This action will be remove the data from our server permanently.</p>
+                        <div className="flex justify-end gap-2 mt-4">
+                            <Button
+                                onClick={() => setDeleteCategoryModal(false)}
+                                style={{
+                                    height: 40,
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="primary"
+                                danger
+                                style={{
+                                    height: 40,
+                                }}
+                                onClick={() => {
+                                    handleDeleteCategory();
+                                    setDeleteCategoryModal(false);
+                                }}
+                            >
+                                Continue
+                            </Button>
+                        </div>
+                    </div>
+                }
             />
         </div>
     );
