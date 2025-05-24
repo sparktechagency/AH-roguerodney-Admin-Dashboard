@@ -2,10 +2,12 @@ import { Button, Form, Input } from 'antd';
 import { CircleCheck, CircleMinus, PencilLineIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 import CustomModal from '../../../components/shared/CustomModal';
+import { useGetAllPlansQuery } from '../../../redux/features/plan/planApi';
 
 const ClientSubscriptions = () => {
-    const [addChallengeModal, setAddChallengeModal] = useState(false);
-    const [editChallengeModal, setEditChallengeModal] = useState(false);
+    const [addPlanModal, setAddPlanModal] = useState(false);
+    const [editPlanModal, setEditPlanModal] = useState(false);
+    const [editModalData, setEditModalData] = useState(null);
     const [packageOffers, setPackageOffers] = useState([
         ' Top priority in client matching (get booked first)',
         'No service fees – Keep 100% of your earnings',
@@ -14,9 +16,14 @@ const ClientSubscriptions = () => {
         'Profile featured on the Ooh Ah homepage',
     ]);
 
-    const addChallengeForm = (
+    const { data } = useGetAllPlansQuery({ query: `for=USER` });
+    const package1 = data?.data[0];
+    const package2 = data?.data[1];
+    const package3 = data?.data[2];
+
+    const addPlanForm = (
         <Form layout="vertical">
-            <Form.Item label={<label className="font-medium">Package Name</label>} name="packageName">
+            <Form.Item label={<label className="font-medium">Package Name</label>} name="name">
                 <Input
                     style={{
                         height: 42,
@@ -26,7 +33,7 @@ const ClientSubscriptions = () => {
                 />
             </Form.Item>
 
-            <Form.Item label={<label className="font-medium">Package Price</label>} name="bonusAmount">
+            <Form.Item label={<label className="font-medium">Package Price</label>} name="price">
                 <Input
                     style={{
                         height: 42,
@@ -36,7 +43,7 @@ const ClientSubscriptions = () => {
                 />
             </Form.Item>
 
-            <Form.Item label={<label className="font-medium">Package Price offer</label>} name="bonusAmount">
+            <Form.Item label={<label className="font-medium">Package Price offer</label>} name="price_offer">
                 <Input
                     type="number"
                     style={{
@@ -96,6 +103,7 @@ const ClientSubscriptions = () => {
             <Form.Item>
                 <div className="flex justify-center w-full">
                     <Button
+                        htmlType="submit"
                         type="primary"
                         style={{
                             height: 40,
@@ -109,9 +117,9 @@ const ClientSubscriptions = () => {
         </Form>
     );
 
-    const editChallengeForm = (
+    const editPlanForm = (
         <Form layout="vertical">
-            <Form.Item label={<label className="font-medium">Package Name</label>} name="packageName">
+            <Form.Item label={<label className="font-medium">Package Name</label>} name="name">
                 <Input
                     style={{
                         height: 42,
@@ -121,7 +129,7 @@ const ClientSubscriptions = () => {
                 />
             </Form.Item>
 
-            <Form.Item label={<label className="font-medium">Package Price</label>} name="bonusAmount">
+            <Form.Item label={<label className="font-medium">Package Price</label>} name="price">
                 <Input
                     style={{
                         height: 42,
@@ -131,7 +139,7 @@ const ClientSubscriptions = () => {
                 />
             </Form.Item>
 
-            <Form.Item label={<label className="font-medium">Package Price offer</label>} name="bonusAmount">
+            <Form.Item label={<label className="font-medium">Package Price offer</label>} name="price_offer">
                 <Input
                     type="number"
                     style={{
@@ -191,6 +199,7 @@ const ClientSubscriptions = () => {
             <Form.Item>
                 <div className="flex justify-center w-full">
                     <Button
+                        htmlType="submit"
                         type="primary"
                         style={{
                             height: 40,
@@ -208,7 +217,7 @@ const ClientSubscriptions = () => {
         <section className="">
             <div className="flex justify-end">
                 <Button
-                    onClick={() => setAddChallengeModal(true)}
+                    onClick={() => setAddPlanModal(true)}
                     type="primary"
                     style={{ height: 42 }}
                     className="rounded-xl text-base"
@@ -218,77 +227,96 @@ const ClientSubscriptions = () => {
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 pt-4">
                 {/* Ah Casual  */}
-                <div className="flex flex-col">
-                    <div className="flex items-center justify-between gap-2 p-5 pb-9 bg-teal-400 text-white rounded-2xl">
-                        <h3 className="text-2xl font-medium">Ah Casual</h3>
-                        <button onClick={() => setEditChallengeModal(true)}>
-                            <PencilLineIcon />
-                        </button>
+                {package1 && (
+                    <div className="flex flex-col">
+                        <div className="flex items-center justify-between gap-2 p-5 pb-9 bg-teal-400 text-white rounded-2xl">
+                            <h3 className="text-2xl font-medium">{package1?.name}</h3>
+                            <button onClick={() => setEditPlanModal(true)}>
+                                <PencilLineIcon />
+                            </button>
+                        </div>
+                        <div className="flex-1 p-10 bg-[#f4f4f4] rounded-2xl grid gap-2 relative -top-6">
+                            <h4 className="text-lg text-teal-400 font-semibold">
+                                {package1?.price < 1 ? 'Free Plan' : package1?.price}
+                            </h4>
+                            <ul className="list-disc pl-6 grid gap-2 text-base">
+                                {package1?.offers?.map((item: any, idx: number) => (
+                                    <li key={idx} className="font-medium">
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                    <div className="flex-1 p-10 bg-[#f4f4f4] rounded-2xl grid gap-2 relative -top-6">
-                        <h4 className="text-lg text-teal-400 font-semibold">Free Plan</h4>
-                        <ul className="list-disc pl-6 grid gap-2 text-base">
-                            <li className="font-medium">No Monthly Fee</li>
-                            <li className="font-medium">Standard Booking & Pricing</li>
-                            <li className="font-medium">Standard Support Response Times</li>
-                            <li className="font-medium">Includes Ooh Ah's standard service fee per booking</li>
-                        </ul>
-                    </div>
-                </div>
+                )}
 
                 {/* Ah Glow  */}
-                <div className="flex flex-col">
-                    <div className="flex items-center justify-between gap-2 p-5 pb-9 bg-[#6A3E82] text-white rounded-2xl">
-                        <h3 className="text-2xl font-medium">Ah Glow</h3>
-                        <button onClick={() => setEditChallengeModal(true)}>
-                            <PencilLineIcon />
-                        </button>
+                {package2 && (
+                    <div className="flex flex-col">
+                        <div className="flex items-center justify-between gap-2 p-5 pb-9 bg-[#6A3E82] text-white rounded-2xl">
+                            <h3 className="text-2xl font-medium">{package2?.name}</h3>
+                            <button onClick={() => setEditPlanModal(true)}>
+                                <PencilLineIcon />
+                            </button>
+                        </div>
+                        <div className="flex-1 p-10 bg-[#f4f4f4] rounded-2xl grid gap-2 relative -top-6">
+                            <h4 className="text-lg text-[#6A3E82] font-semibold">
+                                {package2?.price < 1 ? 'Free Plan' : `$${package2?.price}/month`}
+                            </h4>
+                            <ul className="list-disc pl-6 grid gap-2 text-base">
+                                {package2?.offers?.map((item: any, idx: number) => (
+                                    <li key={idx} className="font-medium">
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                    <div className="flex-1 p-10 bg-[#f4f4f4] rounded-2xl grid gap-2 relative -top-6">
-                        <h4 className="text-lg text-[#6A3E82] font-semibold">$9.99/month</h4>
-                        <ul className="list-disc pl-6 grid gap-2 text-base">
-                            <li className="font-medium">Early Booking Access (Book before free users!)</li>
-                            <li className="font-medium">Exclusive Discounts (Visible on select services.)</li>
-                            <li className="font-medium">Priority Customer Support (Faster response times.)</li>
-                            <li className="font-medium">Special Beauty Promotions & Bonuses</li>
-                        </ul>
-                    </div>
-                </div>
+                )}
 
                 {/* Ah Luxe  */}
-                <div className="flex flex-col">
-                    <div className="flex items-center justify-between gap-2 p-5 pb-9 bg-[#2190F2] text-white rounded-2xl">
-                        <h3 className="text-2xl font-medium">Ah Luxe</h3>
-                        <button onClick={() => setEditChallengeModal(true)}>
-                            <PencilLineIcon />
-                        </button>
+                {package3 && (
+                    <div className="flex flex-col">
+                        <div className="flex items-center justify-between gap-2 p-5 pb-9 bg-[#2190F2] text-white rounded-2xl">
+                            <h3 className="text-2xl font-medium">{package3?.name}</h3>
+                            <button onClick={() => setEditPlanModal(true)}>
+                                <PencilLineIcon />
+                            </button>
+                        </div>
+                        <div className="flex-1 p-10 bg-[#f4f4f4] rounded-2xl grid gap-2 relative -top-6">
+                            <h4 className="text-lg text-[#2190F2] font-semibold">
+                                {package3?.price < 1 ? (
+                                    'Free Plan'
+                                ) : (
+                                    <span className="font-semibold">
+                                        $19.99/month <span className="text-sm font-medium">(The VIP Experience!)</span>
+                                    </span>
+                                )}
+                            </h4>
+                            <ul className="list-disc pl-6 grid gap-2 text-base">
+                                {package3?.offers?.map((item: any, idx: number) => (
+                                    <li key={idx} className="font-medium">
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                    <div className="flex-1 p-10 bg-[#f4f4f4] rounded-2xl grid gap-2 relative -top-6">
-                        <h4 className="text-lg text-[#2190F2] font-semibold">
-                            $19.99/month <span className="text-sm font-medium">(The VIP Experience!)</span>
-                        </h4>
-                        <ul className="list-disc pl-6 grid gap-2 text-base">
-                            <li className="font-medium">Early Booking Access (Book before free users!)</li>
-                            <li className="font-medium">Exclusive Discounts (Visible on select services.)</li>
-                            <li className="font-medium">Priority Customer Support (Faster response times.)</li>
-                            <li className="font-medium">Special Beauty Promotions & Bonuses</li>
-                        </ul>
-                    </div>
-                </div>
+                )}
 
                 <CustomModal
-                    open={addChallengeModal}
-                    setOpen={setAddChallengeModal}
+                    open={addPlanModal}
+                    setOpen={setAddPlanModal}
                     title="Add Package"
                     width={500}
-                    body={addChallengeForm}
+                    body={addPlanForm}
                 />
                 <CustomModal
-                    open={editChallengeModal}
-                    setOpen={setEditChallengeModal}
+                    open={editPlanModal}
+                    setOpen={setEditPlanModal}
                     title="Edit Package"
                     width={500}
-                    body={editChallengeForm}
+                    body={editPlanForm}
                 />
             </div>
         </section>
