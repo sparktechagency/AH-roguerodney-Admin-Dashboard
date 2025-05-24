@@ -17,7 +17,20 @@ export const baseApi = createApi({
         },
     }),
     endpoints: () => ({}),
-    tagTypes: ['Users', 'User', 'Profile', 'Subscription', 'Subscribers', 'Plan'],
+    tagTypes: [
+        'Users',
+        'User',
+        'Profile',
+        'Subscription',
+        'Subscribers',
+        'Plan',
+        'Categories',
+        'Category',
+        'SubCategories',
+        'SubCategory',
+        'Services',
+        'Service',
+    ],
 });
 
 export const IMAGE_URL = import.meta.env.VITE_SERVER_URL;
