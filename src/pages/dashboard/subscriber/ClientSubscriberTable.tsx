@@ -2,6 +2,8 @@ import { Avatar, Select, Table } from 'antd';
 import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
 import { useGetAllSubscribersQuery } from '../../../redux/features/subscription/subscriptionApi';
 import { useGetAllPlansQuery } from '../../../redux/features/plan/planApi';
+import { Option } from 'antd/es/mentions';
+import { getSearchParams } from '../../../utils/getSearchParams';
 
 const ClientSubscriberTable = () => {
     const { data: subscriberData } = useGetAllSubscribersQuery({
@@ -12,7 +14,8 @@ const ClientSubscriberTable = () => {
         query: `for=USER`,
     });
 
-    const udpateSearchPamars = useUpdateSearchParams();
+    const { package: packageName = '', status = '' } = getSearchParams();
+    const udpateSearchParams = useUpdateSearchParams();
     const formatedData = subscriberData?.data?.map((item: any, index: number) => ({ ...item, key: index + 1 })) || [];
 
     const packageTypes =
@@ -65,7 +68,7 @@ const ClientSubscriberTable = () => {
         },
     ];
 
-    const activeStatusOption = [
+    const activeStatusOptions = [
         { value: 'active', label: 'Active' },
         { value: 'inactive', label: 'Inactive' },
     ];
@@ -74,17 +77,29 @@ const ClientSubscriberTable = () => {
         <>
             <div className="flex items-center gap-5 justify-end ">
                 <Select
-                    onSelect={(value) => udpateSearchPamars({ package: value })}
-                    defaultValue="Subscription Plan"
-                    className="w-auto h-[30px]"
-                    options={packageTypes}
-                />
+                    onSelect={(value) => udpateSearchParams({ package: value })}
+                    defaultValue={packageName}
+                    className="w-32 h-[40px]"
+                >
+                    <Option value="">All Package</Option>
+                    {packageTypes.map((item: any) => (
+                        <Option key={item.value} value={item.value}>
+                            {item.label}
+                        </Option>
+                    ))}
+                </Select>
                 <Select
-                    onSelect={(value) => udpateSearchPamars({ status: value })}
-                    defaultValue="Active"
-                    className="w-[150px] h-[30px]"
-                    options={activeStatusOption}
-                />
+                    onSelect={(value) => udpateSearchParams({ status: value })}
+                    defaultValue={status}
+                    className="w-32 h-[40px]"
+                >
+                    <Option value="">All Status</Option>
+                    {activeStatusOptions.map((item: any) => (
+                        <Option key={item.value} value={item.value}>
+                            {item.label}
+                        </Option>
+                    ))}
+                </Select>
             </div>
 
             <div>
