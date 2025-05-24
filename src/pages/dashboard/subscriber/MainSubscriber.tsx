@@ -1,7 +1,6 @@
-import SubscriberTable from './SubscriberTable';
 import ClientSubscriptions from './ClientSubscriptions';
-import AhTistSubscriptions from './AhTistSubsriptions';
 import { ConfigProvider, Tabs } from 'antd';
+import AhTistSubscriptions from './AhTistSubsriptions';
 
 const MainSubscriber = () => {
     const tabs = [
@@ -36,7 +35,6 @@ const MainSubscriber = () => {
             >
                 <Tabs type="card" items={tabs} />
             </ConfigProvider>
-            <SubscriberTable />
         </section>
     );
 };

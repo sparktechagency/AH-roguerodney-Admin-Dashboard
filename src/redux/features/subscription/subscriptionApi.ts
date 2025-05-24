@@ -13,6 +13,7 @@ const subscriptionApi = baseApi.injectEndpoints({
         }),
         getAllSubscribers: builder.query({
             query: ({ query }) => {
+                console.log(query);
                 return {
                     url: `/subscription${query}`,
                     method: 'GET',

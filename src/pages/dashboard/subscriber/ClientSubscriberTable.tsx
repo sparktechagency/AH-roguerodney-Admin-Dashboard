@@ -1,0 +1,97 @@
+import { Avatar, Select, Table } from 'antd';
+import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
+import { useGetAllSubscribersQuery } from '../../../redux/features/subscription/subscriptionApi';
+import { useGetAllPlansQuery } from '../../../redux/features/plan/planApi';
+
+const ClientSubscriberTable = () => {
+    const { data: subscriberData } = useGetAllSubscribersQuery({
+        query: `${location.search}${location.search ? '&user=USER' : '?user=USER'}`,
+    });
+
+    const { data: packageTypesData } = useGetAllPlansQuery({
+        query: `for=USER`,
+    });
+
+    const udpateSearchPamars = useUpdateSearchParams();
+    const formatedData = subscriberData?.data?.map((item: any, index: number) => ({ ...item, key: index + 1 })) || [];
+
+    const packageTypes =
+        packageTypesData?.data?.map((item: any) => ({
+            value: item.name,
+            label: item.name,
+        })) || [];
+
+    const tableColumns = [
+        {
+            title: 'S. no.',
+            key: 'key',
+            render: (_: any, record: any) => <span># {record?.key}</span>,
+        },
+        {
+            title: 'Client',
+            dataIndex: 'client',
+            key: 'client',
+            render: (_: any, item: any) => {
+                return (
+                    <div className="flex items-center gap-2">
+                        <Avatar size="large" src="/user.svg" />
+                        <div>
+                            <div className="text-sm font-medium">{item?.user?.name}</div>
+                            <div className="text-xs text-gray-500">{item?.user?.email}</div>
+                        </div>
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'Subscription Plan',
+            key: 'plan',
+            render: (_: any, record: any) => <span>{record?.package?.name}</span>,
+        },
+        {
+            title: 'Price',
+            key: 'price',
+            render: (_: any, record: any) => <span>${record?.price}</span>,
+        },
+        {
+            title: 'Start Date',
+            key: 'startDate',
+            render: (_: any, record: any) => <span>{record?.currentPeriodStart?.split('T')[0]}</span>,
+        },
+        {
+            title: 'Expired Date',
+            key: 'expiredDate',
+            render: (_: any, record: any) => <span>{record?.currentPeriodEnd.split('T')[0]}</span>,
+        },
+    ];
+
+    const activeStatusOption = [
+        { value: 'active', label: 'Active' },
+        { value: 'inactive', label: 'Inactive' },
+    ];
+
+    return (
+        <>
+            <div className="flex items-center gap-5 justify-end ">
+                <Select
+                    onSelect={(value) => udpateSearchPamars({ package: value })}
+                    defaultValue="Subscription Plan"
+                    className="w-auto h-[30px]"
+                    options={packageTypes}
+                />
+                <Select
+                    onSelect={(value) => udpateSearchPamars({ status: value })}
+                    defaultValue="Active"
+                    className="w-[150px] h-[30px]"
+                    options={activeStatusOption}
+                />
+            </div>
+
+            <div>
+                <Table columns={tableColumns} dataSource={formatedData} />
+            </div>
+        </>
+    );
+};
+
+export default ClientSubscriberTable;
