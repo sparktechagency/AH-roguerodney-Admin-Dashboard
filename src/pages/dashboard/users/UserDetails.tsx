@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Option } from 'antd/es/mentions';
 import { useUpdateSubscriptionMutation } from '../../../redux/features/subscription/subscriptionApi';
 import { differenceInMonths } from 'date-fns';
+import { IMAGE_URL } from '../../../redux/api/baseApi';
 const UserDetails = () => {
     const { id } = useParams();
     const { data } = useGetSingleUserQuery({ id });
@@ -17,16 +18,15 @@ const UserDetails = () => {
     const columns = [
         {
             title: 'Artist',
-            dataIndex: 'artist',
             key: 'artist',
             render: (item: any) => {
-                if (item?.artist) {
+                if (item?.artiestId) {
                     return (
                         <div className="flex items-center gap-2">
-                            <Avatar size="small" src={item?.profile} />
+                            <Avatar size="default" src={`${IMAGE_URL}${item?.artiestId?.profile}`} />
                             <div>
-                                <div className="text-sm font-medium">{item?.name}</div>
-                                <div className="text-xs text-gray-500">{item?.email}</div>
+                                <div className="text-sm font-medium">{item?.artiestId?.name}</div>
+                                <div className="text-xs text-gray-500">{item?.artiestId?.email}</div>
                             </div>
                         </div>
                     );
