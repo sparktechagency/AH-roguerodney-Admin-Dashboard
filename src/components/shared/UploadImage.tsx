@@ -14,9 +14,11 @@ const getBase64 = (file: FileType): Promise<string> =>
 const UploadImage = ({
     fileList,
     setFileList,
+    maxCount = 1,
 }: {
     fileList: UploadFile[];
     setFileList: React.Dispatch<React.SetStateAction<UploadFile[]>>;
+    maxCount?: number;
 }) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
@@ -51,11 +53,11 @@ const UploadImage = ({
     return (
         <>
             <Upload
-                action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
+                maxCount={maxCount}
             >
                 {fileList.length >= 8 ? null : uploadButton}
             </Upload>
