@@ -20,7 +20,6 @@ const UploadImage = ({
     setFileList: React.Dispatch<React.SetStateAction<UploadFile[]>>;
     maxCount?: number;
 }) => {
-    console.log(fileList);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
 
