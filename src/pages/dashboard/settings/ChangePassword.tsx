@@ -1,8 +1,23 @@
 import { Button, Form, Input } from 'antd';
+import { useChangePasswordMutation } from '../../../redux/features/auth/authApi';
+import toast from 'react-hot-toast';
 
 const ChangePassword = () => {
-    const onFinish = (values: any) => {
-        console.log(values, 'from u');
+    const [changePassword] = useChangePasswordMutation();
+
+    const onFinish = async (values: any) => {
+        toast.loading('Changing password...', { id: 'change-password' });
+
+        try {
+            const res = await changePassword({ payload: values }).unwrap();
+            console.log(res);
+            if (res?.success) {
+                toast.success('Password changed successfully', { id: 'change-password' });
+            }
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error?.data?.message || 'Failed to change password', { id: 'change-password' });
+        }
     };
     return (
         <section className="grid gap-4 p-4">
@@ -17,7 +32,7 @@ const ChangePassword = () => {
                                 Current Password
                             </label>
                         }
-                        name="current_password"
+                        name="currentPassword"
                         rules={[{ required: true, message: 'Please input new password!' }]}
                     >
                         <Input.Password
@@ -31,11 +46,14 @@ const ChangePassword = () => {
                                 New Password
                             </label>
                         }
-                        name="new_password"
-                        rules={[{ required: true, message: 'Please input confirm password!' }]}
+                        name="newPassword"
+                        rules={[
+                            { required: true, message: 'Please enter new password' },
+                            { min: 6, message: 'Password must be at least 6 characters' },
+                        ]}
                     >
                         <Input.Password
-                            placeholder="Enter your password"
+                            placeholder="Enter new password"
                             className="h-12 px-6 text-base bg-stone-50 rounded-lg border-none placeholder:font-semibold"
                         />
                     </Form.Item>
@@ -45,11 +63,22 @@ const ChangePassword = () => {
                                 Confirm Password
                             </label>
                         }
-                        name="confirm_password"
-                        rules={[{ required: true, message: 'Please input confirm password!' }]}
+                        name="confirmPassword"
+                        dependencies={['newPassword']}
+                        rules={[
+                            { required: true, message: 'Please confirm your password' },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue('newPassword') === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('Passwords do not match!'));
+                                },
+                            }),
+                        ]}
                     >
                         <Input.Password
-                            placeholder="Re-enter your password"
+                            placeholder="Confirm new password"
                             className="h-12 px-6 text-base bg-stone-50 rounded-lg border-none placeholder:font-semibold"
                         />
                     </Form.Item>
