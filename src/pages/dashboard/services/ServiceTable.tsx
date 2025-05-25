@@ -6,13 +6,16 @@ import { IoTrashOutline } from 'react-icons/io5';
 import CustomModal from '../../../components/shared/CustomModal';
 import UploadImage from '../../../components/shared/UploadImage';
 import { Option } from 'antd/es/mentions';
-import { dummyServiceData } from '../../../dummyData/service';
+import { useGetAllServiceQuery } from '../../../redux/features/service/serviceApi';
 
 const ServiceTable = () => {
     const [serviceModal, setServiceModal] = useState(false);
     const [editServiceModal, setEditServiceModal] = useState(false);
-
     const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+    const { data } = useGetAllServiceQuery(undefined);
+    const services = data?.data || [];
+    console.log(services);
 
     const columns = [
         {
@@ -240,7 +243,7 @@ const ServiceTable = () => {
                 </Button>
             </div>
             <ConfigProvider>
-                <Table columns={columns} dataSource={dummyServiceData} />
+                <Table columns={columns} dataSource={services} />
             </ConfigProvider>
 
             <CustomModal

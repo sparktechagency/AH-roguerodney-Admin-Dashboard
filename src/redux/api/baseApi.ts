@@ -30,6 +30,8 @@ export const baseApi = createApi({
         'SubCategory',
         'Services',
         'Service',
+        'Bookings',
+        'Booking',
     ],
 });
 

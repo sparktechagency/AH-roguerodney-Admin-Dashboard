@@ -30,6 +30,7 @@ const CategoryTable = () => {
 
     const { data } = useGetAllCategoriesQuery(undefined);
     const categoryData = data?.data;
+    console.log(categoryData);
 
     const columns = [
         {
@@ -168,7 +169,6 @@ const CategoryTable = () => {
                 }
             });
         }
-        console.log(fileList);
 
         try {
             const res = await editCategory({
