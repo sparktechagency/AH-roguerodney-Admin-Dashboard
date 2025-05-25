@@ -1,6 +1,6 @@
 import { Button, ConfigProvider, Form, Input, Table, UploadFile } from 'antd';
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { IoTrashOutline } from 'react-icons/io5';
 import CustomModal from '../../../components/shared/CustomModal';
@@ -13,6 +13,7 @@ import {
 } from '../../../redux/features/category/categoryApi';
 import { IMAGE_URL } from '../../../redux/api/baseApi';
 import toast from 'react-hot-toast';
+import EditCategoryModal from './EditCategoryModal';
 
 const CategoryTable = () => {
     const [categoryModal, setCategoryModal] = useState(false);
@@ -30,7 +31,12 @@ const CategoryTable = () => {
 
     const { data } = useGetAllCategoriesQuery(undefined);
     const categoryData = data?.data;
-    console.log(categoryData);
+
+    useEffect(() => {
+        if (editCategoryData) {
+            editForm.setFieldsValue(editCategoryData);
+        }
+    }, [editCategoryData]);
 
     const columns = [
         {
@@ -193,7 +199,7 @@ const CategoryTable = () => {
             layout="vertical"
             form={editForm}
             onFinish={handleEditCategory}
-            initialValues={editCategoryData}
+            // initialValues={editCategoryData}
         >
             <Form.Item label="Category Name" name="name">
                 <Input
@@ -259,15 +265,6 @@ const CategoryTable = () => {
                 body={addCategoryForm}
             />
 
-            {/* edit modal */}
-            <CustomModal
-                open={editCategoryModal}
-                setOpen={setEditCategoryModal}
-                title="Edit category"
-                width={500}
-                body={editServiceForm}
-            />
-
             {/* delete alert modal */}
             <CustomModal
                 open={deleteCategoryModal}
@@ -303,6 +300,13 @@ const CategoryTable = () => {
                         </div>
                     </div>
                 }
+            />
+            {/* edit modal */}
+            <EditCategoryModal
+                open={editCategoryModal}
+                setOpen={setEditCategoryModal}
+                children={editServiceForm}
+                setEditCategoryData={setEditCategoryData}
             />
         </div>
     );
