@@ -20,6 +20,7 @@ const UploadImage = ({
     setFileList: React.Dispatch<React.SetStateAction<UploadFile[]>>;
     maxCount?: number;
 }) => {
+    console.log(fileList);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
 
@@ -59,7 +60,7 @@ const UploadImage = ({
                 onChange={handleChange}
                 maxCount={maxCount}
             >
-                {fileList.length >= 8 ? null : uploadButton}
+                {fileList.length >= maxCount ? null : uploadButton}
             </Upload>
             {previewImage && (
                 <Image

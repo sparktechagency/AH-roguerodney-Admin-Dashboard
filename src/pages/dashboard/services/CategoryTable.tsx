@@ -8,6 +8,7 @@ import UploadImage from '../../../components/shared/UploadImage';
 import {
     useCreateCategoryMutation,
     useDeleteCategoryMutation,
+    useEditCategoryMutation,
     useGetAllCategoriesQuery,
 } from '../../../redux/features/category/categoryApi';
 import { IMAGE_URL } from '../../../redux/api/baseApi';
@@ -16,13 +17,16 @@ import toast from 'react-hot-toast';
 const CategoryTable = () => {
     const [categoryModal, setCategoryModal] = useState(false);
     const [editCategoryModal, setEditCategoryModal] = useState(false);
+    const [editCategoryData, setEditCategoryData] = useState();
     const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
     const [currentCategoryId, setCurrentCategoryId] = useState(null);
 
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [addCategory] = useCreateCategoryMutation();
+    const [editCategory] = useEditCategoryMutation();
     const [deleteCategory] = useDeleteCategoryMutation();
     const [form] = Form.useForm();
+    const [editForm] = Form.useForm();
 
     const { data } = useGetAllCategoriesQuery(undefined);
     const categoryData = data?.data;
@@ -57,6 +61,17 @@ const CategoryTable = () => {
                     <button
                         onClick={() => {
                             setEditCategoryModal(true);
+                            setEditCategoryData(item);
+                            setCurrentCategoryId(item._id);
+                            setFileList(
+                                item?.image?.map((img: string, idx: number) => ({
+                                    uid: img + idx,
+                                    name: img,
+                                    status: 'done',
+                                    url: `${IMAGE_URL}${img}`,
+                                    thumbUrl: `${IMAGE_URL}${img}`,
+                                })),
+                            );
                         }}
                     >
                         <AiOutlineEdit className="text-xl text-primary" />
@@ -139,12 +154,43 @@ const CategoryTable = () => {
         </Form>
     );
 
+    // handle edit category form
+    const handleEditCategory = async (values: any) => {
+        toast.loading('Editing category...', { id: 'edit-category' });
+        const formData = new FormData();
+        formData.append('name', values.name);
+        if (fileList && fileList.length > 0) {
+            fileList.forEach((file) => {
+                if (file.originFileObj) {
+                    formData.append('image', file.originFileObj);
+                }
+            });
+        }
+
+        try {
+            const res = await editCategory({
+                id: currentCategoryId,
+                payload: formData,
+            }).unwrap();
+            if (res?.success) {
+                toast.success('Category updated successfully', { id: 'edit-category' });
+                setEditCategoryModal(false);
+            }
+        } catch (error) {
+            console.error('Error editing category:', error);
+            toast.error('Failed to edit category', { id: 'edit-category' });
+        }
+    };
+
     const editServiceForm = (
         <Form
             style={{
                 color: '#767676',
             }}
             layout="vertical"
+            form={editForm}
+            onFinish={handleEditCategory}
+            initialValues={editCategoryData}
         >
             <Form.Item label="Category Name" name="name">
                 <Input
@@ -156,12 +202,13 @@ const CategoryTable = () => {
             </Form.Item>
 
             <Form.Item label="Category Images" name="images">
-                <UploadImage fileList={fileList} setFileList={setFileList} />
+                <UploadImage fileList={fileList} setFileList={setFileList} maxCount={5} />
             </Form.Item>
 
             <Form.Item>
                 <div className="flex justify-center w-full">
                     <Button
+                        htmlType="submit"
                         type="primary"
                         style={{
                             height: 40,

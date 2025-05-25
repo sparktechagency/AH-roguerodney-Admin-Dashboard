@@ -30,6 +30,16 @@ const categoryApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ['Categories', 'Category'],
         }),
+        editCategory: builder.mutation({
+            query: ({ id, payload }) => {
+                return {
+                    url: `/category/${id}`,
+                    method: 'PATCH',
+                    body: payload,
+                };
+            },
+            invalidatesTags: ['Categories', 'Category'],
+        }),
         deleteCategory: builder.mutation({
             query: ({ id }) => {
                 return {
@@ -44,6 +54,7 @@ const categoryApi = baseApi.injectEndpoints({
 
 export const {
     useCreateCategoryMutation,
+    useEditCategoryMutation,
     useDeleteCategoryMutation,
     useGetAllCategoriesQuery,
     useGetSingleCategoryQuery,
