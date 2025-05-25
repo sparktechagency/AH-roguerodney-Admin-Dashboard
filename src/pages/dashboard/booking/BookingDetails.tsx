@@ -1,9 +1,13 @@
 import { PencilLine } from 'lucide-react';
-import { dummySingleBookingData } from '../../../dummyData/singleBooking';
 import { Input, Select } from 'antd';
+import { useGetSingleBookingQuery } from '../../../redux/features/booking/bookingApi';
+import { useParams } from 'react-router-dom';
 
 const BookingDetailsPage = () => {
-    const booking = dummySingleBookingData;
+    const { id } = useParams();
+    const { data } = useGetSingleBookingQuery({ id });
+    const booking = data?.data;
+    console.log(booking);
 
     return (
         <div className="grid gap-4 p-4">

@@ -1,13 +1,12 @@
 import { ConfigProvider, Table } from 'antd';
-import { Info } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { dummyPaymentData } from '../../../dummyData/payments';
+import { useGetAllPaymentsQuery } from '../../../redux/features/payment/paymentApi';
+import { IMAGE_URL } from '../../../redux/api/baseApi';
 
 const columns = [
     {
         title: 'ID',
-        dataIndex: 'id',
         key: 'id',
+        render: (_: any, __: any, index: number) => <p key={index}># {index + 1}</p>,
     },
     {
         title: 'Client',
@@ -15,68 +14,74 @@ const columns = [
         key: 'client',
         render: (_: any, record: any, index: number) => (
             <div key={index} className="flex items-center gap-3">
-                <img src={record?.client?.image} alt="client img" className="size-10" />
+                <img src={`${IMAGE_URL}${record?.userId?.profile}`} alt="user img" className="size-10" />
                 <div>
-                    <h1 className="font-medium">{record?.client?.name}</h1>
-                    <h3 className="text-sm">{record?.client?.email}</h3>
+                    <h1 className="font-medium">{record?.userId?.name}</h1>
+                    <h3 className="text-sm">{record?.userId?.email}</h3>
                 </div>
             </div>
         ),
     },
     {
-        title: 'Provider',
-        dataIndex: 'provider',
-        key: 'provider',
+        title: 'Artist',
+        dataIndex: 'artist',
+        key: 'artist',
         render: (_: any, record: any, index: number) => (
             <div key={index} className="flex items-center gap-3">
-                <img src={record?.provider?.image} alt="provider img" className="size-10" />
+                <img src={`${IMAGE_URL}${record?.artiestId?.profile}`} alt="artist img" className="size-10" />
                 <div>
-                    <h1 className="font-medium">{record?.provider?.name}</h1>
-                    <h3 className="text-sm">{record?.provider?.email}</h3>
+                    <h1 className="font-medium">{record?.artiestId?.name}</h1>
+                    <h3 className="text-sm">{record?.artiestId?.email}</h3>
                 </div>
             </div>
         ),
     },
     {
         title: 'Price',
-        dataIndex: 'price',
         key: 'price',
+        render: (_: any, record: any, index: number) => (
+            <div key={index} className="flex items-center gap-3">
+                <h1>$ {record?.price}</h1>
+            </div>
+        ),
     },
     {
         title: 'Category',
-        dataIndex: 'category',
         key: 'category',
+        render: (_: any, record: any, index: number) => (
+            <div key={index} className="flex items-center gap-3">
+                <h1>{record?.serviceId?.category?.name}</h1>
+            </div>
+        ),
     },
     {
         title: 'Service Name',
-        dataIndex: 'serviceName',
         key: 'serviceName',
+        render: (_: any, record: any, index: number) => (
+            <div key={index} className="flex items-center gap-3">
+                <h1>{record?.serviceId?.name}</h1>
+            </div>
+        ),
     },
     {
         title: 'Booking Date',
-        dataIndex: 'bookingDate',
         key: 'bookingDate',
-    },
-
-    {
-        title: 'Action',
-        key: 'action',
         render: (_: any, record: any, index: number) => (
             <div key={index} className="flex items-center gap-3">
-                <Link to={`/payments/${record?.id}`}>
-                    <Info className="text-xl text-primary" />
-                </Link>
-                <button className="bg-primary/10 text-primary p-3 py-1 rounded-lg">Payout</button>
+                <h1>{record?.createdAt?.split('T')[0]}</h1>
             </div>
         ),
     },
 ];
 
 const PaymentTable = () => {
+    const { data } = useGetAllPaymentsQuery(undefined);
+    const payments = data?.data || [];
+
     return (
-        <div className='p-4'>
+        <div className="p-4">
             <ConfigProvider>
-                <Table columns={columns} dataSource={dummyPaymentData} />
+                <Table columns={columns} dataSource={payments} />
             </ConfigProvider>
         </div>
     );

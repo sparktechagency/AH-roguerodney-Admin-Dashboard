@@ -70,7 +70,7 @@ const columns = [
         key: 'action',
         render: (_: any, record: any, index: number) => (
             <div key={index} className="flex items-center gap-3">
-                <Link to={`/bookings/${record?.id}`}>
+                <Link to={`/bookings/${record?._id}`}>
                     <Info className="text-xl text-primary" />
                 </Link>
             </div>
