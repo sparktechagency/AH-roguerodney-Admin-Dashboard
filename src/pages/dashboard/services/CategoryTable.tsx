@@ -163,9 +163,12 @@ const CategoryTable = () => {
             fileList.forEach((file) => {
                 if (file.originFileObj) {
                     formData.append('image', file.originFileObj);
+                } else {
+                    formData.append('existImage', file?.name);
                 }
             });
         }
+        console.log(fileList);
 
         try {
             const res = await editCategory({
