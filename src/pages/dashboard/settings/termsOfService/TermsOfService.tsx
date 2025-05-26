@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import JoditEditor from 'jodit-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGetCmsQuery, useUpdateCmsMutation } from '../../../../redux/features/cms/cmsApi';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
@@ -12,6 +12,13 @@ const TermsOfService = () => {
 
     const { data } = useGetCmsQuery({ query: `?type=terms` });
     const contentData = data?.data;
+
+    // re-set content on mount
+    useEffect(() => {
+        if (contentData?.content) {
+            setContent(contentData?.content);
+        }
+    }, [contentData?.content]);
 
     // handle update
     const handleUpdate = async () => {
@@ -35,7 +42,7 @@ const TermsOfService = () => {
             <div className="p-6 bg-white rounded-lg">
                 <JoditEditor
                     ref={editor}
-                    value={contentData?.content}
+                    value={content}
                     config={{ height: 550, theme: 'light', readonly: false }}
                     onBlur={(newContent) => setContent(newContent)}
                 />
