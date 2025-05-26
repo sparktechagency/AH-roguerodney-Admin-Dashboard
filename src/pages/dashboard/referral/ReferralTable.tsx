@@ -1,28 +1,43 @@
 import { ConfigProvider, Table } from 'antd';
-import { dummyReferralsData } from '../../../dummyData/referrals';
 import { useState } from 'react';
 import CustomModal from '../../../components/shared/CustomModal';
-import { Info } from 'lucide-react';
+import { useGetAllReferralsQuery } from '../../../redux/features/referral/referralApi';
+import { IMAGE_URL } from '../../../redux/api/baseApi';
 
 const ReferralTable = () => {
     const [detailsModal, setDetailsModal] = useState(false);
 
+    const { data } = useGetAllReferralsQuery(undefined);
+    const referralsData = data?.data;
+    console.log(referralsData);
+
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'id',
             key: 'id',
+            render: (_: any, __: any, index: number) => (
+                <div key={index} className="flex items-center gap-3">
+                    <h1># {index + 1}</h1>
+                </div>
+            ),
         },
         {
             title: 'Referral  User',
-            dataIndex: 'referralUser',
             key: 'referralUser',
-            render: (_: any, record: any, index: number) => (
+            render: (_: any, item: any, index: number) => (
                 <div key={index} className="flex items-center gap-3">
-                    <img src={record?.referralUser?.image} alt="referralUser img" className="size-10" />
+                    <img
+                        src={
+                            item?.token_user?.profile?.includes('http')
+                                ? item?.token_user?.profile
+                                : `${IMAGE_URL}${item?.token_user?.profile}`
+                        }
+                        alt="referral_user_img"
+                        className="size-10 rounded-full"
+                    />
                     <div>
-                        <h1 className="font-medium">{record?.referralUser?.name}</h1>
-                        <h3 className="text-sm">{record?.referralUser?.email}</h3>
+                        <h1 className="font-medium">{item?.referral_user?.name}</h1>
+                        <h3 className="text-sm">{item?.referral_user?.email}</h3>
                     </div>
                 </div>
             ),
@@ -31,12 +46,20 @@ const ReferralTable = () => {
             title: 'Token User',
             dataIndex: 'tokenUser',
             key: 'tokenUser',
-            render: (_: any, record: any, index: number) => (
+            render: (_: any, item: any, index: number) => (
                 <div key={index} className="flex items-center gap-3">
-                    <img src={record?.tokenUser?.image} alt="tokenUser img" className="size-10" />
+                    <img
+                        src={
+                            item?.token_user?.profile?.includes('http')
+                                ? item?.token_user?.profile
+                                : `${IMAGE_URL}${item?.token_user?.profile}`
+                        }
+                        alt="token_user img"
+                        className="size-10 rounded-full"
+                    />
                     <div>
-                        <h1 className="font-medium">{record?.tokenUser?.name}</h1>
-                        <h3 className="text-sm">{record?.tokenUser?.email}</h3>
+                        <h1 className="font-medium">{item?.token_user?.name}</h1>
+                        <h3 className="text-sm">{item?.token_user?.email}</h3>
                     </div>
                 </div>
             ),
@@ -48,28 +71,33 @@ const ReferralTable = () => {
             render: (_: any, record: any, index: number) => (
                 <div key={index} className="flex items-center gap-3">
                     <div>
-                        <h1 className="font-medium">${record?.bonus}</h1>
+                        <h1 className="font-medium">${record?.amount}</h1>
                     </div>
                 </div>
             ),
         },
         {
             title: 'Referral Date',
-            dataIndex: 'referralDate',
             key: 'referralDate',
-        },
-
-        {
-            title: 'Action',
-            key: 'action',
-            render: (_: any, _record: any, index: number) => (
+            render: (_: any, record: any, index: number) => (
                 <div key={index} className="flex items-center gap-3">
-                    <button onClick={() => setDetailsModal(true)}>
-                        <Info className="text-xl text-primary" />
-                    </button>
+                    <div>
+                        <h1 className="font-medium">{new Date(record?.createdAt).toLocaleDateString()}</h1>
+                    </div>
                 </div>
             ),
         },
+        // {
+        //     title: 'Action',
+        //     key: 'action',
+        //     render: (_: any, _record: any, index: number) => (
+        //         <div key={index} className="flex items-center gap-3">
+        //             <button onClick={() => setDetailsModal(true)}>
+        //                 <Info className="text-xl text-primary" />
+        //             </button>
+        //         </div>
+        //     ),
+        // },
     ];
 
     const referralDetailsModal = (
@@ -110,7 +138,7 @@ const ReferralTable = () => {
     return (
         <div>
             <ConfigProvider>
-                <Table columns={columns} dataSource={dummyReferralsData} />
+                <Table columns={columns} dataSource={referralsData} />
             </ConfigProvider>
             <CustomModal
                 open={detailsModal}

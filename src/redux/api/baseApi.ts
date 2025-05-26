@@ -34,6 +34,7 @@ export const baseApi = createApi({
         'Booking',
         'CMS',
         'Agreement',
+        'Referral',
     ],
 });
 
