@@ -247,7 +247,6 @@ const ServiceTable = () => {
 
         try {
             const res = await editService({ payload: formData, id: selectedService?._id }).unwrap();
-            console.log(res);
             if (res?.success) {
                 toast.success(res?.message || 'Service edited successfully', {
                     id: 'editService',

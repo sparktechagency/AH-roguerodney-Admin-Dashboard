@@ -8,6 +8,7 @@ import UploadImage from '../../../components/shared/UploadImage';
 import { Option } from 'antd/es/mentions';
 import {
     useCreateSubCategoryMutation,
+    useDeleteSubCategoryMutation,
     useGetAllSubCategoryQuery,
     useUpdateSubCategoryMutation,
 } from '../../../redux/features/subCategory/subCategoryApi';
@@ -186,7 +187,6 @@ const SubCategoryTable = () => {
                 id: editCategoryData?._id,
                 payload: formData,
             }).unwrap();
-            console.log(res);
             if (res?.success) {
                 setEditCategoryModal(false);
                 setFileList([]);
@@ -250,9 +250,22 @@ const SubCategoryTable = () => {
     );
 
     // handle delete category
-    // const [deleteSubCategory] = useDeleteSubCategoryMutation();
+    const [deleteSubCategory] = useDeleteSubCategoryMutation();
     const handleDeleteCategory = async () => {
-        //
+        toast.loading('Deleting sub-category...', { id: 'delete-sub-category' });
+        try {
+            const res = await deleteSubCategory({
+                id: editCategoryData?._id,
+            }).unwrap();
+            if (res?.success) {
+                setDeleteCategoryModal(false);
+                setEditCategoryData(null)
+                toast.success(res?.message || 'Sub-category deleted successfully', { id: 'delete-sub-category' });
+            }
+        } catch (error: any) {
+            console.error('Failed to delete sub-category:', error);
+            toast.error(error?.data?.message || 'Failed to delete sub-category', { id: 'delete-sub-category' });
+        }
     };
 
     return (
