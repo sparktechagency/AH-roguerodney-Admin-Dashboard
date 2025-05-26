@@ -35,6 +35,8 @@ export const baseApi = createApi({
         'CMS',
         'Agreement',
         'Referral',
+        'Challenge',
+        'Challenges',
     ],
 });
 

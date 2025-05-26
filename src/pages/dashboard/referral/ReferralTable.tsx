@@ -9,7 +9,6 @@ const ReferralTable = () => {
 
     const { data } = useGetAllReferralsQuery(undefined);
     const referralsData = data?.data;
-    console.log(referralsData);
 
     const columns = [
         {
