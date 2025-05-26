@@ -1,10 +1,39 @@
 import { Button } from 'antd';
 import JoditEditor from 'jodit-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useGetAgreementQuery, useUpdateAgreementMutation } from '../../../../redux/features/agreement/agreementApi';
+import toast from 'react-hot-toast';
+import { Loader2 } from 'lucide-react';
 
 const AhTistAgreement = () => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
+    const [updateContent, { isLoading }] = useUpdateAgreementMutation();
+    const { data } = useGetAgreementQuery({ query: `?type=agreement&for=artist` });
+    const contentData = data?.data;
+
+    // re-set content on mount
+    useEffect(() => {
+        if (contentData?.content) {
+            setContent(contentData?.content);
+        }
+    }, [contentData?.content]);
+
+    // handle update
+    const handleUpdate = async () => {
+        toast.loading('Updating...', { id: 'update-client-agreement' });
+        try {
+            const res = await updateContent({
+                payload: { content, type: 'agreement', for: 'artist' },
+            }).unwrap();
+            if (res?.success) {
+                toast.success('Agreement updated successfully!', { id: 'update-client-agreement' });
+            }
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error?.data?.message || 'Something went wrong!', { id: 'update-client-agreement' });
+        }
+    };
 
     return (
         <section className="p-4 grid gap-4">
@@ -18,8 +47,8 @@ const AhTistAgreement = () => {
                     config={{ height: 550, theme: 'light', readonly: false }}
                     onBlur={(newContent) => setContent(newContent)}
                 />
-                <Button type="primary" className="mt-6 text-base p-6 px-12">
-                    Save
+                <Button onClick={handleUpdate} type="primary" className="mt-6 text-base p-6 px-12">
+                    {isLoading ? <Loader2 className="animate-spin" /> : 'Save'}
                 </Button>
             </div>
         </section>
