@@ -33,6 +33,7 @@ export const baseApi = createApi({
         'Bookings',
         'Booking',
         'CMS',
+        'Agreement',
     ],
 });
 
