@@ -36,6 +36,7 @@ const ServiceTable = () => {
     const [editAddOnName, setEditAddOnName] = useState('');
     const [editAddOnPrice, setEditAddOnPrice] = useState<number | null>(null);
     const [selectedService, setSelectedService] = useState<any>(null);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<any>(null);
 
     const [addForm] = Form.useForm();
     const [editForm] = Form.useForm();
@@ -46,7 +47,7 @@ const ServiceTable = () => {
     const { data: categoryData } = useGetAllCategoriesQuery({ query: '' });
     const categories = categoryData?.data || [];
 
-    const { data: subCategoryData } = useGetAllSubCategoryQuery({ query: '' });
+    const { data: subCategoryData } = useGetAllSubCategoryQuery({ query: `?id=${selectedCategoryId}` });
     const subCategories = subCategoryData?.data || [];
 
     // Add new add-on
@@ -210,7 +211,6 @@ const ServiceTable = () => {
 
         try {
             const res = await addService({ payload: formData }).unwrap();
-            console.log(res);
             if (res?.success) {
                 toast.success(res?.message || 'Service added successfully', {
                     id: 'addService',
@@ -276,7 +276,13 @@ const ServiceTable = () => {
                 name="category"
                 rules={[{ required: true, message: 'Please select a category' }]}
             >
-                <Select placeholder="Select category" className="w-full h-[42px]">
+                <Select
+                    onSelect={(value) => {
+                        setSelectedCategoryId(value);
+                    }}
+                    placeholder="Select category"
+                    className="w-full h-[42px]"
+                >
                     {categories.map((item: any) => (
                         <Option key={item._id} value={item._id}>
                             {item.name}
@@ -502,7 +508,6 @@ const ServiceTable = () => {
         toast.loading('Deleting service...', { id: 'deleteService' });
         try {
             const res = await deleteService({ id: selectedService?._id }).unwrap();
-            console.log(res);
             if (res.success) {
                 toast.success('Service deleted successfully', { id: 'deleteService' });
                 setSelectedService(null);

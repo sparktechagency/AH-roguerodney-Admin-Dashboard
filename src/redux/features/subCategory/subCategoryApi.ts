@@ -3,9 +3,9 @@ import { baseApi } from '../../api/baseApi';
 const subCategoryApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllSubCategory: builder.query({
-            query: () => {
+            query: ({ query }) => {
                 return {
-                    url: `/subCategory`,
+                    url: `/subCategory${query}`,
                     method: 'GET',
                 };
             },
