@@ -104,7 +104,6 @@ const SubCategoryTable = () => {
 
         try {
             const res = await createSubCategory({ payload: formData }).unwrap();
-            console.log(res);
             if (res?.success) {
                 setCategoryModal(false);
                 setFileList([]);
