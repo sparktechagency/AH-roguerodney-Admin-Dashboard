@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import JoditEditor from 'jodit-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGetAgreementQuery, useUpdateAgreementMutation } from '../../../../redux/features/agreement/agreementApi';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
@@ -12,6 +12,13 @@ const ClientAgreement = () => {
 
     const { data } = useGetAgreementQuery({ query: `?type=agreement&for=user` });
     const contentData = data?.data;
+
+    // re-set content on mount
+    useEffect(() => {
+        if (contentData?.content) {
+            setContent(contentData?.content);
+        }
+    }, [contentData?.content]);
 
     // handle update
     const handleUpdate = async () => {
