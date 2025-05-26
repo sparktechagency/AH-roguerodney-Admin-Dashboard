@@ -96,6 +96,7 @@ const ServiceTable = () => {
             category: record.category?._id,
             subCategory: record.subCategory?._id,
             name: record.name,
+            location: record.location,
             basePrice: record.basePrice,
         });
         setEditServiceModal(true);
@@ -127,6 +128,28 @@ const ServiceTable = () => {
         editForm.resetFields();
     };
 
+    // update service status
+    const updateServiceStatus = async (values: any, id: string) => {
+        toast.loading('Loading...', {
+            id: 'updateStatus',
+        });
+
+        try {
+            const res = await editService({ payload: values, id }).unwrap();
+            if (res?.success) {
+                toast.success('Status updated successfully', {
+                    id: 'updateStatus',
+                });
+                resetEditModal();
+            }
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error?.data?.message || 'Something went wrong', {
+                id: 'updateStatus',
+            });
+        }
+    };
+
     const columns = [
         {
             title: 'ID',
@@ -153,6 +176,11 @@ const ServiceTable = () => {
             key: 'name',
         },
         {
+            title: 'Location',
+            dataIndex: 'location',
+            key: 'location',
+        },
+        {
             title: 'Base Price',
             dataIndex: 'basePrice',
             key: 'basePrice',
@@ -167,6 +195,23 @@ const ServiceTable = () => {
                     <img src={`${IMAGE_URL}${item?.image}`} className="size-9 rounded-sm" />
                 </div>
             ),
+        },
+        {
+            title: 'Status',
+            key: 'status',
+            render: (_: any, item: any) => {
+                return (
+                    <Select
+                        onSelect={(value) => updateServiceStatus({ status: value }, item._id)}
+                        defaultValue={item?.status}
+                        placeholder="Status"
+                        className="w-24 h-[42px]"
+                    >
+                        <Option value={'active'}>Active</Option>
+                        <Option value={'paused'}>Paused</Option>
+                    </Select>
+                );
+            },
         },
         {
             title: 'Action',
@@ -305,6 +350,14 @@ const ServiceTable = () => {
             </Form.Item>
 
             <Form.Item
+                label={<label className="font-medium">Location</label>}
+                name="location"
+                rules={[{ required: true, message: 'Please enter location' }]}
+            >
+                <Input style={{ height: 42 }} placeholder="Enter location" />
+            </Form.Item>
+
+            <Form.Item
                 label="Service Name"
                 name="name"
                 rules={[{ required: true, message: 'Please enter service name' }]}
@@ -424,6 +477,14 @@ const ServiceTable = () => {
                 rules={[{ required: true, message: 'Please enter service name' }]}
             >
                 <Input style={{ height: 42 }} placeholder="Enter service name" />
+            </Form.Item>
+
+            <Form.Item
+                label={<label className="font-medium">Location</label>}
+                name="location"
+                rules={[{ required: true, message: 'Please enter location' }]}
+            >
+                <Input style={{ height: 42 }} placeholder="Enter location" />
             </Form.Item>
 
             <Form.Item
