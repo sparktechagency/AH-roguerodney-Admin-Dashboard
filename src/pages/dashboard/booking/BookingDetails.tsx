@@ -1,13 +1,11 @@
-import { PencilLine } from 'lucide-react';
-import { Input, Select } from 'antd';
 import { useGetSingleBookingQuery } from '../../../redux/features/booking/bookingApi';
 import { useParams } from 'react-router-dom';
+import { IMAGE_URL } from '../../../redux/api/baseApi';
 
 const BookingDetailsPage = () => {
     const { id } = useParams();
     const { data } = useGetSingleBookingQuery({ id });
     const booking = data?.data;
-    console.log(booking);
 
     return (
         <div className="grid gap-4 p-4">
@@ -22,22 +20,22 @@ const BookingDetailsPage = () => {
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Client name</span>
                                 <span>:</span>
-                                <span>{booking?.client?.name}</span>
+                                <span>{booking?.userId?.name}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Email</span>
                                 <span>:</span>
-                                <span>{booking?.client?.email}</span>
+                                <span>{booking?.userId?.email}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Booking Date</span>
                                 <span>:</span>
-                                <span>{booking?.client?.bookingDate}</span>
+                                <span>{booking?.createdAt?.split('T')[0]}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Subscription plan</span>
                                 <span>:</span>
-                                <span>{booking?.client?.subscriptionPlan}</span>
+                                <span>{booking?.userId?.subscription?.package?.name}</span>
                             </p>
                         </div>
                     </div>
@@ -45,24 +43,24 @@ const BookingDetailsPage = () => {
                         <h1 className="text-xl font-semibold mb-4">Artist Information</h1>
                         <div className="grid gap-4">
                             <p className="grid grid-cols-3 gap-2">
-                                <span>Provider name</span>
+                                <span>Artist name</span>
                                 <span>:</span>
-                                <span>{booking?.artist?.name}</span>
+                                <span>{booking?.artiestId?.name}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Email</span>
                                 <span>:</span>
-                                <span>{booking?.artist?.email}</span>
+                                <span>{booking?.artiestId?.email}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Booking Date</span>
                                 <span>:</span>
-                                <span>{booking?.artist?.bookingDate}</span>
+                                <span>{booking?.artist_book_date?.split('T')[0]}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Subscription plan</span>
                                 <span>:</span>
-                                <span>{booking?.artist?.subscriptionPlan}</span>
+                                <span>{booking?.artiestId?.subscription?.package?.name}</span>
                             </p>
                         </div>
                     </div>
@@ -73,97 +71,66 @@ const BookingDetailsPage = () => {
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Category</span>
                                 <span>:</span>
-                                <span>{booking?.service?.category}</span>
+                                <span>{booking?.serviceId?.category?.name}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Sub-category</span>
                                 <span>:</span>
-                                <span>{booking?.service?.subCategory}</span>
+                                <span>{booking?.serviceId?.subCategory?.name}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Service name</span>
                                 <span>:</span>
-                                <span>{booking?.service?.name}</span>
+                                <span>{booking?.serviceId?.name}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Service image</span>
                                 <span>:</span>
-                                <img src={booking?.service?.image} alt="" className="size-8 rounded" />
+                                <img
+                                    src={`${IMAGE_URL}${booking?.serviceId?.image}`}
+                                    alt="service-image"
+                                    className="size-8 rounded"
+                                />
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Base Price</span>
                                 <span>:</span>
-                                <span>{booking?.service?.price}</span>
+                                <span>${booking?.price}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Add-Ons</span>
                                 <span>:</span>
                                 <div>
-                                    <span>Mid-Back Length – + ${booking?.service?.addOns?.midBackLength}</span>
-                                    <span>Waist-Length or Longer – + ${booking?.service?.addOns?.waistLength}</span>
-                                    <span>
-                                        Custom Design (e.g., spirals, double twists, pattern locs) – + $
-                                        {booking?.service?.addOns?.customDesign}
-                                    </span>
+                                    {booking?.serviceId?.addOns?.length > 0 ? (
+                                        booking?.serviceId.addOns.map((item: any, index: number) => (
+                                            <span key={index} className="block">
+                                                {item.title} (${item.price})
+                                            </span>
+                                        ))
+                                    ) : (
+                                        <span className="text-gray-500">No Add-Ons</span>
+                                    )}
                                 </div>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Booking Date</span>
                                 <span>:</span>
-                                <span className="flex items-center gap-2">
-                                    {booking?.service?.bookingDate} <PencilLine size={16} className="text-primary" />
-                                </span>
+                                <span className="flex items-center gap-2">{booking?.createdAt?.split('T')[0]}</span>
                             </p>
                             <div className="grid grid-cols-3 gap-2">
-                                <span>Cancelled</span>
+                                <span>Cancelled By</span>
                                 <span>:</span>
-                                <span>
-                                    <Select
-                                        showSearch
-                                        placeholder="Select a option"
-                                        style={{ width: '100%' }}
-                                        filterOption={(input, option) =>
-                                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                                        }
-                                        options={[
-                                            { value: 'Client', label: 'Client' },
-                                            { value: 'Provider', label: 'Provider' },
-                                            { value: 'Admin', label: 'Admin' },
-                                        ]}
-                                    />
-                                </span>
+                                <span>{booking?.cancelled_by || 'N/A'}</span>
                             </div>
                             <div className="grid grid-cols-3 gap-2">
                                 <span>Status</span>
                                 <span>:</span>
-                                <span>
-                                    <Select
-                                        showSearch
-                                        placeholder="Select a status"
-                                        style={{ width: '100%' }}
-                                        filterOption={(input, option) =>
-                                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                                        }
-                                        options={[
-                                            { value: 'Ongoing', label: 'Ongoing' },
-                                            { value: 'Pending', label: 'Pending' },
-                                            { value: 'Confirmed', label: 'Confirmed' },
-                                            { value: 'En route', label: 'En route' },
-                                            { value: 'Started', label: 'Started' },
-                                            { value: 'Completed', label: 'Completed' },
-                                            { value: 'Cancelled by client', label: 'Cancelled by client' },
-                                            { value: 'Cancelled by provider', label: 'Cancelled by provider' },
-                                            { value: 'Cancelled by admin', label: 'Cancelled by admin' },
-                                        ]}
-                                    />
-                                </span>
+                                <span className="capitalize">{booking?.status || 'N/A'}</span>
                             </div>
                             <div className="grid grid-cols-3 gap-2">
                                 <span>Refund</span>
                                 <span>:</span>
-                                <span>
-                                    <Input placeholder="Enter amound" defaultValue={5} prefix={'$'} />
-                                </span>
+                                <span>{booking?.refund || 'N/A'}</span>
                             </div>
                         </div>
                     </div>

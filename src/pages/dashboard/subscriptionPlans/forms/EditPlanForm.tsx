@@ -89,7 +89,7 @@ const EditPlanForm = ({
                     />
                 </Form.Item>
 
-                <Form.Item label={<label className="font-medium">Package Price offer</label>} name="price_offer">
+                <Form.Item label={<label className="font-medium">App Fee (%)</label>} name="price_offer">
                     <Input
                         style={{
                             height: 42,
