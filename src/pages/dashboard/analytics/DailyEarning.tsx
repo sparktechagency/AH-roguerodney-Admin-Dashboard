@@ -1,16 +1,10 @@
-
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-const data = [
-    { name: 'Sun', earnings: 800 },
-    { name: 'Mon', earnings: 120 },
-    { name: 'Tue', earnings: 100 },
-    { name: 'Wed', earnings: 214 },
-    { name: 'Thu', earnings: 160 },
-    { name: 'Fri', earnings: 150 },
-    { name: 'Sat', earnings: 100 },
-];
+import { useGetMonthlyEarningsQuery } from '../../../redux/features/analytics/analyticsApi';
 
-const PopularChart = () => {
+const DailyEarnings = () => {
+    const { data } = useGetMonthlyEarningsQuery({ query: '' });
+    const earnings = data?.data?.earnings || [];
+
     return (
         <div
             style={{
@@ -20,12 +14,12 @@ const PopularChart = () => {
             }}
         >
             <div className="px-2 flex items-center justify-between">
-                <h1 className="text-xl font-semibold">Monthly Earning</h1>
+                <h1 className="text-xl font-semibold">Daily Earning</h1>
             </div>
             <ResponsiveContainer width="100%" height={245}>
-                <LineChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                <LineChart data={earnings} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <XAxis dataKey="day" />
                     <YAxis domain={[100, 1000]} />
                     <Tooltip />
                     <Line
@@ -41,4 +35,4 @@ const PopularChart = () => {
     );
 };
 
-export default PopularChart;
+export default DailyEarnings;

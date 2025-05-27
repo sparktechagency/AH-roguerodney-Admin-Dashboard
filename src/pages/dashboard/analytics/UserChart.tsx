@@ -12,7 +12,7 @@ const UserChart = () => {
 
     const [year, setYear] = useState(recentYears[0]?.year || '');
     const { data } = useGetMonthlyEarningsQuery({ query: `?year=${year}` });
-    const earnings = data?.data?.users || [];
+    const users = data?.data?.users || [];
 
     return (
         <div
@@ -38,7 +38,7 @@ const UserChart = () => {
             </div>
 
             <ResponsiveContainer width="100%" height={245}>
-                <LineChart data={earnings} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                <LineChart data={users} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis domain={[100, 1000]} />

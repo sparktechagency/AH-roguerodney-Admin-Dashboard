@@ -1,6 +1,6 @@
+import DailyEarnings from './DailyEarning';
 import DashboardStats from './DashboardStats';
 import EarningChart from './EarningChart';
-import PopularChart from './PopularChart';
 import UserChart from './UserChart';
 
 const Dashboard = () => {
@@ -16,7 +16,7 @@ const Dashboard = () => {
                     <UserChart />
                 </div>
                 <div className="col-span-6 bg-white p-4 rounded-2xl">
-                    <PopularChart />
+                    <DailyEarnings />
                 </div>
             </div>
         </div>

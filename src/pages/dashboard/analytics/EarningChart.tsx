@@ -23,7 +23,7 @@ const EarningChart = () => {
             }}
         >
             <div className="px-3 flex items-center justify-between">
-                <h1 className="text-xl font-semibold">Yearly Earning</h1>
+                <h1 className="text-xl font-semibold">Monthly Earning</h1>
                 <Select
                     onSelect={(value) => setYear(value)}
                     value={year || recentYears[0]?.year}
