@@ -20,6 +20,8 @@ export const baseApi = createApi({
     tagTypes: [
         'Users',
         'User',
+        'Admins',
+        'Admin',
         'Profile',
         'Subscription',
         'Subscribers',

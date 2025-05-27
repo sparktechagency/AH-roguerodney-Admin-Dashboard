@@ -40,6 +40,8 @@ const columns = [
 ];
 
 const AdminTable = () => {
+    
+    
     return (
         <div>
             <ConfigProvider>

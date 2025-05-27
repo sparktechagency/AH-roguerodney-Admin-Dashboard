@@ -35,7 +35,7 @@ const challengeApi = baseApi.injectEndpoints({
             query: ({ id }) => {
                 return {
                     url: `/bonusAndChallenge/${id}`,
-                    method: 'PATCH',
+                    method: 'DELETE',
                 };
             },
             invalidatesTags: ['Challenges'],
