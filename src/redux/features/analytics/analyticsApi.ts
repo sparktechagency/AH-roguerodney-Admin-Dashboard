@@ -12,9 +12,9 @@ const analyticsApi = baseApi.injectEndpoints({
             providesTags: ['Analytics'],
         }),
         getMonthlyEarnings: builder.query({
-            query: () => {
+            query: ({ query }) => {
                 return {
-                    url: `/analytics/monthly-earnings`,
+                    url: `/analytics/monthly-earnings${query}`,
                     method: 'GET',
                 };
             },
