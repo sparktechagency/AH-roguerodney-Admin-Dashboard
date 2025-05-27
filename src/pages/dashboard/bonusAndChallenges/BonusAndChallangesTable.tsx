@@ -3,9 +3,14 @@ import { useState } from 'react';
 import { Option } from 'antd/es/mentions';
 import CustomModal from '../../../components/shared/CustomModal';
 import { PencilLine, Trash2 } from 'lucide-react';
-import { useGetAllChallengesQuery, useUpdateChallengeMutation } from '../../../redux/features/challenge/challengeApi';
+import {
+    useDeleteChallengeMutation,
+    useGetAllChallengesQuery,
+    useUpdateChallengeMutation,
+} from '../../../redux/features/challenge/challengeApi';
 import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
+import DeleteModal from '../../../components/shared/DeleteAlertModal';
 
 type Challenge = {
     _id?: string;
@@ -21,6 +26,7 @@ type Challenge = {
 
 const BonusAndChallangesTable = () => {
     const [editChallengeModal, setEditChallengeModal] = useState(false);
+    const [deleteChallengeModal, setDeleteChallengeModal] = useState(false);
     const [activeChallenge, setActiveChallenge] = useState<Challenge | undefined>(undefined);
 
     const { data } = useGetAllChallengesQuery({ query: '' });
@@ -98,7 +104,14 @@ const BonusAndChallangesTable = () => {
                         size={20}
                         className="text-xl cursor-pointer"
                     />
-                    <Trash2 size={20} className="text-xl cursor-pointer text-red-500" />
+                    <Trash2
+                        onClick={() => {
+                            setDeleteChallengeModal(true);
+                            setActiveChallenge(item);
+                        }}
+                        size={20}
+                        className="text-xl cursor-pointer text-red-500"
+                    />
                 </div>
             ),
         },
@@ -110,7 +123,6 @@ const BonusAndChallangesTable = () => {
         toast.loading('Updating challenge...', { id: 'update-challenge' });
         try {
             const res = await updateChallenge({ payload: values, id: activeChallenge?._id }).unwrap();
-            console.log(res);
             if (res.success) {
                 toast.success('Challenge updated successfully', { id: 'update-challenge' });
                 setEditChallengeModal(false);
@@ -236,6 +248,23 @@ const BonusAndChallangesTable = () => {
         </Form>
     );
 
+    // handle delete challenge
+    const [deleteChallenge] = useDeleteChallengeMutation();
+    const handleDelete = async () => {
+        toast.loading('Deleting challenge...', { id: 'delete-challenge' });
+        try {
+            const res = await deleteChallenge({ id: activeChallenge?._id }).unwrap();
+            if (res?.success) {
+                toast.success('Challenge deleted successfully', { id: 'delete-challenge' });
+                setDeleteChallengeModal(false);
+                setActiveChallenge(undefined);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to delete challenge', { id: 'delete-challenge' });
+        }
+    };
+
     return (
         <div>
             <ConfigProvider>
@@ -249,6 +278,8 @@ const BonusAndChallangesTable = () => {
                 width={500}
                 body={editChallengeForm}
             />
+
+            <DeleteModal open={deleteChallengeModal} setOpen={setDeleteChallengeModal} action={handleDelete} />
         </div>
     );
 };

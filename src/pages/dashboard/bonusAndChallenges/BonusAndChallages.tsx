@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
 
 const BonusAndChallanges = () => {
+    const [form] = Form.useForm();
     const [addChallengeModal, setAddChallengeModal] = useState(false);
     const [activeChallenge, setActiveChallenge] = useState<any>(undefined);
 
@@ -22,6 +23,7 @@ const BonusAndChallanges = () => {
                 toast.success('Challenge updated successfully', { id: 'update-challenge' });
                 setAddChallengeModal(false);
                 setActiveChallenge(undefined);
+                form.resetFields();
             }
         } catch (error) {
             console.error(error);
@@ -31,6 +33,7 @@ const BonusAndChallanges = () => {
 
     const addChallengeForm = (
         <Form
+            form={form}
             style={{
                 color: '#767676',
             }}
