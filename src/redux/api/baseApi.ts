@@ -39,6 +39,7 @@ export const baseApi = createApi({
         'Referral',
         'Challenge',
         'Challenges',
+        'Faq',
     ],
 });
 
