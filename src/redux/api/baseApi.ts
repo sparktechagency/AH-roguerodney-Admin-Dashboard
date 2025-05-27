@@ -40,6 +40,7 @@ export const baseApi = createApi({
         'Challenge',
         'Challenges',
         'Faq',
+        'Analytics',
     ],
 });
 
