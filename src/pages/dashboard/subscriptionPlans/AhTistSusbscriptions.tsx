@@ -33,9 +33,7 @@ const AhTistSubscriptions = () => {
                             </button>
                         </div>
                         <div className="flex-1 p-10 bg-[#f4f4f4] rounded-2xl grid gap-2 relative -top-6">
-                            <h4 className="text-lg text-teal-400 font-semibold">
-                                {package1?.price < 1 ? 'Free Plan' : package1?.price}
-                            </h4>
+                            <h4 className="text-lg text-teal-400 font-semibold">{package1?.title}</h4>
                             <ul className="list-disc pl-6 grid gap-2 text-base">
                                 {package1?.offers?.map((item: any, idx: number) => (
                                     <li key={idx} className="font-medium">
@@ -62,9 +60,7 @@ const AhTistSubscriptions = () => {
                             </button>
                         </div>
                         <div className="flex-1 p-10 bg-[#f4f4f4] rounded-2xl grid gap-2 relative -top-6">
-                            <h4 className="text-lg text-[#6A3E82] font-semibold">
-                                {package2?.price < 1 ? 'Free Plan' : `$${package2?.price}/month`}
-                            </h4>
+                            <h4 className="text-lg text-[#6A3E82] font-semibold">{package2?.title}</h4>
                             <ul className="list-disc pl-6 grid gap-2 text-base">
                                 {package2?.offers?.map((item: any, idx: number) => (
                                     <li key={idx} className="font-medium">
@@ -91,15 +87,7 @@ const AhTistSubscriptions = () => {
                             </button>
                         </div>
                         <div className="flex-1 p-10 bg-[#f4f4f4] rounded-2xl grid gap-2 relative -top-6">
-                            <h4 className="text-lg text-[#2190F2] font-semibold">
-                                {package3?.price < 1 ? (
-                                    'Free Plan'
-                                ) : (
-                                    <span className="font-semibold">
-                                        $19.99/month <span className="text-sm font-medium">(The VIP Experience!)</span>
-                                    </span>
-                                )}
-                            </h4>
+                            <h4 className="text-lg text-[#2190F2] font-semibold">{package3?.title}</h4>
                             <ul className="list-disc pl-6 grid gap-2 text-base">
                                 {package3?.offers?.map((item: any, idx: number) => (
                                     <li key={idx} className="font-medium">

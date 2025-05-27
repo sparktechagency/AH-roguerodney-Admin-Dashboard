@@ -23,6 +23,7 @@ const EditPlanForm = ({
         if (defaultData) {
             form.setFieldsValue({
                 name: defaultData.name,
+                title: defaultData.title,
                 price: defaultData.price,
                 price_offer: defaultData.price_offer,
                 offers: packageOffers,
@@ -33,6 +34,7 @@ const EditPlanForm = ({
 
     // handle form submission
     const handleSubmit = async (values: any) => {
+        console.log(values);
         toast.loading('Updating package...', { id: 'update-package' });
         try {
             const res = await updatePlan({
@@ -75,6 +77,16 @@ const EditPlanForm = ({
                             height: 42,
                         }}
                         placeholder="Enter package name"
+                        className="text-base font-medium rounded-md"
+                    />
+                </Form.Item>
+
+                <Form.Item label={<label className="font-medium">Price Title</label>} name="title">
+                    <Input
+                        style={{
+                            height: 42,
+                        }}
+                        placeholder="Free, $10/month etc."
                         className="text-base font-medium rounded-md"
                     />
                 </Form.Item>

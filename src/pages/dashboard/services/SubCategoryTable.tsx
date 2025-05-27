@@ -241,7 +241,7 @@ const SubCategoryTable = () => {
                             height: 40,
                         }}
                     >
-                        Add Sub-category
+                        Edit Sub-category
                     </Button>
                 </div>
             </Form.Item>
