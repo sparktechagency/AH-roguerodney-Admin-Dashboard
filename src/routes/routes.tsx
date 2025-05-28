@@ -38,6 +38,7 @@ import ClientResponsibility from '../pages/dashboard/agreement/client/ClientResp
 import AhTistResponsibility from '../pages/dashboard/agreement/ahTist/AhTistResponsibility';
 import AhTistAgreement from '../pages/dashboard/agreement/ahTist/AhTistAgreement';
 import PrivateRoute from './PrivateRoute';
+import ReportPage from '../pages/dashboard/report/Report';
 
 const router = createBrowserRouter([
     {
@@ -61,6 +62,7 @@ const router = createBrowserRouter([
             { path: 'bookings/:id', element: <BookingDetailsPage /> },
             { path: 'payments', element: <PaymentPage /> },
             { path: 'payments/:id', element: <PaymentDetailsPage /> },
+            { path: 'reports', element: <ReportPage /> },
             { path: 'settings/change-password', element: <ChangePassword /> },
             { path: 'settings/profile', element: <Profile /> },
             { path: 'settings/profile/edit-profile', element: <EditProfile /> },

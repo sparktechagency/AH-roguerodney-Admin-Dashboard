@@ -16,6 +16,7 @@ const EditPlanForm = ({
     setEditModalData: (data: any) => void;
 }) => {
     const [packageOffers, setPackageOffers] = React.useState<string[]>(defaultData?.offers || []);
+    const [offerInput, setOfferInput] = React.useState<string>('');
     const [form] = Form.useForm();
     const [updatePlan] = useUpdatePlanMutation();
 
@@ -119,19 +120,17 @@ const EditPlanForm = ({
                             }}
                             placeholder="Enter package offers"
                             className="text-base font-medium rounded-md"
+                            value={offerInput}
+                            onChange={(e) => setOfferInput(e.target.value)}
                         />
                         <Button
                             type="default"
                             style={{ height: 42 }}
                             className="rounded-md"
                             onClick={() => {
-                                const newOffer = (
-                                    document.querySelector(
-                                        'input[placeholder="Enter package offers"]',
-                                    ) as HTMLInputElement
-                                )?.value;
-                                if (newOffer) {
-                                    setPackageOffers([...packageOffers, newOffer]);
+                                if (offerInput.trim()) {
+                                    setPackageOffers([...packageOffers, offerInput.trim()]);
+                                    setOfferInput('');
                                 }
                             }}
                         >

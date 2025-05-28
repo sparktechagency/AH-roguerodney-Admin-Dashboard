@@ -14,8 +14,6 @@ const ClientSubscriptions = () => {
     const package2 = data?.data[1];
     const package3 = data?.data[2];
 
-    console.log(package1);
-
     return (
         <section className="">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 pt-4">

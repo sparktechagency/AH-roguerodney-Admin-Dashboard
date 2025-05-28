@@ -15,6 +15,7 @@ import {
     LockKeyhole,
     LogOut,
     MessageCircleQuestion,
+    MessageCircleWarning,
     Settings,
     ShieldCheck,
     ShieldUser,
@@ -85,6 +86,12 @@ const sidebarItems: TSidebarItem[] = [
         label: 'Payments',
         path: 'payments',
         icon: <CircleDollarSignIcon size={24} />,
+    },
+    {
+        key: 'reports',
+        label: 'Reports',
+        path: 'reports',
+        icon: <MessageCircleWarning size={24} />,
     },
     {
         key: 'settings',
