@@ -3,6 +3,7 @@ import { Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { IMAGE_URL } from '../../../redux/api/baseApi';
 import { useGetAllReportsQuery } from '../../../redux/features/report/reportApi';
+import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
 
 const columns = [
     {
@@ -11,66 +12,71 @@ const columns = [
         render: (_: any, __: any, index: number) => <p key={index}># {index + 1}</p>,
     },
     {
-        title: 'Client',
-        key: 'client',
-        render: (_: any, item: any, index: number) => (
-            <div key={index} className="flex items-center gap-3">
-                <img src={`${IMAGE_URL}${item?.userId?.profile}`} alt="client img" className="size-10" />
-                <div>
-                    <h1 className="font-medium">{item?.userId?.name}</h1>
-                    <h3 className="text-sm">{item?.userId?.email}</h3>
-                </div>
-            </div>
-        ),
-    },
-    {
-        title: 'Artist',
-        key: 'artist',
+        title: 'Reporter',
+        key: 'reporter',
         render: (_: any, item: any, index: number) => (
             <div key={index} className="flex items-center gap-3">
                 <img
                     src={
-                        item?.artiestId?.profile?.includes('http')
-                            ? item?.artiestId?.profile
-                            : `${IMAGE_URL}${item?.artiestId?.profile}`
+                        item?.user?.profile?.includes('http')
+                            ? item?.user?.profile
+                            : `${IMAGE_URL}${item?.user?.profile}`
                     }
-                    alt="provider img"
-                    className="size-10"
+                    alt="reporter img"
+                    className="size-10 rounded-md"
                 />
                 <div>
-                    <h1 className="font-medium">{item?.artiestId?.name}</h1>
-                    <h3 className="text-sm">{item?.artiestId?.email}</h3>
+                    <h1 className="font-medium">{item?.user?.name}</h1>
+                    <h3 className="text-sm">{item?.user?.email}</h3>
                 </div>
             </div>
         ),
     },
     {
-        title: 'Service Location',
-        key: 'serviceLocation',
-        render: (_: any, item: any, index: number) => <p key={index}>{item?.address}</p>,
+        title: 'Service',
+        key: 'service',
+        render: (_: any, item: any, index: number) => (
+            <div key={index} className="flex items-center gap-3">
+                <img
+                    src={
+                        item?.reservation?.serviceId?.image?.includes('http')
+                            ? item?.reservation?.serviceId?.image
+                            : `${IMAGE_URL}${item?.reservation?.serviceId?.image}`
+                    }
+                    alt="service"
+                    className="size-10 rounded-md"
+                />
+                <div>
+                    <h1 className="font-medium">{item?.reservation?.serviceId?.name}</h1>
+                </div>
+            </div>
+        ),
     },
     {
         title: 'Price',
         key: 'price',
-        render: (_: any, item: any, index: number) => <p key={index}>${item?.price}</p>,
+        render: (_: any, item: any, index: number) => <p key={index}>${item?.reservation?.price}</p>,
     },
     {
-        title: 'Category',
-        key: 'category',
-        render: (_: any, item: any, index: number) => <p key={index}>{item?.serviceId?.category?.name}</p>,
-    },
-    {
-        title: 'Appt. Time',
-        key: 'apptTime',
+        title: 'Report Time',
+        key: 'reportTime',
         render: (_: any, item: any, index: number) => <p key={index}>{new Date(item?.createdAt).toLocaleString()}</p>,
     },
-
+    {
+        title: 'Status',
+        key: 'status',
+        render: (_: any, item: any, index: number) => (
+            <p key={index} className="capitalize">
+                {item?.status}
+            </p>
+        ),
+    },
     {
         title: 'Action',
         key: 'action',
         render: (_: any, record: any, index: number) => (
             <div key={index} className="flex items-center gap-3">
-                <Link to={`/bookings/${record?._id}`}>
+                <Link to={`/reports/${record?._id}`}>
                     <Info className="text-xl text-primary" />
                 </Link>
             </div>
@@ -79,14 +85,25 @@ const columns = [
 ];
 
 const ReportTable = () => {
-    const { data } = useGetAllReportsQuery({ query: '' });
+    const updateSearchParams = useUpdateSearchParams();
+    const { data } = useGetAllReportsQuery({ query: location.search });
     const reports = data?.data;
-    console.log(reports);
+    const pagination = data?.pagination;
 
     return (
         <div>
             <ConfigProvider>
-                <Table columns={columns} dataSource={reports} />
+                <Table
+                    columns={columns}
+                    dataSource={reports}
+                    pagination={{
+                        current: pagination?.page,
+                        pageSize: pagination?.limit,
+                        total: pagination?.total,
+                        // Optional: handle page change
+                        onChange: (page) => updateSearchParams({ page }),
+                    }}
+                />
             </ConfigProvider>
         </div>
     );

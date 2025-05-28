@@ -20,7 +20,17 @@ const reportApi = baseApi.injectEndpoints({
             },
             providesTags: ['Report'],
         }),
+        updateReport: builder.mutation({
+            query: ({ id, payload }) => {
+                return {
+                    url: `/report/report/${id}`,
+                    method: 'PATCH',
+                    body: payload,
+                };
+            },
+            invalidatesTags: ['Report'],
+        }),
     }),
 });
 
-export const { useGetAllReportsQuery, useGetSingleReportQuery } = reportApi;
+export const { useGetAllReportsQuery, useGetSingleReportQuery, useUpdateReportMutation } = reportApi;
