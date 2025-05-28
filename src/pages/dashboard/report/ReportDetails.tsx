@@ -3,6 +3,7 @@ import { IMAGE_URL } from '../../../redux/api/baseApi';
 import { useGetSingleReportQuery, useUpdateReportMutation } from '../../../redux/features/report/reportApi';
 import { Button, Form, Input } from 'antd';
 import toast from 'react-hot-toast';
+import { CircleCheckBig } from 'lucide-react';
 
 const ReportDetailsPage = () => {
     const { id } = useParams();
@@ -19,7 +20,7 @@ const ReportDetailsPage = () => {
         try {
             const res = await updateReport({ id, payload: { ...values, refund: Number(values?.refund) } }).unwrap();
             if (res?.success) {
-                toast.success('Refund successful', { id: 'refund' }); 
+                toast.success('Refund successful', { id: 'refund' });
                 form.resetFields();
             }
         } catch (error: any) {
@@ -167,41 +168,47 @@ const ReportDetailsPage = () => {
                         </div>
                     </div>
                     {/* Report Details */}
-                    {!report?.reservation?.refund && (
-                        <div>
-                            <h1 className="text-xl font-semibold mb-4">Report Information</h1>
-                            <div className="grid gap-4">
-                                <p className="grid grid-cols-3 gap-2">
-                                    <span>Reporter name</span>
-                                    <span>:</span>
-                                    <span>{report?.reservation?.artiestId?.name}</span>
-                                </p>
-                                <p className="grid grid-cols-3 gap-2">
-                                    <span>Reporter email</span>
-                                    <span>:</span>
-                                    <span>{report?.reservation?.artiestId?.email}</span>
-                                </p>
-                                <p className="grid grid-cols-3 gap-2">
-                                    <span>Date</span>
-                                    <span>:</span>
-                                    <span>{report?.createdAt?.split('T')[0]}</span>
-                                </p>
-                                <p className="grid grid-cols-3 gap-2">
-                                    <span>Status</span>
-                                    <span>:</span>
-                                    <span className="capitalize">{report?.status}</span>
-                                </p>
-                                <p className="grid grid-cols-3 gap-2">
-                                    <span>Reason</span>
-                                    <span>:</span>
-                                    <span>{report?.reason}</span>
-                                </p>
-                                <p className="grid grid-cols-3 gap-2">
-                                    <span>Note</span>
-                                    <span>:</span>
-                                    <span>{report?.note || 'N/A'}</span>
-                                </p>
-                            </div>
+                    <div>
+                        <h1 className="text-xl font-semibold mb-4">Report Information</h1>
+                        <div className="grid gap-4">
+                            <p className="grid grid-cols-3 gap-2">
+                                <span>Reporter name</span>
+                                <span>:</span>
+                                <span>{report?.user?.name}</span>
+                            </p>
+                            <p className="grid grid-cols-3 gap-2">
+                                <span>Reporter email</span>
+                                <span>:</span>
+                                <span>{report?.user?.email}</span>
+                            </p>
+                            <p className="grid grid-cols-3 gap-2">
+                                <span>Date</span>
+                                <span>:</span>
+                                <span>{report?.createdAt?.split('T')[0]}</span>
+                            </p>
+                            <p className="grid grid-cols-3 gap-2">
+                                <span>Status</span>
+                                <span>:</span>
+                                <span className="capitalize flex items-center gap-2">
+                                    {report?.status}{' '}
+                                    {report?.status === 'resolved' && (
+                                        <CircleCheckBig size={16} className="text-green-500" />
+                                    )}
+                                </span>
+                            </p>
+                            <p className="grid grid-cols-3 gap-2">
+                                <span>Reason</span>
+                                <span>:</span>
+                                <span>{report?.reason}</span>
+                            </p>
+                            <p className="grid grid-cols-3 gap-2">
+                                <span>Note</span>
+                                <span>:</span>
+                                <span>{report?.note || 'N/A'}</span>
+                            </p>
+                        </div>
+
+                        {!report?.reservation?.refund && (
                             <div className="p-4 my-8 bg-gray-100 rounded-md">
                                 <h1 className="text-base font-semibold mb-4">Refund Price</h1>
                                 <div>
@@ -231,8 +238,8 @@ const ReportDetailsPage = () => {
                                     </Form>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </section>
         </div>
