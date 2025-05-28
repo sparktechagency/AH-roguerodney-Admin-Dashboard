@@ -3,30 +3,24 @@ import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { IoTrashOutline } from 'react-icons/io5';
-import CustomModal from '../../../components/shared/CustomModal';
 import UploadImage from '../../../components/shared/UploadImage';
-import {
-    useCreateCategoryMutation,
-    useDeleteCategoryMutation,
-    useEditCategoryMutation,
-    useGetAllCategoriesQuery,
-} from '../../../redux/features/category/categoryApi';
+import { useEditCategoryMutation, useGetAllCategoriesQuery } from '../../../redux/features/category/categoryApi';
 import { IMAGE_URL } from '../../../redux/api/baseApi';
 import toast from 'react-hot-toast';
 import EditCategoryModal from './EditCategoryModal';
+import MyModal from '../../../components/shared/MyModal';
+import AddCategoryForm from './forms/category/AddCategoryForm';
+import DeleteCategoryForm from './forms/category/DeleteCategoryForm';
 
 const CategoryTable = () => {
-    const [categoryModal, setCategoryModal] = useState(false);
+    const [addCategoryModal, setAddCategoryModal] = useState(false);
     const [editCategoryModal, setEditCategoryModal] = useState(false);
     const [editCategoryData, setEditCategoryData] = useState();
     const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
     const [currentCategoryId, setCurrentCategoryId] = useState(null);
 
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [addCategory] = useCreateCategoryMutation();
     const [editCategory] = useEditCategoryMutation();
-    const [deleteCategory] = useDeleteCategoryMutation();
-    const [form] = Form.useForm();
     const [editForm] = Form.useForm();
 
     const { data } = useGetAllCategoriesQuery(undefined);
@@ -96,71 +90,6 @@ const CategoryTable = () => {
         },
     ];
 
-    // handle add category form
-    const handleAddCategory = async (values: any) => {
-        toast.loading('Adding category...', { id: 'add-category' });
-        const formData = new FormData();
-        formData.append('name', values.name);
-        if (fileList && fileList.length > 0) {
-            fileList.forEach((file) => {
-                if (file.originFileObj) {
-                    formData.append('image', file.originFileObj);
-                }
-            });
-        }
-
-        try {
-            const res = await addCategory({
-                payload: formData,
-            }).unwrap();
-            if (res?.success) {
-                toast.success('Category added successfully', { id: 'add-category' });
-                setFileList([]);
-                form.resetFields();
-            }
-        } catch (error) {
-            console.error('Error adding category:', error);
-            toast.error('Failed to add category', { id: 'add-category' });
-        }
-    };
-
-    const addCategoryForm = (
-        <Form
-            style={{
-                color: '#767676',
-            }}
-            layout="vertical"
-            form={form}
-            onFinish={handleAddCategory}
-        >
-            <Form.Item label="Category Name" name="name">
-                <Input
-                    style={{
-                        height: 42,
-                    }}
-                    placeholder="Enter category name"
-                />
-            </Form.Item>
-            <Form.Item label="Category Images" name="image">
-                <UploadImage fileList={fileList} setFileList={setFileList} maxCount={5} />
-            </Form.Item>
-
-            <Form.Item>
-                <div className="flex justify-center w-full">
-                    <Button
-                        htmlType="submit"
-                        type="primary"
-                        style={{
-                            height: 40,
-                        }}
-                    >
-                        Add category
-                    </Button>
-                </div>
-            </Form.Item>
-        </Form>
-    );
-
     // handle edit category form
     const handleEditCategory = async (values: any) => {
         toast.loading('Editing category...', { id: 'edit-category' });
@@ -191,7 +120,7 @@ const CategoryTable = () => {
         }
     };
 
-    const editServiceForm = (
+    const editCategoryForm = (
         <Form
             style={{
                 color: '#767676',
@@ -230,82 +159,35 @@ const CategoryTable = () => {
         </Form>
     );
 
-    // handle delete category
-    const handleDeleteCategory = async () => {
-        toast.loading('Deleting category...', { id: 'delete-category' });
-        try {
-            const res = await deleteCategory({ id: currentCategoryId }).unwrap();
-            if (res?.success) {
-                toast.success('Category deleted successfully', { id: 'delete-category' });
-            }
-        } catch (error) {
-            console.error('Error deleting category:', error);
-            toast.error('Failed to delete category', { id: 'delete-category' });
-        }
-    };
-
     return (
         <div className="grid gap-4 mt-2">
             <div className="flex justify-between items-center gap-4">
                 <h1 className="text-2xl text-primary font-semibold">Categories</h1>
-                <Button type="primary" className="p-5 text-base" onClick={() => setCategoryModal(true)}>
+                <Button type="primary" className="p-5 text-base" onClick={() => setAddCategoryModal(true)}>
                     <Plus size={20} /> Add Category
                 </Button>
+                <MyModal open={addCategoryModal} setOpen={setAddCategoryModal}>
+                    <AddCategoryForm setModal={setAddCategoryModal} />
+                </MyModal>
             </div>
             <ConfigProvider>
                 <Table columns={columns} dataSource={categoryData} />
             </ConfigProvider>
 
-            {/* add modal */}
-            <CustomModal
-                open={categoryModal}
-                setOpen={setCategoryModal}
-                title="Add category"
-                width={500}
-                body={addCategoryForm}
-            />
+            {/* delete modal */}
+            <MyModal open={deleteCategoryModal} setOpen={setDeleteCategoryModal}>
+                <DeleteCategoryForm
+                    open={deleteCategoryModal}
+                    setOpen={setDeleteCategoryModal}
+                    itemId={currentCategoryId ?? ''}
+                />
+            </MyModal>
 
-            {/* delete alert modal */}
-            <CustomModal
-                open={deleteCategoryModal}
-                setOpen={setDeleteCategoryModal}
-                title="Delete Category"
-                width={500}
-                body={
-                    <div>
-                        <h1 className="text-lg font-semibold">Are you sure you want to delete this category?</h1>
-                        <p>This action will be remove the data from our server permanently.</p>
-                        <div className="flex justify-end gap-2 mt-4">
-                            <Button
-                                onClick={() => setDeleteCategoryModal(false)}
-                                style={{
-                                    height: 40,
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                type="primary"
-                                danger
-                                style={{
-                                    height: 40,
-                                }}
-                                onClick={() => {
-                                    handleDeleteCategory();
-                                    setDeleteCategoryModal(false);
-                                }}
-                            >
-                                Continue
-                            </Button>
-                        </div>
-                    </div>
-                }
-            />
             {/* edit modal */}
             <EditCategoryModal
                 open={editCategoryModal}
                 setOpen={setEditCategoryModal}
-                children={editServiceForm}
+                children={editCategoryForm}
                 setEditCategoryData={setEditCategoryData}
             />
         </div>

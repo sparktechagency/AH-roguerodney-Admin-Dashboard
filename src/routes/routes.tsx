@@ -4,10 +4,8 @@ import Dashboard from '../pages/dashboard/analytics/Dashboard';
 import MakeAdmin from '../pages/dashboard/MakeAdmin';
 import Login from '../pages/authentication/Login';
 import ErrorPage from '../pages/error/ErrorPage';
-import Brands from '../pages/dashboard/Brands';
 import Services from '../pages/dashboard/services/Services';
 import Review from '../pages/dashboard/Review';
-import Campaign from '../pages/dashboard/Campaign';
 import TermsCondition from '../pages/dashboard/TermsCondition';
 import FAQs from '../pages/dashboard/FAQs';
 import Notification from '../pages/dashboard/Notification';
@@ -56,7 +54,6 @@ const router = createBrowserRouter([
             { path: 'users/clients', element: <Clients /> },
             { path: 'users/artist', element: <Artist /> },
             { path: 'user-details/:id', element: <UserDetails /> },
-            { path: 'brands', element: <Brands /> },
             { path: 'subscriber', element: <MainSubscriber /> },
             { path: 'subscription-plan', element: <SubscriptionPlans /> },
             { path: 'services', element: <Services /> },
@@ -83,7 +80,6 @@ const router = createBrowserRouter([
             { path: 'referral', element: <ReferralPage /> },
             { path: 'notification', element: <Notification /> },
             { path: 'reviews', element: <Review /> },
-            { path: 'campaign', element: <Campaign /> },
             { path: 'make-admin', element: <MakeAdmin /> },
             { path: 'terms', element: <TermsCondition /> },
             { path: 'faqs', element: <FAQs /> },
