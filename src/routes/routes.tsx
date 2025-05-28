@@ -40,6 +40,7 @@ import AhTistAgreement from '../pages/dashboard/agreement/ahTist/AhTistAgreement
 import PrivateRoute from './PrivateRoute';
 import ReportPage from '../pages/dashboard/report/Report';
 import ReportDetailsPage from '../pages/dashboard/report/ReportDetails';
+import SupportPage from '../pages/dashboard/support/Support';
 
 const router = createBrowserRouter([
     {
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
             { path: 'payments/:id', element: <PaymentDetailsPage /> },
             { path: 'reports', element: <ReportPage /> },
             { path: 'reports/:id', element: <ReportDetailsPage /> },
+            { path: 'supports', element: <SupportPage /> },
             { path: 'settings/change-password', element: <ChangePassword /> },
             { path: 'settings/profile', element: <Profile /> },
             { path: 'settings/profile/edit-profile', element: <EditProfile /> },

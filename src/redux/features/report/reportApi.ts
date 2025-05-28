@@ -28,7 +28,7 @@ const reportApi = baseApi.injectEndpoints({
                     body: payload,
                 };
             },
-            invalidatesTags: ['Report'],
+            invalidatesTags: ['Report', 'Reports'],
         }),
     }),
 });

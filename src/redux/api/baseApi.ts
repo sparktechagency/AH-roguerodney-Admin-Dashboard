@@ -43,6 +43,8 @@ export const baseApi = createApi({
         'Analytics',
         'Reports',
         'Report',
+        'Supports',
+        'Support',
     ],
 });
 

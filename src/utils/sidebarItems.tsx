@@ -16,6 +16,7 @@ import {
     LogOut,
     MessageCircleQuestion,
     MessageCircleWarning,
+    MessageSquareMore,
     Settings,
     ShieldCheck,
     ShieldUser,
@@ -92,6 +93,12 @@ const sidebarItems: TSidebarItem[] = [
         label: 'Reports',
         path: 'reports',
         icon: <MessageCircleWarning size={24} />,
+    },
+    {
+        key: 'supports',
+        label: 'Supports',
+        path: 'supports',
+        icon: <MessageSquareMore size={24} />,
     },
     {
         key: 'settings',
