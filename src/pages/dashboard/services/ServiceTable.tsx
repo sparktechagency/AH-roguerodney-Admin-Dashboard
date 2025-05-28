@@ -10,6 +10,7 @@ import {
     useCreateServiceMutation,
     useDeleteServiceMutation,
     useGetAllServiceQuery,
+    useGetStatesQuery,
     useUpdateServiceMutation,
 } from '../../../redux/features/service/serviceApi';
 import { useGetAllCategoriesQuery } from '../../../redux/features/category/categoryApi';
@@ -20,7 +21,7 @@ import toast from 'react-hot-toast';
 
 interface AddOn {
     id: string;
-    title: string;
+    state: string;
     price: number;
 }
 
@@ -37,6 +38,12 @@ const ServiceTable = () => {
     const [editAddOnPrice, setEditAddOnPrice] = useState<number | null>(null);
     const [selectedService, setSelectedService] = useState<any>(null);
     const [selectedCategoryId, setSelectedCategoryId] = useState<any>(null);
+    const [selectedStates, setSelectedStates] = useState<AddOn[]>([]);
+    const [editSelectedStates, setEditSelectedStates] = useState<AddOn[]>([]);
+    const [stateName, setStateName] = useState('');
+    const [statePrice, setStatePrice] = useState<number | null>(null);
+    const [editStateName, setEditStateName] = useState('');
+    const [editStatePrice, setEditStatePrice] = useState<number | null>(null);
 
     const [addForm] = Form.useForm();
     const [editForm] = Form.useForm();
@@ -50,12 +57,15 @@ const ServiceTable = () => {
     const { data: subCategoryData } = useGetAllSubCategoryQuery({ query: `?id=${selectedCategoryId}` });
     const subCategories = subCategoryData?.data || [];
 
+    const { data: statesData } = useGetStatesQuery(undefined);
+    const states = statesData?.data || [];
+
     // Add new add-on
     const handleAddAddOn = () => {
         if (addOnName.trim() && addOnPrice !== null && addOnPrice > 0) {
             const newAddOn: AddOn = {
                 id: Date.now().toString(),
-                title: addOnName.trim(),
+                state: addOnName.trim(),
                 price: addOnPrice,
             };
             setAddOns([...addOns, newAddOn]);
@@ -74,7 +84,7 @@ const ServiceTable = () => {
         if (editAddOnName.trim() && editAddOnPrice !== null && editAddOnPrice > 0) {
             const newAddOn: AddOn = {
                 id: Date.now().toString(),
-                title: editAddOnName.trim(),
+                state: editAddOnName.trim(),
                 price: editAddOnPrice,
             };
             setEditAddOns([...editAddOns, newAddOn]);
@@ -88,10 +98,49 @@ const ServiceTable = () => {
         setEditAddOns(editAddOns.filter((addon) => addon.id !== id));
     };
 
+    // Add new state
+    const handleAddState = () => {
+        if (stateName.trim() && statePrice !== null && statePrice > 0) {
+            const newState: AddOn = {
+                id: Date.now().toString(),
+                state: stateName.trim(),
+                price: statePrice,
+            };
+            setSelectedStates([...selectedStates, newState]);
+            setStateName('');
+            setStatePrice(null);
+        }
+    };
+
+    // Remove state
+    const handleRemoveState = (id: string) => {
+        setSelectedStates(selectedStates.filter((state) => state.id !== id));
+    };
+
+    // Add edit state
+    const handleAddEditState = () => {
+        if (editStateName.trim() && editStatePrice !== null && editStatePrice > 0) {
+            const newState: AddOn = {
+                id: Date.now().toString(),
+                state: editStateName.trim(),
+                price: editStatePrice,
+            };
+            setEditSelectedStates([...editSelectedStates, newState]);
+            setEditStateName('');
+            setEditStatePrice(null);
+        }
+    };
+
+    // Remove edit state
+    const handleRemoveEditState = (id: string) => {
+        setEditSelectedStates(editSelectedStates.filter((state) => state.id !== id));
+    };
+
     // Handle edit service click
     const handleEditClick = (record: any) => {
         setSelectedService(record);
         setEditAddOns(record.addOns || []);
+        setEditSelectedStates(record.statePrices || []);
         editForm.setFieldsValue({
             category: record.category?._id,
             subCategory: record.subCategory?._id,
@@ -113,8 +162,11 @@ const ServiceTable = () => {
     const resetAddModal = () => {
         setServiceModal(false);
         setAddOns([]);
+        setSelectedStates([]);
         setAddOnName('');
         setAddOnPrice(null);
+        setStateName('');
+        setStatePrice(null);
         addForm.resetFields();
         setFileList([]);
     };
@@ -122,8 +174,11 @@ const ServiceTable = () => {
     const resetEditModal = () => {
         setEditServiceModal(false);
         setEditAddOns([]);
+        setEditSelectedStates([]);
         setEditAddOnName('');
         setEditAddOnPrice(null);
+        setEditStateName('');
+        setEditStatePrice(null);
         setSelectedService(null);
         editForm.resetFields();
     };
@@ -249,6 +304,10 @@ const ServiceTable = () => {
         if (addOns.length > 0) {
             formData.append('addOns', JSON.stringify(addOns));
         }
+        // append states to formData
+        if (selectedStates.length > 0) {
+            formData.append('statePrices', JSON.stringify(selectedStates));
+        }
         // append fileList to formData
         if (fileList.length > 0) {
             formData.append('image', fileList[0]?.originFileObj as any);
@@ -285,6 +344,10 @@ const ServiceTable = () => {
         if (editAddOns.length > 0) {
             formData.append('addOns', JSON.stringify(editAddOns));
         }
+        // append states to formData
+        if (editSelectedStates.length > 0) {
+            formData.append('statePrices', JSON.stringify(editSelectedStates));
+        }
         // append fileList to formData
         if (fileList.length > 0) {
             formData.append('image', fileList[0]?.originFileObj as any);
@@ -306,7 +369,7 @@ const ServiceTable = () => {
         }
     };
 
-    const addCategoryForm = (
+    const addServiceForm = (
         <Form
             form={addForm}
             style={{
@@ -350,14 +413,6 @@ const ServiceTable = () => {
             </Form.Item>
 
             <Form.Item
-                label={<label className="font-medium">Location</label>}
-                name="location"
-                rules={[{ required: true, message: 'Please enter location' }]}
-            >
-                <Input style={{ height: 42 }} placeholder="Enter location" />
-            </Form.Item>
-
-            <Form.Item
                 label="Service Name"
                 name="name"
                 rules={[{ required: true, message: 'Please enter service name' }]}
@@ -371,6 +426,64 @@ const ServiceTable = () => {
                 rules={[{ required: true, message: 'Please enter base price' }]}
             >
                 <Input type="number" style={{ height: 42 }} placeholder="Enter base price" />
+            </Form.Item>
+
+            <Form.Item label="States">
+                <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                        <Select
+                            showSearch
+                            placeholder="Select a state"
+                            value={stateName || undefined}
+                            onSelect={(value) => setStateName(value)}
+                            filterOption={(input, option) => {
+                                const label = option?.label;
+                                return typeof label === 'string'
+                                    ? label.toLowerCase().includes(input.toLowerCase())
+                                    : false;
+                            }}
+                            options={states.map((state: any) => ({
+                                value: state,
+                                label: state,
+                            }))}
+                            className="w-full h-[42px]"
+                        />
+                        <Input
+                            type="number"
+                            style={{ height: 42, width: 160 }}
+                            placeholder="Price"
+                            value={statePrice || ''}
+                            onChange={(e) => setStatePrice(Number(e.target.value))}
+                        />
+                        <Button
+                            style={{ height: 42 }}
+                            className="text-primary border-primary"
+                            onClick={handleAddState}
+                            disabled={!stateName.trim() || !statePrice}
+                        >
+                            <Plus size={20} /> Add
+                        </Button>
+                    </div>
+
+                    {selectedStates.length > 0 && (
+                        <div className="space-y-2">
+                            <label className="font-medium text-sm">Selected States:</label>
+                            <div className="flex flex-wrap gap-2">
+                                {selectedStates.map((state) => (
+                                    <Tag
+                                        key={state.id}
+                                        closable
+                                        onClose={() => handleRemoveState(state.id)}
+                                        color="green"
+                                        className="flex items-center gap-1 p-2 py-1 text-sm"
+                                    >
+                                        {state.state} (${state.price})
+                                    </Tag>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
             </Form.Item>
 
             <Form.Item label="Add-Ons">
@@ -411,7 +524,7 @@ const ServiceTable = () => {
                                         color="blue"
                                         className="flex items-center gap-1 p-2 py-1 text-sm"
                                     >
-                                        {addon.title} (${addon.price})
+                                        {addon.state} (${addon.price})
                                     </Tag>
                                 ))}
                             </div>
@@ -479,12 +592,62 @@ const ServiceTable = () => {
                 <Input style={{ height: 42 }} placeholder="Enter service name" />
             </Form.Item>
 
-            <Form.Item
-                label={<label className="font-medium">Location</label>}
-                name="location"
-                rules={[{ required: true, message: 'Please enter location' }]}
-            >
-                <Input style={{ height: 42 }} placeholder="Enter location" />
+            <Form.Item label="States">
+                <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                        <Select
+                            showSearch
+                            placeholder="Select a state"
+                            value={editStateName || undefined}
+                            onSelect={(value) => setEditStateName(value)}
+                            filterOption={(input, option) => {
+                                const label = option?.label;
+                                return typeof label === 'string'
+                                    ? label.toLowerCase().includes(input.toLowerCase())
+                                    : false;
+                            }}
+                            options={states.map((state: any) => ({
+                                value: state,
+                                label: state,
+                            }))}
+                            className="w-full h-[42px]"
+                        />
+                        <Input
+                            type="number"
+                            style={{ height: 42, width: 160 }}
+                            placeholder="Price"
+                            value={editStatePrice || ''}
+                            onChange={(e) => setEditStatePrice(Number(e.target.value))}
+                        />
+                        <Button
+                            style={{ height: 42 }}
+                            className="text-primary border-primary"
+                            onClick={handleAddEditState}
+                            disabled={!editStateName.trim() || !editStatePrice}
+                        >
+                            <Plus size={20} /> Add
+                        </Button>
+                    </div>
+
+                    {editSelectedStates.length > 0 && (
+                        <div className="space-y-2">
+                            <label className="font-medium text-sm">Selected States:</label>
+                            <div className="flex flex-wrap gap-2">
+                                {editSelectedStates.map((state) => (
+                                    <Tag
+                                        key={state.id}
+                                        closable
+                                        onClose={() => handleRemoveEditState(state.id)}
+                                        color="green"
+                                        className="flex items-center gap-1 p-2 py-1 text-sm"
+                                    >
+                                        {state.state} (${state.price})
+                                    </Tag>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
             </Form.Item>
 
             <Form.Item
@@ -533,7 +696,7 @@ const ServiceTable = () => {
                                         color="blue"
                                         className="flex items-center gap-1"
                                     >
-                                        {addon.title} (+${addon.price})
+                                        {addon.state} (+${addon.price})
                                     </Tag>
                                 ))}
                             </div>
@@ -596,7 +759,7 @@ const ServiceTable = () => {
                 setOpen={setServiceModal}
                 title="Add Service"
                 width={500}
-                body={addCategoryForm}
+                body={addServiceForm}
             />
             <CustomModal
                 open={editServiceModal}

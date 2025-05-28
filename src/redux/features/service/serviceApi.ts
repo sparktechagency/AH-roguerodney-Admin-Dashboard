@@ -11,6 +11,7 @@ const subCategoryApi = baseApi.injectEndpoints({
             },
             providesTags: ['Services', 'Service'],
         }),
+
         getSingleService: builder.query({
             query: ({ id }) => {
                 return {
@@ -49,6 +50,14 @@ const subCategoryApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ['Services', 'Service'],
         }),
+        getStates: builder.query({
+            query: () => {
+                return {
+                    url: `/serviceManagement/states`,
+                    method: 'GET',
+                };
+            },
+        }),
     }),
 });
 
@@ -58,4 +67,5 @@ export const {
     useDeleteServiceMutation,
     useGetAllServiceQuery,
     useGetSingleServiceQuery,
+    useGetStatesQuery
 } = subCategoryApi;
