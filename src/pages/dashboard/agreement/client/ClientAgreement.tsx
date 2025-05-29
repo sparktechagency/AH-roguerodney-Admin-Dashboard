@@ -4,13 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import { useGetAgreementQuery, useUpdateAgreementMutation } from '../../../../redux/features/agreement/agreementApi';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
+import Loader from '../../../../components/ui/Loader';
 
 const ClientAgreement = () => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
-    const [updateContent, { isLoading }] = useUpdateAgreementMutation();
+    const [updateContent, { isLoading: isPending }] = useUpdateAgreementMutation();
 
-    const { data } = useGetAgreementQuery({ query: `?type=agreement&for=user` });
+    const { data, isLoading } = useGetAgreementQuery({ query: `?type=agreement&for=user` });
     const contentData = data?.data;
 
     // re-set content on mount
@@ -34,6 +35,14 @@ const ClientAgreement = () => {
         }
     };
 
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-[70vh]">
+                <Loader />
+            </div>
+        );
+    }
+
     return (
         <section className="p-4 grid gap-4">
             <div className="flex justify-between items-center gap-4">
@@ -47,7 +56,7 @@ const ClientAgreement = () => {
                     onBlur={(newContent) => setContent(newContent)}
                 />
                 <Button onClick={handleUpdate} type="primary" className="mt-6 text-base p-6 px-12">
-                    {isLoading ? <Loader2 className="animate-spin" /> : 'Save'}
+                    {isPending ? <Loader2 className="animate-spin" /> : 'Save'}
                 </Button>
             </div>
         </section>
