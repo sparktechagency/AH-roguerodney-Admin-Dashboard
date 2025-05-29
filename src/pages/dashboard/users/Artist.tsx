@@ -11,7 +11,7 @@ const Artists = () => {
     const { searchTerm = '', verified = '' } = getSearchParams();
     const udpateSearchParams = useUpdateSearchParams();
 
-    const { data } = useGetAllUsersQuery({
+    const { data, isLoading } = useGetAllUsersQuery({
         query: `${location.search}${location.search ? '&role=ARTIST' : '?role=ARTIST'}`,
     });
     const usersData = data?.data;
@@ -90,7 +90,7 @@ const Artists = () => {
         <div className="grid gap-4 p-4">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-xl text-[#2C2C2C] font-semibold">Clients</h1>
+                    <h1 className="text-2xl text-[#2C2C2C] font-semibold">Artists</h1>
                 </div>
                 <div className="flex items-center gap-5 justify-end">
                     <Input
@@ -117,6 +117,8 @@ const Artists = () => {
                 </div>
             </div>
             <Table
+                columns={columns}
+                dataSource={usersData}
                 pagination={{
                     total: pagination?.total,
                     pageSize: pagination?.limit,
@@ -125,8 +127,7 @@ const Artists = () => {
                         udpateSearchParams({ page });
                     },
                 }}
-                columns={columns}
-                dataSource={usersData}
+                loading={isLoading}
                 rowClassName="hover:bg-gray-100"
             />
         </div>

@@ -48,7 +48,7 @@ const ServiceTable = () => {
 
     const [editForm] = Form.useForm();
 
-    const { data } = useGetAllServiceQuery({ query: `?page=${page}` });
+    const { data, isLoading } = useGetAllServiceQuery({ query: `?page=${page}` });
     const services = data?.data || [];
     const pagination = data?.meta;
 
@@ -89,7 +89,11 @@ const ServiceTable = () => {
                 state: editStateName.trim(),
                 price: editStatePrice,
             };
-            setEditSelectedStates([...editSelectedStates, newState]);
+            if (!editSelectedStates.some((state) => state.state === editStateName.trim())) {
+                setEditSelectedStates([...editSelectedStates, newState]);
+            } else {
+                toast.error('State already added');
+            }
             setEditStateName('');
             setEditStatePrice(null);
         }
@@ -497,6 +501,7 @@ const ServiceTable = () => {
                         current: pagination?.page,
                         onChange: (page) => setPage(page),
                     }}
+                    loading={isLoading}
                 />
             </ConfigProvider>
 

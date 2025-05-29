@@ -1,8 +1,9 @@
 
-import { Loader2, PencilLineIcon } from 'lucide-react';
+import { PencilLineIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useGetAllPlansQuery } from '../../../redux/features/plan/planApi';
 import EditPlanForm from './forms/EditPlanForm';
+import Loader from '../../../components/ui/Loader';
 
 const AhTistSubscriptions = () => {
     const [editPlanModal, setEditPlanModal] = useState(false);
@@ -18,7 +19,7 @@ const AhTistSubscriptions = () => {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-10 w-10 animate-spin" />
+                <Loader />
             </div>
         );
     }

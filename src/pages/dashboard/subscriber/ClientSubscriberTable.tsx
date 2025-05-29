@@ -6,9 +6,10 @@ import { Option } from 'antd/es/mentions';
 import { getSearchParams } from '../../../utils/getSearchParams';
 
 const ClientSubscriberTable = () => {
-    const { data: subscriberData } = useGetAllSubscribersQuery({
+    const { data: subscriberData, isLoading } = useGetAllSubscribersQuery({
         query: `${location.search}${location.search ? '&user=USER' : '?user=USER'}`,
     });
+    const pagination = subscriberData?.pagination;
 
     const { data: packageTypesData } = useGetAllPlansQuery({
         query: `for=USER`,
@@ -103,7 +104,17 @@ const ClientSubscriberTable = () => {
             </div>
 
             <div>
-                <Table columns={tableColumns} dataSource={formatedData} />
+                <Table
+                    columns={tableColumns}
+                    dataSource={formatedData}
+                    pagination={{
+                        pageSize: pagination?.limit,
+                        total: pagination?.total,
+                        current: pagination?.page,
+                        onChange: (page: number) => udpateSearchParams({ page }),
+                    }}
+                    loading={isLoading}
+                />
             </div>
         </>
     );

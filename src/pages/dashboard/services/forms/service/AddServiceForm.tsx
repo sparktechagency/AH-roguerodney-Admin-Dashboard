@@ -67,7 +67,11 @@ const AddServiceForm = ({ setModalOpen }: { setModalOpen: (value: boolean) => vo
                 state: stateName.trim(),
                 price: statePrice,
             };
-            setSelectedStates([...selectedStates, newState]);
+            if (!selectedStates.some((state) => state.state === stateName.trim())) {
+                setSelectedStates([...selectedStates, newState]);
+            } else {
+                toast.error('State already added');
+            }
             setStateName('');
             setStatePrice(null);
         }

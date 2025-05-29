@@ -6,9 +6,11 @@ import { Option } from 'antd/es/mentions';
 import { getSearchParams } from '../../../utils/getSearchParams';
 
 const ArtistSubscriberTable = () => {
-    const { data: subscriberData } = useGetAllSubscribersQuery({
+    const { data: subscriberData, isLoading } = useGetAllSubscribersQuery({
         query: `${location.search}${location.search ? '&user=ARTIST' : '?user=ARTIST'}`,
     });
+    const pagination = subscriberData?.pagination;
+    console.log(pagination);
 
     const { package: packageName = '', status = '' } = getSearchParams();
     const udpateSearchParams = useUpdateSearchParams();
@@ -103,7 +105,17 @@ const ArtistSubscriberTable = () => {
             </div>
 
             <div>
-                <Table columns={tableColumns} dataSource={formatedData} />
+                <Table
+                    columns={tableColumns}
+                    dataSource={formatedData}
+                    loading={isLoading}
+                    pagination={{
+                        pageSize: pagination?.limit,
+                        total: pagination?.total,
+                        current: pagination?.page,
+                        onChange: (page) => udpateSearchParams({ page }),
+                    }}
+                />
             </div>
         </>
     );

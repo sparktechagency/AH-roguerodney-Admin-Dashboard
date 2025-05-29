@@ -17,7 +17,7 @@ const CategoryTable = () => {
     const [activeCaterory, setActiveCategory] = useState();
     const [currentCategoryId, setCurrentCategoryId] = useState(null);
 
-    const { data } = useGetAllCategoriesQuery(undefined);
+    const { data, isLoading } = useGetAllCategoriesQuery(undefined);
     const categoryData = data?.data;
 
     const columns = [
@@ -88,7 +88,7 @@ const CategoryTable = () => {
                 </MyModal>
             </div>
             <ConfigProvider>
-                <Table columns={columns} dataSource={categoryData} />
+                <Table columns={columns} dataSource={categoryData} loading={isLoading} />
             </ConfigProvider>
 
             {/* edit modal */}

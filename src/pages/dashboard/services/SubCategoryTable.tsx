@@ -20,7 +20,7 @@ const SubCategoryTable = () => {
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [activeSubCategory, setActiveSubCategory] = useState<any>();
 
-    const { data } = useGetAllSubCategoryQuery({ query: location.search });
+    const { data, isLoading } = useGetAllSubCategoryQuery({ query: location.search });
     const subCategories = data?.data || [];
 
     const columns = [
@@ -106,8 +106,9 @@ const SubCategoryTable = () => {
                     <AddSubCategoryForm setSubCategoryModal={setOpenAddModal} />
                 </MyModal>
             </div>
+
             <ConfigProvider>
-                <Table columns={columns} dataSource={subCategories} />
+                <Table columns={columns} dataSource={subCategories} loading={isLoading} />
             </ConfigProvider>
 
             {/* edit modal */}

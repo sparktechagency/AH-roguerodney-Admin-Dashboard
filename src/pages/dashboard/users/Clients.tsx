@@ -12,7 +12,7 @@ const Clients = () => {
     const { searchTerm = '', verified = '' } = getSearchParams();
     const udpateSearchParams = useUpdateSearchParams();
 
-    const { data } = useGetAllUsersQuery({
+    const { data, isLoading } = useGetAllUsersQuery({
         query: `${location.search}${location.search ? '&role=USER' : '?role=USER'}`,
     });
     const usersData = data?.data;
@@ -91,7 +91,7 @@ const Clients = () => {
         <div className="grid gap-4 p-4">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-xl text-[#2C2C2C] font-semibold">Clients</h1>
+                    <h1 className="text-2xl text-[#2C2C2C] font-semibold">Clients</h1>
                 </div>
                 <div className="flex items-center gap-5 justify-end">
                     <Input
@@ -118,6 +118,8 @@ const Clients = () => {
                 </div>
             </div>
             <Table
+                columns={columns}
+                dataSource={usersData}
                 pagination={{
                     total: pagination?.total,
                     pageSize: pagination?.limit,
@@ -126,8 +128,7 @@ const Clients = () => {
                         udpateSearchParams({ page });
                     },
                 }}
-                columns={columns}
-                dataSource={usersData}
+                loading={isLoading}
                 rowClassName="hover:bg-gray-100"
             />
         </div>
