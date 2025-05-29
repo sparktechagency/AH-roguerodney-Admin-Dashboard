@@ -1,11 +1,20 @@
 import { useGetSingleBookingQuery } from '../../../redux/features/booking/bookingApi';
 import { useParams } from 'react-router-dom';
 import { IMAGE_URL } from '../../../redux/api/baseApi';
+import Loader from '../../../components/ui/Loader';
 
 const BookingDetailsPage = () => {
     const { id } = useParams();
-    const { data } = useGetSingleBookingQuery({ id });
+    const { data, isLoading } = useGetSingleBookingQuery({ id });
     const booking = data?.data;
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-[70vh]">
+                <Loader />
+            </div>
+        );
+    }
 
     return (
         <div className="grid gap-4 p-4">

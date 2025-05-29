@@ -9,7 +9,7 @@ const { Option } = Select;
 
 const Artists = () => {
     const { searchTerm = '', verified = '' } = getSearchParams();
-    const udpateSearchParams = useUpdateSearchParams();
+    const updateSearchParams = useUpdateSearchParams();
 
     const { data, isLoading } = useGetAllUsersQuery({
         query: `${location.search}${location.search ? '&role=ARTIST' : '?role=ARTIST'}`,
@@ -101,12 +101,12 @@ const Artists = () => {
                         placeholder="Search"
                         prefix={<Search size={20} color="#2C2C2C" />}
                         defaultValue={searchTerm}
-                        onChange={(e) => udpateSearchParams({ searchTerm: e.target.value, page: 1 })}
+                        onChange={(e) => updateSearchParams({ searchTerm: e.target.value, page: 1 })}
                     />
 
                     {/* Dropdown Filter */}
                     <Select
-                        onSelect={(value) => udpateSearchParams({ verified: value, page: 1 })}
+                        onSelect={(value) => updateSearchParams({ verified: value, page: 1 })}
                         value={verified}
                         className="w-32 h-[40px]"
                     >
@@ -124,7 +124,7 @@ const Artists = () => {
                     pageSize: pagination?.limit,
                     current: pagination?.page,
                     onChange: (page) => {
-                        udpateSearchParams({ page });
+                        updateSearchParams({ page });
                     },
                 }}
                 loading={isLoading}

@@ -1,9 +1,17 @@
 import { PackageSearch } from 'lucide-react';
 import { useGetPaymentOverviewQuery } from '../../../redux/features/payment/paymentApi';
+import Loader from '../../../components/ui/Loader';
 
 const PaymentStatistics = () => {
-    const { data } = useGetPaymentOverviewQuery(undefined);
+    const { data, isLoading } = useGetPaymentOverviewQuery(undefined);
     const overviewData = data?.data || {};
+
+    if (isLoading)
+        return (
+            <div className="flex items-center justify-center py-16">
+                <Loader />
+            </div>
+        );
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">

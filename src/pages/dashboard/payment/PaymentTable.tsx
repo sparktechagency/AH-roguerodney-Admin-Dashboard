@@ -1,6 +1,8 @@
 import { ConfigProvider, Table } from 'antd';
 import { useGetAllPaymentsQuery } from '../../../redux/features/payment/paymentApi';
 import { IMAGE_URL } from '../../../redux/api/baseApi';
+import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
+import { getSearchParams } from '../../../utils/getSearchParams';
 
 const columns = [
     {
@@ -75,13 +77,28 @@ const columns = [
 ];
 
 const PaymentTable = () => {
-    const { data } = useGetAllPaymentsQuery(undefined);
+    const updateSearchParams = useUpdateSearchParams();
+    const { page } = getSearchParams();
+    const { data, isLoading } = useGetAllPaymentsQuery({ query: `page=${page}` });
     const payments = data?.data || [];
+    const pagination = data?.pagination;
 
     return (
         <div className="p-4">
             <ConfigProvider>
-                <Table columns={columns} dataSource={payments} />
+                <Table
+                    columns={columns}
+                    dataSource={payments}
+                    loading={isLoading}
+                    pagination={{
+                        total: pagination?.total,
+                        pageSize: pagination?.limit,
+                        current: pagination?.page,
+                        onChange: (page) => {
+                            updateSearchParams({ page });
+                        },
+                    }}
+                />
             </ConfigProvider>
         </div>
     );

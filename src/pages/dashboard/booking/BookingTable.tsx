@@ -79,13 +79,13 @@ const columns = [
 ];
 
 const BookingTable = () => {
-    const { data } = useGetAllBookingsQuery(undefined);
+    const { data, isLoading } = useGetAllBookingsQuery(undefined);
     const bookings = data?.data;
 
     return (
         <div>
             <ConfigProvider>
-                <Table columns={columns} dataSource={bookings} />
+                <Table columns={columns} dataSource={bookings} loading={isLoading} />
             </ConfigProvider>
         </div>
     );
