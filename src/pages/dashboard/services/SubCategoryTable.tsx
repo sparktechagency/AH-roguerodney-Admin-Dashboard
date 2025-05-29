@@ -7,7 +7,6 @@ import CustomModal from '../../../components/shared/CustomModal';
 import UploadImage from '../../../components/shared/UploadImage';
 import { Option } from 'antd/es/mentions';
 import {
-    useCreateSubCategoryMutation,
     useDeleteSubCategoryMutation,
     useGetAllSubCategoryQuery,
     useUpdateSubCategoryMutation,
@@ -15,9 +14,11 @@ import {
 import { IMAGE_URL } from '../../../redux/api/baseApi';
 import { useGetAllCategoriesQuery } from '../../../redux/features/category/categoryApi';
 import toast from 'react-hot-toast';
+import MyModal from '../../../components/shared/MyModal';
+import AddSubCategoryForm from './forms/subCategory/AddSubCategoryForm';
 
 const SubCategoryTable = () => {
-    const [categoryModal, setCategoryModal] = useState(false);
+    const [openAddModal, setOpenAddModal] = useState(false);
     const [editCategoryModal, setEditCategoryModal] = useState(false);
     const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
     const [editCategoryData, setEditCategoryData] = useState<any>();
@@ -90,85 +91,6 @@ const SubCategoryTable = () => {
             ),
         },
     ];
-
-    // handle add category form
-    const [createSubCategory] = useCreateSubCategoryMutation();
-    const handleAddCategory = async (values: any) => {
-        toast.loading('Adding sub-category...', { id: 'add-sub-category' });
-        const formData = new FormData();
-        formData.append('category', values.category);
-        formData.append('name', values.name);
-        if (fileList.length > 0) {
-            formData.append('image', fileList[0].originFileObj as Blob);
-        }
-
-        try {
-            const res = await createSubCategory({ payload: formData }).unwrap();
-            if (res?.success) {
-                setCategoryModal(false);
-                setFileList([]);
-                toast.success('Sub-category added successfully', { id: 'add-sub-category' });
-            }
-        } catch (error) {
-            console.error('Failed to add sub-category:', error);
-            toast.error('Failed to add sub-category', { id: 'add-sub-category' });
-        }
-    };
-
-    const addCategoryForm = (
-        <Form
-            style={{
-                color: '#767676',
-            }}
-            layout="vertical"
-            onFinish={handleAddCategory}
-        >
-            <Form.Item
-                label={<label className="font-medium">Category</label>}
-                name="category"
-                rules={[{ required: true, message: 'Please select a category' }]}
-            >
-                <Select defaultValue="Select category" className="w-40 h-[42px]">
-                    {categories.map((item: any) => (
-                        <Option key={item._id} value={item._id}>
-                            {item.name}
-                        </Option>
-                    ))}
-                </Select>
-            </Form.Item>
-
-            <Form.Item
-                label="Sub Category Name"
-                name="name"
-                rules={[{ required: true, message: 'Please enter sub-category name' }]}
-            >
-                <Input
-                    style={{
-                        height: 42,
-                    }}
-                    placeholder="Enter sub-category name"
-                />
-            </Form.Item>
-
-            <Form.Item label="Sub Category Image" name="image">
-                <UploadImage fileList={fileList} setFileList={setFileList} />
-            </Form.Item>
-
-            <Form.Item>
-                <div className="flex justify-center w-full">
-                    <Button
-                        htmlType="submit"
-                        type="primary"
-                        style={{
-                            height: 40,
-                        }}
-                    >
-                        Add Sub-category
-                    </Button>
-                </div>
-            </Form.Item>
-        </Form>
-    );
 
     // handle edit category form
     const [editSubCategory] = useUpdateSubCategoryMutation();
@@ -258,7 +180,7 @@ const SubCategoryTable = () => {
             }).unwrap();
             if (res?.success) {
                 setDeleteCategoryModal(false);
-                setEditCategoryData(null)
+                setEditCategoryData(null);
                 toast.success(res?.message || 'Sub-category deleted successfully', { id: 'delete-sub-category' });
             }
         } catch (error: any) {
@@ -271,21 +193,17 @@ const SubCategoryTable = () => {
         <div className="grid gap-4 mt-2">
             <div className="flex justify-between items-center gap-4">
                 <h1 className="text-2xl text-primary font-semibold">Sub-categories</h1>
-                <Button type="primary" className="p-5 text-base" onClick={() => setCategoryModal(true)}>
+                <Button type="primary" className="p-5 text-base" onClick={() => setOpenAddModal(true)}>
                     <Plus size={20} /> Add Sub-category
                 </Button>
+                <MyModal open={openAddModal} setOpen={setOpenAddModal}>
+                    <AddSubCategoryForm setSubCategoryModal={setOpenAddModal} />
+                </MyModal>
             </div>
             <ConfigProvider>
                 <Table columns={columns} dataSource={subCategories} />
             </ConfigProvider>
 
-            <CustomModal
-                open={categoryModal}
-                setOpen={setCategoryModal}
-                title="Add category"
-                width={500}
-                body={addCategoryForm}
-            />
             <CustomModal
                 open={editCategoryModal}
                 setOpen={setEditCategoryModal}
