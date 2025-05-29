@@ -1,34 +1,27 @@
-import { Button, ConfigProvider, Form, Input, Select, Table, UploadFile } from 'antd';
+import { Button, ConfigProvider, Table } from 'antd';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { IoTrashOutline } from 'react-icons/io5';
-import CustomModal from '../../../components/shared/CustomModal';
-import UploadImage from '../../../components/shared/UploadImage';
-import { Option } from 'antd/es/mentions';
 import {
     useDeleteSubCategoryMutation,
     useGetAllSubCategoryQuery,
-    useUpdateSubCategoryMutation,
 } from '../../../redux/features/subCategory/subCategoryApi';
 import { IMAGE_URL } from '../../../redux/api/baseApi';
-import { useGetAllCategoriesQuery } from '../../../redux/features/category/categoryApi';
 import toast from 'react-hot-toast';
 import MyModal from '../../../components/shared/MyModal';
 import AddSubCategoryForm from './forms/subCategory/AddSubCategoryForm';
+import EditSubCategoryForm from './forms/subCategory/EditSubCategoryForm';
+import DeleteModal from '../../../components/shared/DeleteAlertModal';
 
 const SubCategoryTable = () => {
     const [openAddModal, setOpenAddModal] = useState(false);
-    const [editCategoryModal, setEditCategoryModal] = useState(false);
-    const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
-    const [editCategoryData, setEditCategoryData] = useState<any>();
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [openEditModal, setOpenEditModal] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [activeSubCategory, setActiveSubCategory] = useState<any>();
 
     const { data } = useGetAllSubCategoryQuery({ query: location.search });
     const subCategories = data?.data || [];
-
-    const { data: categoriesData } = useGetAllCategoriesQuery(undefined);
-    const categories = categoriesData?.data || [];
 
     const columns = [
         {
@@ -64,25 +57,16 @@ const SubCategoryTable = () => {
                 <div key={index} className="flex items-center gap-3">
                     <button
                         onClick={() => {
-                            setEditCategoryModal(true);
-                            setEditCategoryData(item);
-                            setFileList([
-                                {
-                                    uid: item?.image,
-                                    name: item?.image,
-                                    status: 'done',
-                                    url: `${IMAGE_URL}${item?.image}`,
-                                    thumbUrl: `${IMAGE_URL}${item?.image}`,
-                                },
-                            ]);
+                            setOpenEditModal(true);
+                            setActiveSubCategory(item);
                         }}
                     >
                         <AiOutlineEdit className="text-xl text-primary" />
                     </button>
                     <button
                         onClick={() => {
-                            setDeleteCategoryModal(true);
-                            setEditCategoryData(item);
+                            setOpenDeleteModal(true);
+                            setActiveSubCategory(item);
                         }}
                     >
                         <IoTrashOutline className="text-xl text-red-500" />
@@ -92,95 +76,17 @@ const SubCategoryTable = () => {
         },
     ];
 
-    // handle edit category form
-    const [editSubCategory] = useUpdateSubCategoryMutation();
-    const handleEditCategory = async (values: any) => {
-        toast.loading('Updating sub-category...', { id: 'edit-sub-category' });
-        const formData = new FormData();
-        formData.append('category', values.category);
-        formData.append('name', values.name);
-        if (fileList[0].originFileObj && fileList.length > 0) {
-            formData.append('image', fileList[0].originFileObj as Blob);
-        }
-
-        try {
-            const res = await editSubCategory({
-                id: editCategoryData?._id,
-                payload: formData,
-            }).unwrap();
-            if (res?.success) {
-                setEditCategoryModal(false);
-                setFileList([]);
-                toast.success(res?.message || 'Sub-category updated successfully', { id: 'edit-sub-category' });
-            }
-        } catch (error: any) {
-            console.error('Failed to update sub-category:', error);
-            toast.error(error?.data?.message || 'Failed to update sub-category', { id: 'edit-sub-category' });
-        }
-    };
-
-    const editServiceForm = (
-        <Form
-            style={{
-                color: '#767676',
-            }}
-            layout="vertical"
-            onFinish={handleEditCategory}
-        >
-            <Form.Item
-                label={<label className="font-medium">Category</label>}
-                name="category"
-                initialValue={editCategoryData?.category?._id}
-            >
-                <Select className="w-40 h-[42px]">
-                    {categories.map((item: any) => (
-                        <Option key={item._id} value={item._id}>
-                            {item.name}
-                        </Option>
-                    ))}
-                </Select>
-            </Form.Item>
-
-            <Form.Item label="Sub-category Name" name="name" initialValue={editCategoryData?.name}>
-                <Input
-                    style={{
-                        height: 42,
-                    }}
-                    placeholder="Enter sub-category name"
-                />
-            </Form.Item>
-
-            <Form.Item label="Sub-category Image" name="image">
-                <UploadImage fileList={fileList} setFileList={setFileList} maxCount={1} />
-            </Form.Item>
-
-            <Form.Item>
-                <div className="flex justify-center w-full">
-                    <Button
-                        htmlType="submit"
-                        type="primary"
-                        style={{
-                            height: 40,
-                        }}
-                    >
-                        Edit Sub-category
-                    </Button>
-                </div>
-            </Form.Item>
-        </Form>
-    );
-
     // handle delete category
     const [deleteSubCategory] = useDeleteSubCategoryMutation();
     const handleDeleteCategory = async () => {
         toast.loading('Deleting sub-category...', { id: 'delete-sub-category' });
         try {
             const res = await deleteSubCategory({
-                id: editCategoryData?._id,
+                id: activeSubCategory?._id,
             }).unwrap();
             if (res?.success) {
-                setDeleteCategoryModal(false);
-                setEditCategoryData(null);
+                setOpenDeleteModal(false);
+                setActiveSubCategory(null);
                 toast.success(res?.message || 'Sub-category deleted successfully', { id: 'delete-sub-category' });
             }
         } catch (error: any) {
@@ -204,30 +110,13 @@ const SubCategoryTable = () => {
                 <Table columns={columns} dataSource={subCategories} />
             </ConfigProvider>
 
-            <CustomModal
-                open={editCategoryModal}
-                setOpen={setEditCategoryModal}
-                title="Edit category"
-                width={500}
-                body={editServiceForm}
-            />
-            <CustomModal
-                open={deleteCategoryModal}
-                setOpen={setDeleteCategoryModal}
-                title="Delete category"
-                width={500}
-                body={
-                    <div className="flex flex-col justify-center">
-                        <h1 className="text-lg font-semibold">Are you sure you want to delete this sub-category?</h1>
-                        <div className="flex justify-end gap-2">
-                            <Button onClick={() => setDeleteCategoryModal(false)}>Cancel</Button>
-                            <Button onClick={handleDeleteCategory} className="bg-red-500 text-white">
-                                Continue
-                            </Button>
-                        </div>
-                    </div>
-                }
-            />
+            {/* edit modal */}
+            <MyModal open={openEditModal} setOpen={setOpenEditModal}>
+                <EditSubCategoryForm itemData={activeSubCategory} setOpenModal={setOpenEditModal} />
+            </MyModal>
+
+            {/* delete modal */}
+            <DeleteModal open={openDeleteModal} setOpen={setOpenDeleteModal} action={handleDeleteCategory} />
         </div>
     );
 };

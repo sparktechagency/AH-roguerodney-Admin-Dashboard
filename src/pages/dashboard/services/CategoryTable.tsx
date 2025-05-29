@@ -55,10 +55,6 @@ const CategoryTable = () => {
                     >
                         <AiOutlineEdit className="text-xl text-primary" />
                     </button>
-                    {/* edit modal */}
-                    <MyModal open={editCategoryModal} setOpen={setEditCategoryModal} key={item._id}>
-                        <EditCategoryForm itemData={activeCaterory} setEditCategoryModal={setEditCategoryModal} />
-                    </MyModal>
                     <button
                         onClick={() => {
                             setDeleteCategoryModal(true);
@@ -94,6 +90,11 @@ const CategoryTable = () => {
             <ConfigProvider>
                 <Table columns={columns} dataSource={categoryData} />
             </ConfigProvider>
+
+            {/* edit modal */}
+            <MyModal open={editCategoryModal} setOpen={setEditCategoryModal}>
+                <EditCategoryForm itemData={activeCaterory} setEditCategoryModal={setEditCategoryModal} />
+            </MyModal>
         </div>
     );
 };
