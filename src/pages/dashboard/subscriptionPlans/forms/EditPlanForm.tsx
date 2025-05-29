@@ -144,14 +144,15 @@ const EditPlanForm = ({
                                 <CircleCheck className="size-5 min-w-5 text-green-600" />
                                 {item}
                             </p>
-                            <button
+                            <span
                                 onClick={() => {
                                     const updatedOffers = packageOffers.filter((_, index) => index !== idx);
                                     setPackageOffers(updatedOffers);
                                 }}
+                                className="cursor-pointer"
                             >
                                 <CircleMinus className="text-stone-500" />
-                            </button>
+                            </span>
                         </li>
                     ))}
                 </ul>
@@ -166,7 +167,7 @@ const EditPlanForm = ({
                             }}
                             className="w-full text-base rounded-lg"
                         >
-                            Submit
+                            Save Changes
                         </Button>
                     </div>
                 </Form.Item>

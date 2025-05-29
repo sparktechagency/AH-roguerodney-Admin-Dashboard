@@ -1,4 +1,4 @@
-import { PencilLineIcon } from 'lucide-react';
+import { Loader2, PencilLineIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useGetAllPlansQuery } from '../../../redux/features/plan/planApi';
 import EditPlanForm from './forms/EditPlanForm';
@@ -9,10 +9,18 @@ const ClientSubscriptions = () => {
         { name?: string; price?: number; title?: string; price_offer?: number; offers?: string[] } | undefined
     >(undefined);
 
-    const { data } = useGetAllPlansQuery({ query: `for=USER` });
+    const { data, isLoading } = useGetAllPlansQuery({ query: `for=USER` });
     const package1 = data?.data[0];
     const package2 = data?.data[1];
     const package3 = data?.data[2];
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-10 w-10 animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <section className="">
