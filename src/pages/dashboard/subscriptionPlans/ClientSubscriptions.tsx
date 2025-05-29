@@ -6,7 +6,7 @@ import EditPlanForm from './forms/EditPlanForm';
 const ClientSubscriptions = () => {
     const [editPlanModal, setEditPlanModal] = useState(false);
     const [editModalData, setEditModalData] = useState<
-        { name?: string; price?: number; price_offer?: number; offers?: string[] } | undefined
+        { name?: string; price?: number; title?: string; price_offer?: number; offers?: string[] } | undefined
     >(undefined);
 
     const { data } = useGetAllPlansQuery({ query: `for=USER` });

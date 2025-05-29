@@ -16,12 +16,13 @@ const EditPlanForm = ({
     setEditModalData: (data: any) => void;
 }) => {
     const [packageOffers, setPackageOffers] = React.useState<string[]>(defaultData?.offers || []);
-    const [offerInput, setOfferInput] = React.useState<string>('');
+    const [offerItemInput, setOfferItemInput] = React.useState<string>('');
     const [form] = Form.useForm();
     const [updatePlan] = useUpdatePlanMutation();
 
     useEffect(() => {
         if (defaultData) {
+            setPackageOffers(defaultData.offers || []);
             form.setFieldsValue({
                 name: defaultData.name,
                 title: defaultData.title,
@@ -29,13 +30,11 @@ const EditPlanForm = ({
                 price_offer: defaultData.price_offer,
                 offers: packageOffers,
             });
-            setPackageOffers(defaultData.offers || []);
         }
     }, [defaultData]);
 
     // handle form submission
     const handleSubmit = async (values: any) => {
-        console.log(values);
         toast.loading('Updating package...', { id: 'update-package' });
         try {
             const res = await updatePlan({
@@ -120,17 +119,17 @@ const EditPlanForm = ({
                             }}
                             placeholder="Enter package offers"
                             className="text-base font-medium rounded-md"
-                            value={offerInput}
-                            onChange={(e) => setOfferInput(e.target.value)}
+                            value={offerItemInput}
+                            onChange={(e) => setOfferItemInput(e.target.value)}
                         />
                         <Button
                             type="default"
                             style={{ height: 42 }}
                             className="rounded-md"
                             onClick={() => {
-                                if (offerInput.trim()) {
-                                    setPackageOffers([...packageOffers, offerInput.trim()]);
-                                    setOfferInput('');
+                                if (offerItemInput.trim()) {
+                                    setPackageOffers([...packageOffers, offerItemInput.trim()]);
+                                    setOfferItemInput('');
                                 }
                             }}
                         >

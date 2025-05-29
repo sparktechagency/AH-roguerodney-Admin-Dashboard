@@ -22,6 +22,11 @@ import AddServiceForm from './forms/service/AddServiceForm';
 
 interface AddOn {
     id: string;
+    title: string;
+    price: number;
+}
+interface State {
+    id: string;
     state: string;
     price: number;
 }
@@ -36,8 +41,8 @@ const ServiceTable = () => {
     const [editAddOnName, setEditAddOnName] = useState('');
     const [editAddOnPrice, setEditAddOnPrice] = useState<number | null>(null);
     const [selectedService, setSelectedService] = useState<any>(null);
-    const [selectedCategoryId, setSelectedCategoryId] = useState<any>(null);
-    const [editSelectedStates, setEditSelectedStates] = useState<AddOn[]>([]);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<any>('');
+    const [editSelectedStates, setEditSelectedStates] = useState<State[]>([]);
     const [editStateName, setEditStateName] = useState('');
     const [editStatePrice, setEditStatePrice] = useState<number | null>(null);
 
@@ -52,6 +57,7 @@ const ServiceTable = () => {
 
     const { data: subCategoryData } = useGetAllSubCategoryQuery({ query: `?id=${selectedCategoryId}` });
     const subCategories = subCategoryData?.data || [];
+    console.log(subCategories);
 
     const { data: statesData } = useGetStatesQuery(undefined);
     const states = statesData?.data || [];
@@ -61,7 +67,7 @@ const ServiceTable = () => {
         if (editAddOnName.trim() && editAddOnPrice !== null && editAddOnPrice > 0) {
             const newAddOn: AddOn = {
                 id: Date.now().toString(),
-                state: editAddOnName.trim(),
+                title: editAddOnName.trim(),
                 price: editAddOnPrice,
             };
             setEditAddOns([...editAddOns, newAddOn]);
@@ -78,7 +84,7 @@ const ServiceTable = () => {
     // Add edit state
     const handleAddEditState = () => {
         if (editStateName.trim() && editStatePrice !== null && editStatePrice > 0) {
-            const newState: AddOn = {
+            const newState: State = {
                 id: Date.now().toString(),
                 state: editStateName.trim(),
                 price: editStatePrice,
@@ -427,7 +433,7 @@ const ServiceTable = () => {
                                         color="blue"
                                         className="flex items-center gap-1"
                                     >
-                                        {addon.state} (+${addon.price})
+                                        {addon.title} (+${addon.price})
                                     </Tag>
                                 ))}
                             </div>
@@ -449,7 +455,7 @@ const ServiceTable = () => {
                             height: 40,
                         }}
                     >
-                        Edit Service
+                        Save Changes
                     </Button>
                 </div>
             </Form.Item>
