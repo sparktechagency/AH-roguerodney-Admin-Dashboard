@@ -1,14 +1,14 @@
 import { ConfigProvider, Table } from 'antd';
-import { useState } from 'react';
-import CustomModal from '../../../components/shared/CustomModal';
 import { useGetAllReferralsQuery } from '../../../redux/features/referral/referralApi';
 import { IMAGE_URL } from '../../../redux/api/baseApi';
+import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
 
 const ReferralTable = () => {
-    const [detailsModal, setDetailsModal] = useState(false);
+    const updateSearchParams = useUpdateSearchParams();
 
-    const { data } = useGetAllReferralsQuery(undefined);
+    const { data, isLoading } = useGetAllReferralsQuery({ query: location.search });
     const referralsData = data?.data;
+    const pagination = data?.pagination;
 
     const columns = [
         {
@@ -86,66 +86,58 @@ const ReferralTable = () => {
                 </div>
             ),
         },
-        // {
-        //     title: 'Action',
-        //     key: 'action',
-        //     render: (_: any, _record: any, index: number) => (
-        //         <div key={index} className="flex items-center gap-3">
-        //             <button onClick={() => setDetailsModal(true)}>
-        //                 <Info className="text-xl text-primary" />
-        //             </button>
-        //         </div>
-        //     ),
-        // },
     ];
 
-    const referralDetailsModal = (
-        <ul className="">
-            <li className="grid grid-cols-3">
-                <span>Referral User Name</span>
-                <span>:</span>
-                <span className="text-right">Candice</span>
-            </li>
-            <li className="grid grid-cols-3">
-                <span>Referral User Email</span>
-                <span>:</span>
-                <span className="text-right">candice@gmail.com</span>
-            </li>
-            <li className="grid grid-cols-3">
-                <span>Token User Name</span>
-                <span>:</span>
-                <span className="text-right">Candice</span>
-            </li>
-            <li className="grid grid-cols-3">
-                <span>Token User Email</span>
-                <span>:</span>
-                <span className="text-right">candice@gmail.com</span>
-            </li>
-            <li className="grid grid-cols-3">
-                <span>Bonus</span>
-                <span>:</span>
-                <span className="text-right">$130</span>
-            </li>
-            <li className="grid grid-cols-3">
-                <span>Referral Date</span>
-                <span>:</span>
-                <span className="text-right"> 2/11/12;02:00PM</span>
-            </li>
-        </ul>
-    );
+    // const referralDetailsModal = (
+    //     <ul className="">
+    //         <li className="grid grid-cols-3">
+    //             <span>Referral User Name</span>
+    //             <span>:</span>
+    //             <span className="text-right">Candice</span>
+    //         </li>
+    //         <li className="grid grid-cols-3">
+    //             <span>Referral User Email</span>
+    //             <span>:</span>
+    //             <span className="text-right">candice@gmail.com</span>
+    //         </li>
+    //         <li className="grid grid-cols-3">
+    //             <span>Token User Name</span>
+    //             <span>:</span>
+    //             <span className="text-right">Candice</span>
+    //         </li>
+    //         <li className="grid grid-cols-3">
+    //             <span>Token User Email</span>
+    //             <span>:</span>
+    //             <span className="text-right">candice@gmail.com</span>
+    //         </li>
+    //         <li className="grid grid-cols-3">
+    //             <span>Bonus</span>
+    //             <span>:</span>
+    //             <span className="text-right">$130</span>
+    //         </li>
+    //         <li className="grid grid-cols-3">
+    //             <span>Referral Date</span>
+    //             <span>:</span>
+    //             <span className="text-right"> 2/11/12;02:00PM</span>
+    //         </li>
+    //     </ul>
+    // );
 
     return (
         <div>
             <ConfigProvider>
-                <Table columns={columns} dataSource={referralsData} />
+                <Table
+                    columns={columns}
+                    dataSource={referralsData}
+                    loading={isLoading}
+                    pagination={{
+                        pageSize: pagination?.limit,
+                        total: pagination?.total,
+                        current: pagination?.page,
+                        onChange: (page) => updateSearchParams({ page }),
+                    }}
+                />
             </ConfigProvider>
-            <CustomModal
-                open={detailsModal}
-                setOpen={setDetailsModal}
-                title="Referral Details"
-                width={500}
-                body={referralDetailsModal}
-            />
         </div>
     );
 };

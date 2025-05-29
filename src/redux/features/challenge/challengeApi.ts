@@ -3,9 +3,9 @@ import { baseApi } from '../../api/baseApi';
 const challengeApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllChallenges: builder.query({
-            query: () => {
+            query: ({ query }) => {
                 return {
-                    url: `/bonusAndChallenge`,
+                    url: `/bonusAndChallenge${query}`,
                     method: 'GET',
                 };
             },

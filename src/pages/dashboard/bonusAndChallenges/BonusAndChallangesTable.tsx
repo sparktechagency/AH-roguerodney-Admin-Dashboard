@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import DeleteModal from '../../../components/shared/DeleteAlertModal';
 import MyModal from '../../../components/shared/MyModal';
 import EditChallengeForm from './forms/EditChallengeForm';
+import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
 
 type Challenge = {
     _id?: string;
@@ -20,12 +21,14 @@ type Challenge = {
 };
 
 const BonusAndChallangesTable = () => {
+    const updateSearchParams = useUpdateSearchParams();
     const [editChallengeModal, setEditChallengeModal] = useState(false);
     const [deleteChallengeModal, setDeleteChallengeModal] = useState(false);
     const [activeChallenge, setActiveChallenge] = useState<Challenge | undefined>(undefined);
 
-    const { data, isLoading } = useGetAllChallengesQuery({ query: '' });
+    const { data, isLoading } = useGetAllChallengesQuery({ query: location.search });
     const challengesData = data?.data;
+    const pagination = data?.pagination;
 
     const columns = [
         {
@@ -132,7 +135,19 @@ const BonusAndChallangesTable = () => {
     return (
         <div>
             <ConfigProvider>
-                <Table columns={columns} dataSource={challengesData} loading={isLoading} />
+                <Table
+                    columns={columns}
+                    dataSource={challengesData}
+                    loading={isLoading}
+                    pagination={{
+                        pageSize: pagination?.limit,
+                        total: pagination?.total,
+                        current: pagination?.page,
+                        onChange: (page: number) => {
+                            updateSearchParams({ page });
+                        },
+                    }}
+                />
             </ConfigProvider>
 
             {/* edit modal */}

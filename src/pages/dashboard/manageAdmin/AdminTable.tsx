@@ -4,13 +4,16 @@ import { useDeleteAdminMutation, useGetAllAdminsQuery } from '../../../redux/fea
 import DeleteModal from '../../../components/shared/DeleteAlertModal';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
 
 const AdminTable = () => {
+    const updateSearchParams = useUpdateSearchParams();
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedAdminId, setSelectedAdminId] = useState<string | null>(null);
     const [deleteAdmin] = useDeleteAdminMutation();
-    const { data, isLoading } = useGetAllAdminsQuery(undefined);
+    const { data, isLoading } = useGetAllAdminsQuery({ query: location.search });
     const admins = data?.data || [];
+    const pagination = data?.pagination || {};
 
     const [form] = Form.useForm();
 
@@ -77,7 +80,17 @@ const AdminTable = () => {
     return (
         <div>
             <ConfigProvider>
-                <Table columns={columns} dataSource={admins} loading={isLoading} />
+                <Table
+                    columns={columns}
+                    dataSource={admins}
+                    loading={isLoading}
+                    pagination={{
+                        pageSize: pagination?.limit,
+                        total: pagination?.total,
+                        current: pagination?.page,
+                        onChange: (page) => updateSearchParams({ page }),
+                    }}
+                />
             </ConfigProvider>
 
             <DeleteModal open={deleteModalOpen} setOpen={setDeleteModalOpen} action={handleDeleteAdmin} />
