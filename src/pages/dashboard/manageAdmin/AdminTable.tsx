@@ -9,7 +9,7 @@ const AdminTable = () => {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedAdminId, setSelectedAdminId] = useState<string | null>(null);
     const [deleteAdmin] = useDeleteAdminMutation();
-    const { data } = useGetAllAdminsQuery(undefined);
+    const { data, isLoading } = useGetAllAdminsQuery(undefined);
     const admins = data?.data || [];
 
     const [form] = Form.useForm();
@@ -77,7 +77,7 @@ const AdminTable = () => {
     return (
         <div>
             <ConfigProvider>
-                <Table columns={columns} dataSource={admins} />
+                <Table columns={columns} dataSource={admins} loading={isLoading} />
             </ConfigProvider>
 
             <DeleteModal open={deleteModalOpen} setOpen={setDeleteModalOpen} action={handleDeleteAdmin} />
