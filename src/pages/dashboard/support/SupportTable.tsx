@@ -4,14 +4,14 @@ import { IMAGE_URL } from '../../../redux/api/baseApi';
 import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
 import { useGetAllSupportsQuery, useUdpateSupportMutation } from '../../../redux/features/support/supportApi';
 import { useState } from 'react';
-import CustomModal from '../../../components/shared/CustomModal';
 import TextArea from 'antd/es/input/TextArea';
 import toast from 'react-hot-toast';
+import MyModal from '../../../components/shared/MyModal';
 
 const SupportTable = () => {
     const updateSearchParams = useUpdateSearchParams();
     const [reply] = useUdpateSupportMutation();
-    const { data } = useGetAllSupportsQuery({ query: location.search });
+    const { data, isLoading } = useGetAllSupportsQuery({ query: location.search });
     const supports = data?.data;
     const pagination = data?.pagination;
 
@@ -107,44 +107,36 @@ const SupportTable = () => {
                 <Table
                     columns={columns}
                     dataSource={supports}
+                    loading={isLoading}
                     pagination={{
                         current: pagination?.page,
                         pageSize: pagination?.limit,
                         total: pagination?.total,
-                        // Optional: handle page change
                         onChange: (page) => updateSearchParams({ page }),
                     }}
                 />
             </ConfigProvider>
 
             {/* Modal */}
-            <CustomModal
-                open={modalOpen}
-                setOpen={setModalOpen}
-                title="Reply"
-                body={
-                    <div>
-                        <Form onFinish={handleReplyMessage} form={form} layout="vertical">
-                            <Form.Item
-                                name="reply"
-                                label={'Message'}
-                                rules={[{ required: true, message: 'Reply is required' }]}
-                            >
-                                <TextArea
-                                    rows={4}
-                                    placeholder="Write your reply here"
-                                    style={{ borderRadius: '8px' }}
-                                />
-                            </Form.Item>
-                            <Form.Item className="flex justify-end">
-                                <Button type="primary" className="h-10" htmlType="submit">
-                                    Send
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    </div>
-                }
-            />
+            <MyModal open={modalOpen} setOpen={setModalOpen}>
+                <div>
+                    <h1 className="text-xl font-semibold mb-6">Reply Message</h1>
+                    <Form onFinish={handleReplyMessage} form={form} layout="vertical">
+                        <Form.Item
+                            name="reply"
+                            label={'Message'}
+                            rules={[{ required: true, message: 'Reply is required' }]}
+                        >
+                            <TextArea rows={4} placeholder="Write your reply here" style={{ borderRadius: '8px' }} />
+                        </Form.Item>
+                        <Form.Item className="flex justify-end">
+                            <Button type="primary" className="h-10" htmlType="submit">
+                                Send
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            </MyModal>
         </div>
     );
 };

@@ -86,7 +86,7 @@ const columns = [
 
 const ReportTable = () => {
     const updateSearchParams = useUpdateSearchParams();
-    const { data } = useGetAllReportsQuery({ query: location.search });
+    const { data, isLoading } = useGetAllReportsQuery({ query: location.search });
     const reports = data?.data;
     const pagination = data?.pagination;
 
@@ -96,11 +96,11 @@ const ReportTable = () => {
                 <Table
                     columns={columns}
                     dataSource={reports}
+                    loading={isLoading}
                     pagination={{
                         current: pagination?.page,
                         pageSize: pagination?.limit,
                         total: pagination?.total,
-                        // Optional: handle page change
                         onChange: (page) => updateSearchParams({ page }),
                     }}
                 />
