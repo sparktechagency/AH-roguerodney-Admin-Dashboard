@@ -4,10 +4,19 @@ import { Pencil } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useGetProfileQuery } from '../../../../redux/features/profile/profileApi';
 import { IMAGE_URL } from '../../../../redux/api/baseApi';
+import Loader from '../../../../components/ui/Loader';
 
 const Profile: React.FC = () => {
-    const { data } = useGetProfileQuery(undefined);
+    const { data, isLoading } = useGetProfileQuery(undefined);
     const profileData = data?.data;
+
+    if (isLoading) {
+        return (
+            <div className="w-full flex justify-center items-center h-[80vh]">
+                <Loader />
+            </div>
+        );
+    }
 
     return (
         <div className="p-4">

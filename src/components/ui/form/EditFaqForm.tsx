@@ -1,55 +1,46 @@
 import { Form, Input, Button } from 'antd';
-import { AiOutlineEdit } from 'react-icons/ai';
+import { useEffect } from 'react';
 
 const { TextArea } = Input;
 
-const EditFaqForm = ({ onFinish }: { onFinish: (values: any) => void }) => {
+const EditFaqForm = ({ onFinish, itemData }: { onFinish: (values: any) => void; itemData: any }) => {
     const [form] = Form.useForm();
 
+    useEffect(() => {
+        if (itemData) {
+            form.setFieldsValue(itemData);
+        }
+    }, [form, itemData]);
+
     return (
-        <Form form={form} layout="vertical" onFinish={onFinish}>
-            {/* Product Name */}
-            <Form.Item
-                label="Question"
-                name="productName"
-                rules={[{ required: true, message: 'Please enter a question' }]}
-            >
-                <Input
-                    style={{
-                        height: 42,
-                    }}
-                    placeholder="Your faq question"
-                />
-            </Form.Item>
-
-            {/* Description */}
-            <Form.Item label="Answer" name="answer" rules={[{ required: true, message: 'Please enter a answer' }]}>
-                <TextArea
-                    style={{
-                        width: '100%',
-                        resize: 'none',
-                        borderRadius: 6,
-                        backgroundColor: '#F9F9F9',
-                    }}
-                    rows={3}
-                    placeholder="Your faq answer"
-                />
-            </Form.Item>
-
-            {/* Submit Button */}
-            <Form.Item>
-                <Button
-                    icon={<AiOutlineEdit />}
-                    htmlType="submit"
-                    style={{
-                        height: 40,
-                    }}
-                    type="primary"
+        <div>
+            <h1 className="text-xl font-semibold mb-6">Edit FAQ</h1>
+            <Form onFinish={onFinish} layout="vertical" className="space-y-4" form={form}>
+                <Form.Item
+                    label="Question"
+                    name="question"
+                    rules={[{ required: true, message: 'Please enter a question' }]}
                 >
-                    Edit FAQ
+                    <Input
+                        type="text"
+                        className="w-full p-2 border rounded"
+                        placeholder="Enter question"
+                        style={{ height: 44, fontSize: 16 }}
+                    />
+                </Form.Item>
+                <Form.Item label="Answer" name="answer" rules={[{ required: true, message: 'Please enter an answer' }]}>
+                    <TextArea
+                        className="w-full p-2 border rounded"
+                        placeholder="Enter answer"
+                        style={{ fontSize: 16 }}
+                        rows={4}
+                    ></TextArea>
+                </Form.Item>
+                <Button htmlType="submit" type="primary" style={{ width: '100%', height: 44, fontSize: 16 }}>
+                    Submit
                 </Button>
-            </Form.Item>
-        </Form>
+            </Form>
+        </div>
     );
 };
 
