@@ -57,6 +57,7 @@ const EditCategoryForm = ({ setEditCategoryModal, itemData }: { setEditCategoryM
 
     return (
         <div>
+            <h1 className="text-xl font-semibold mb-6">Edit Category</h1>
             <Form
                 style={{
                     color: '#767676',
