@@ -4,10 +4,11 @@ import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { useEditCategoryMutation } from '../../../../../redux/features/category/categoryApi';
 import { IMAGE_URL } from '../../../../../redux/api/baseApi';
+import { Loader2 } from 'lucide-react';
 
 const EditCategoryForm = ({ setEditCategoryModal, itemData }: { setEditCategoryModal: any; itemData: any }) => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [editCategory] = useEditCategoryMutation();
+    const [editCategory, { isLoading }] = useEditCategoryMutation();
     const [editForm] = Form.useForm();
 
     useEffect(() => {
@@ -88,8 +89,9 @@ const EditCategoryForm = ({ setEditCategoryModal, itemData }: { setEditCategoryM
                             style={{
                                 height: 40,
                             }}
+                            disabled={isLoading}
                         >
-                            Edit category
+                            {isLoading ? <Loader2 className="animate-spin" /> : 'Save Changes'}
                         </Button>
                     </div>
                 </Form.Item>

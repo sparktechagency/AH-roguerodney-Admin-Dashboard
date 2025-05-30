@@ -1,5 +1,5 @@
 import { Button, Form, Input, Select, Tag, UploadFile } from 'antd';
-import { Plus } from 'lucide-react';
+import { Loader2, Plus } from 'lucide-react';
 import UploadImage from '../../../../../components/shared/UploadImage';
 import { useCreateServiceMutation, useGetStatesQuery } from '../../../../../redux/features/service/serviceApi';
 import toast from 'react-hot-toast';
@@ -96,7 +96,7 @@ const AddServiceForm = ({ setModalOpen }: { setModalOpen: (value: boolean) => vo
     };
 
     // handle add service
-    const [addService] = useCreateServiceMutation();
+    const [addService, { isLoading }] = useCreateServiceMutation();
     const handleAddService = async (values: any) => {
         toast.loading('Adding Service...', {
             id: 'addService',
@@ -307,8 +307,14 @@ const AddServiceForm = ({ setModalOpen }: { setModalOpen: (value: boolean) => vo
 
                 <Form.Item>
                     <div className="flex justify-center w-full">
-                        <Button htmlType="submit" type="primary" style={{ height: 40 }} className="w-full">
-                            Add Service
+                        <Button
+                            htmlType="submit"
+                            type="primary"
+                            style={{ height: 40 }}
+                            className="w-full"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? <Loader2 className="animate-spin" /> : 'Add Service'}
                         </Button>
                     </div>
                 </Form.Item>

@@ -3,10 +3,11 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useCreateCategoryMutation } from '../../../../../redux/features/category/categoryApi';
 import UploadImage from '../../../../../components/shared/UploadImage';
+import { Loader2 } from 'lucide-react';
 
 const AddCategoryForm = ({ setModal }: { setModal: any }) => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [addCategory] = useCreateCategoryMutation();
+    const [addCategory, { isLoading }] = useCreateCategoryMutation();
     const [form] = Form.useForm();
 
     // handle add category form
@@ -69,8 +70,9 @@ const AddCategoryForm = ({ setModal }: { setModal: any }) => {
                             style={{
                                 height: 40,
                             }}
+                            disabled={isLoading}
                         >
-                            Add category
+                            {isLoading ? <Loader2 className="animate-spin" /> : 'Add Category'}
                         </Button>
                     </div>
                 </Form.Item>

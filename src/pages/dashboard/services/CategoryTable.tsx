@@ -14,7 +14,7 @@ const CategoryTable = () => {
     const [addCategoryModal, setAddCategoryModal] = useState(false);
     const [editCategoryModal, setEditCategoryModal] = useState(false);
     const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
-    const [activeCaterory, setActiveCategory] = useState();
+    const [activeCategory, setActiveCategory] = useState();
     const [currentCategoryId, setCurrentCategoryId] = useState(null);
 
     const { data, isLoading } = useGetAllCategoriesQuery(undefined);
@@ -63,14 +63,6 @@ const CategoryTable = () => {
                     >
                         <IoTrashOutline className="text-xl text-red-500" />
                     </button>
-                    {/* delete modal */}
-                    <MyModal open={deleteCategoryModal} setOpen={setDeleteCategoryModal}>
-                        <DeleteCategoryForm
-                            open={deleteCategoryModal}
-                            setOpen={setDeleteCategoryModal}
-                            itemId={currentCategoryId ?? ''}
-                        />
-                    </MyModal>
                 </div>
             ),
         },
@@ -93,7 +85,16 @@ const CategoryTable = () => {
 
             {/* edit modal */}
             <MyModal open={editCategoryModal} setOpen={setEditCategoryModal}>
-                <EditCategoryForm itemData={activeCaterory} setEditCategoryModal={setEditCategoryModal} />
+                <EditCategoryForm itemData={activeCategory} setEditCategoryModal={setEditCategoryModal} />
+            </MyModal>
+
+            {/* delete modal */}
+            <MyModal open={deleteCategoryModal} setOpen={setDeleteCategoryModal}>
+                <DeleteCategoryForm
+                    open={deleteCategoryModal}
+                    setOpen={setDeleteCategoryModal}
+                    itemId={currentCategoryId ?? ''}
+                />
             </MyModal>
         </div>
     );

@@ -1,11 +1,9 @@
 
 
 const CategoryReview = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+    // const {data} = useGetReviewQuery({query})
+
+    return <div></div>;
 };
 
 export default CategoryReview;

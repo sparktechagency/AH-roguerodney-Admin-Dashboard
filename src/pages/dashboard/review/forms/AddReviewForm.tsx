@@ -2,9 +2,10 @@ import { Form, Input, Button } from 'antd';
 import toast from 'react-hot-toast';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useUpdateGeneralReviewMutation } from '../../../../redux/features/review/reviewApi';
+import { Loader2 } from 'lucide-react';
 
 const AddReviewForm = ({ existingReviews, setOpen }: { existingReviews: string[]; setOpen: any }) => {
-    const [addReview] = useUpdateGeneralReviewMutation();
+    const [addReview, { isLoading }] = useUpdateGeneralReviewMutation();
     const [form] = Form.useForm();
 
     // handle add local review
@@ -56,8 +57,9 @@ const AddReviewForm = ({ existingReviews, setOpen }: { existingReviews: string[]
                             height: 40,
                         }}
                         type="primary"
+                        disabled={isLoading}
                     >
-                        Add Review
+                        {isLoading ? <Loader2 className="animate-spin" /> : 'Add Review'}
                     </Button>
                 </Form.Item>
             </Form>
