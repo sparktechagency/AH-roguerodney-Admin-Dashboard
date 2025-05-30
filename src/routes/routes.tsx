@@ -7,7 +7,6 @@ import ErrorPage from '../pages/error/ErrorPage';
 import Services from '../pages/dashboard/services/Services';
 import Review from '../pages/dashboard/Review';
 import TermsCondition from '../pages/dashboard/TermsCondition';
-import FAQs from '../pages/dashboard/FAQs';
 import Notification from '../pages/dashboard/Notification';
 import ForgetPassword from '../pages/authentication/ForgetPassword';
 import VerifyOtp from '../pages/authentication/VerifyOtp';
@@ -39,6 +38,7 @@ import PrivateRoute from './PrivateRoute';
 import ReportPage from '../pages/dashboard/report/Report';
 import ReportDetailsPage from '../pages/dashboard/report/ReportDetails';
 import SupportPage from '../pages/dashboard/support/Support';
+import Reviews from '../pages/dashboard/review/Review';
 
 const router = createBrowserRouter([
     {
@@ -71,6 +71,7 @@ const router = createBrowserRouter([
             { path: 'settings/privacy-policy', element: <PrivacyPolicy /> },
             { path: 'settings/terms-of-service', element: <TermsOfService /> },
             { path: 'settings/faq', element: <Faq /> },
+            { path: 'settings/review', element: <Reviews /> },
             { path: 'agreement/client-agreement', element: <ClientAgreement /> },
             { path: 'agreement/client-responsibility', element: <ClientResponsibility /> },
             { path: 'agreement/ah-tist-agreement', element: <AhTistAgreement /> },
@@ -82,7 +83,6 @@ const router = createBrowserRouter([
             { path: 'reviews', element: <Review /> },
             { path: 'make-admin', element: <MakeAdmin /> },
             { path: 'terms', element: <TermsCondition /> },
-            { path: 'faqs', element: <FAQs /> },
         ],
     },
     { path: '/login', element: <Login /> },

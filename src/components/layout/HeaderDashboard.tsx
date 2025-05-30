@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useGetProfileQuery } from '../../redux/features/profile/profileApi';
 import { IMAGE_URL } from '../../redux/api/baseApi';
 import { useGetAllNotificationQuery } from '../../redux/features/notification/notificationApi';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { io } from 'socket.io-client';
 
 const { Header } = Layout;
@@ -16,7 +16,7 @@ const HeaderDashboard = () => {
     const notificationUnreadCount = notificationData?.data?.unreadCount || 0;
 
     // handle live notification
-    const socket = io(import.meta.env.VITE_SERVER_URL);
+    const socket = useMemo(() => io(import.meta.env.VITE_SERVER_URL), []);
     // socket.on('connect', () => {
     //     console.log('Connected to socket');
     // });

@@ -32,9 +32,9 @@ const AddCategoryForm = ({ setModal }: { setModal: any }) => {
                 setModal(false);
                 form.resetFields();
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error adding category:', error);
-            toast.error('Failed to add category', { id: 'add-category' });
+            toast.error(error?.data?.message || 'Failed to add category', { id: 'add-category' });
         }
     };
 

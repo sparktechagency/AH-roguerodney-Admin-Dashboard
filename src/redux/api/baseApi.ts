@@ -46,6 +46,8 @@ export const baseApi = createApi({
         'Supports',
         'Support',
         'Notifications',
+        'Review',
+        'GeneralReviews',
     ],
 });
 

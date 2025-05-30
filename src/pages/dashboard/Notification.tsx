@@ -6,7 +6,7 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import { io } from 'socket.io-client';
@@ -66,7 +66,7 @@ const Notification = () => {
     }, []);
 
     // handle live notification
-    const socket = io(import.meta.env.VITE_SERVER_URL);
+    const socket = useMemo(() => io(import.meta.env.VITE_SERVER_URL), []);
     // socket.on('connect', () => {
     //     console.log('Connected to socket');
     // });
