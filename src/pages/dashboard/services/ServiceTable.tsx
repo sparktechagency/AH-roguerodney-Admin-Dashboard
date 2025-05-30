@@ -1,144 +1,34 @@
-import { Button, ConfigProvider, Form, Input, Select, Table, UploadFile, Tag } from 'antd';
+import { Button, ConfigProvider, Select, Table } from 'antd';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { IoTrashOutline } from 'react-icons/io5';
-import CustomModal from '../../../components/shared/CustomModal';
-import UploadImage from '../../../components/shared/UploadImage';
 import { Option } from 'antd/es/mentions';
 import {
     useDeleteServiceMutation,
     useGetAllServiceQuery,
-    useGetStatesQuery,
     useUpdateServiceMutation,
 } from '../../../redux/features/service/serviceApi';
-import { useGetAllCategoriesQuery } from '../../../redux/features/category/categoryApi';
-import { useGetAllSubCategoryQuery } from '../../../redux/features/subCategory/subCategoryApi';
 import { IMAGE_URL } from '../../../redux/api/baseApi';
 import DeleteModal from '../../../components/shared/DeleteAlertModal';
 import toast from 'react-hot-toast';
 import MyModal from '../../../components/shared/MyModal';
 import AddServiceForm from './forms/service/AddServiceForm';
-
-interface AddOn {
-    id: string;
-    title: string;
-    price: number;
-}
-interface State {
-    id: string;
-    state: string;
-    price: number;
-}
+import EditServiceForm from './forms/service/EditServiceForm';
 
 const ServiceTable = () => {
     const [page, setPage] = useState(1);
     const [serviceModal, setServiceModal] = useState(false);
     const [editServiceModal, setEditServiceModal] = useState(false);
     const [deleteServiceModal, setDeleteServiceModal] = useState(false);
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [editAddOns, setEditAddOns] = useState<AddOn[]>([]);
-    const [editAddOnName, setEditAddOnName] = useState('');
-    const [editAddOnPrice, setEditAddOnPrice] = useState<number | null>(null);
     const [selectedService, setSelectedService] = useState<any>(null);
-    const [selectedCategoryId, setSelectedCategoryId] = useState<any>('');
-    const [editSelectedStates, setEditSelectedStates] = useState<State[]>([]);
-    const [editStateName, setEditStateName] = useState('');
-    const [editStatePrice, setEditStatePrice] = useState<number | null>(null);
-
-    const [editForm] = Form.useForm();
 
     const { data, isLoading } = useGetAllServiceQuery({ query: `?page=${page}` });
     const services = data?.data || [];
     const pagination = data?.meta;
 
-    const { data: categoryData } = useGetAllCategoriesQuery({ query: '' });
-    const categories = categoryData?.data || [];
-
-    const { data: subCategoryData } = useGetAllSubCategoryQuery({ query: `?id=${selectedCategoryId}` });
-    const subCategories = subCategoryData?.data || [];
-    console.log(subCategories);
-
-    const { data: statesData } = useGetStatesQuery(undefined);
-    const states = statesData?.data || [];
-
-    // Add edit add-on
-    const handleAddEditAddOn = () => {
-        if (editAddOnName.trim() && editAddOnPrice !== null && editAddOnPrice > 0) {
-            const newAddOn: AddOn = {
-                id: Date.now().toString(),
-                title: editAddOnName.trim(),
-                price: editAddOnPrice,
-            };
-            setEditAddOns([...editAddOns, newAddOn]);
-            setEditAddOnName('');
-            setEditAddOnPrice(null);
-        }
-    };
-
-    // Remove edit add-on
-    const handleRemoveEditAddOn = (id: string) => {
-        setEditAddOns(editAddOns.filter((addon) => addon.id !== id));
-    };
-
-    // Add edit state
-    const handleAddEditState = () => {
-        if (editStateName.trim() && editStatePrice !== null && editStatePrice > 0) {
-            const newState: State = {
-                id: Date.now().toString(),
-                state: editStateName.trim(),
-                price: editStatePrice,
-            };
-            if (!editSelectedStates.some((state) => state.state === editStateName.trim())) {
-                setEditSelectedStates([...editSelectedStates, newState]);
-            } else {
-                toast.error('State already added');
-            }
-            setEditStateName('');
-            setEditStatePrice(null);
-        }
-    };
-
-    // Remove edit state
-    const handleRemoveEditState = (id: string) => {
-        setEditSelectedStates(editSelectedStates.filter((state) => state.id !== id));
-    };
-
-    // Handle edit service click
-    const handleEditClick = (record: any) => {
-        setSelectedService(record);
-        setEditAddOns(record.addOns || []);
-        setEditSelectedStates(record.statePrices || []);
-        editForm.setFieldsValue({
-            category: record.category?._id,
-            subCategory: record.subCategory?._id,
-            name: record.name,
-            location: record.location,
-            basePrice: record.basePrice,
-        });
-        setEditServiceModal(true);
-        setFileList([
-            {
-                uid: record._id,
-                name: record.name,
-                url: `${IMAGE_URL}${record.image}`,
-            },
-        ]);
-    };
-
-    const resetEditModal = () => {
-        setEditServiceModal(false);
-        setEditAddOns([]);
-        setEditSelectedStates([]);
-        setEditAddOnName('');
-        setEditAddOnPrice(null);
-        setEditStateName('');
-        setEditStatePrice(null);
-        setSelectedService(null);
-        editForm.resetFields();
-    };
-
     // update service status
+    const [editService] = useUpdateServiceMutation();
     const updateServiceStatus = async (values: any, id: string) => {
         toast.loading('Loading...', {
             id: 'updateStatus',
@@ -150,7 +40,6 @@ const ServiceTable = () => {
                 toast.success('Status updated successfully', {
                     id: 'updateStatus',
                 });
-                resetEditModal();
             }
         } catch (error: any) {
             console.log(error);
@@ -226,15 +115,20 @@ const ServiceTable = () => {
         {
             title: 'Action',
             key: 'action',
-            render: (_: any, record: any, index: number) => (
+            render: (_: any, item: any, index: number) => (
                 <div key={index} className="flex items-center gap-4">
-                    <button onClick={() => handleEditClick(record)}>
+                    <button
+                        onClick={() => {
+                            setEditServiceModal(true);
+                            setSelectedService(item);
+                        }}
+                    >
                         <AiOutlineEdit className="text-xl text-primary" />
                     </button>
                     <button
                         onClick={() => {
                             setDeleteServiceModal(true);
-                            setSelectedService(record);
+                            setSelectedService(item);
                         }}
                     >
                         <IoTrashOutline className="text-xl text-red-500" />
@@ -243,228 +137,6 @@ const ServiceTable = () => {
             ),
         },
     ];
-
-    // handle edit service
-    const [editService] = useUpdateServiceMutation();
-    const handleEditService = async (values: any) => {
-        toast.loading('Editing Service...', {
-            id: 'editService',
-        });
-        const formData = new FormData();
-        // transform the values to formData
-        Object.entries(values).forEach(([key, value]) => {
-            formData.append(key, value as any);
-        });
-        // append addOns to formData
-        if (editAddOns.length > 0) {
-            formData.append('addOns', JSON.stringify(editAddOns));
-        }
-        // append states to formData
-        if (editSelectedStates.length > 0) {
-            formData.append('statePrices', JSON.stringify(editSelectedStates));
-        }
-        // append fileList to formData
-        if (fileList.length > 0) {
-            formData.append('image', fileList[0]?.originFileObj as any);
-        }
-
-        try {
-            const res = await editService({ payload: formData, id: selectedService?._id }).unwrap();
-            if (res?.success) {
-                toast.success(res?.message || 'Service edited successfully', {
-                    id: 'editService',
-                });
-                resetEditModal();
-            }
-        } catch (error: any) {
-            console.log(error);
-            toast.error(error?.data?.message || 'Something went wrong', {
-                id: 'editService',
-            });
-        }
-    };
-
-    const editServiceForm = (
-        <Form
-            form={editForm}
-            style={{
-                color: '#767676',
-            }}
-            layout="vertical"
-            onFinish={handleEditService}
-        >
-            <Form.Item
-                label={<label className="font-medium">Category</label>}
-                name="category"
-                rules={[{ required: true, message: 'Please select a category' }]}
-            >
-                <Select
-                    onSelect={(value) => setSelectedCategoryId(value)}
-                    placeholder="Select category"
-                    className="w-full h-[42px]"
-                >
-                    {categories.map((item: any) => (
-                        <Option key={item._id} value={item._id}>
-                            {item.name}
-                        </Option>
-                    ))}
-                </Select>
-            </Form.Item>
-
-            <Form.Item
-                label={<label className="font-medium">Sub-category</label>}
-                name="subCategory"
-                rules={[{ required: true, message: 'Please select a sub-category' }]}
-            >
-                <Select placeholder="Select sub-category" className="w-full h-[42px]">
-                    {subCategories.map((item: any) => (
-                        <Option key={item._id} value={item._id}>
-                            {item.name}
-                        </Option>
-                    ))}
-                </Select>
-            </Form.Item>
-
-            <Form.Item
-                label="Service Name"
-                name="name"
-                rules={[{ required: true, message: 'Please enter service name' }]}
-            >
-                <Input style={{ height: 42 }} placeholder="Enter service name" />
-            </Form.Item>
-
-            <Form.Item label="States">
-                <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                        <Select
-                            showSearch
-                            placeholder="Select a state"
-                            value={editStateName || undefined}
-                            onSelect={(value) => setEditStateName(value)}
-                            filterOption={(input, option) => {
-                                const label = option?.label;
-                                return typeof label === 'string'
-                                    ? label.toLowerCase().includes(input.toLowerCase())
-                                    : false;
-                            }}
-                            options={states.map((state: any) => ({
-                                value: state,
-                                label: state,
-                            }))}
-                            className="w-full h-[42px]"
-                        />
-                        <Input
-                            type="number"
-                            style={{ height: 42, width: 160 }}
-                            placeholder="Price"
-                            value={editStatePrice || ''}
-                            onChange={(e) => setEditStatePrice(Number(e.target.value))}
-                        />
-                        <Button
-                            style={{ height: 42 }}
-                            className="text-primary border-primary"
-                            onClick={handleAddEditState}
-                            disabled={!editStateName.trim() || !editStatePrice}
-                        >
-                            <Plus size={20} /> Add
-                        </Button>
-                    </div>
-
-                    {editSelectedStates.length > 0 && (
-                        <div className="space-y-2">
-                            <label className="font-medium text-sm">Selected States:</label>
-                            <div className="flex flex-wrap gap-2">
-                                {editSelectedStates.map((state) => (
-                                    <Tag
-                                        key={state.id}
-                                        closable
-                                        onClose={() => handleRemoveEditState(state.id)}
-                                        color="green"
-                                        className="flex items-center gap-1 p-2 py-1 text-sm"
-                                    >
-                                        {state.state} (${state.price})
-                                    </Tag>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </Form.Item>
-
-            <Form.Item
-                label="Base Price"
-                name="basePrice"
-                rules={[{ required: true, message: 'Please enter base price' }]}
-            >
-                <Input type="number" style={{ height: 42 }} placeholder="Enter base price" />
-            </Form.Item>
-
-            <Form.Item label="Add-Ons">
-                <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                        <Input
-                            style={{ height: 42 }}
-                            placeholder="Enter add-on name"
-                            value={editAddOnName}
-                            onChange={(e) => setEditAddOnName(e.target.value)}
-                        />
-                        <Input
-                            type="number"
-                            style={{ height: 42 }}
-                            placeholder="Price"
-                            value={editAddOnPrice || ''}
-                            onChange={(e) => setEditAddOnPrice(Number(e.target.value))}
-                        />
-                        <Button
-                            style={{ height: 42 }}
-                            className="text-primary border-primary"
-                            onClick={handleAddEditAddOn}
-                            disabled={!editAddOnName.trim() || !editAddOnPrice}
-                        >
-                            <Plus size={20} /> Add
-                        </Button>
-                    </div>
-
-                    {editAddOns.length > 0 && (
-                        <div className="space-y-2">
-                            <label className="font-medium text-sm">Added Add-ons:</label>
-                            <div className="flex flex-wrap gap-2">
-                                {editAddOns.map((addon) => (
-                                    <Tag
-                                        key={addon.id}
-                                        closable
-                                        onClose={() => handleRemoveEditAddOn(addon.id)}
-                                        color="blue"
-                                        className="flex items-center gap-1"
-                                    >
-                                        {addon.title} (+${addon.price})
-                                    </Tag>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </Form.Item>
-
-            <Form.Item label="Service Image" name="image">
-                <UploadImage fileList={fileList} setFileList={setFileList} maxCount={1} />
-            </Form.Item>
-
-            <Form.Item>
-                <div className="flex justify-center w-full">
-                    <Button
-                        htmlType="submit"
-                        type="primary"
-                        style={{
-                            height: 40,
-                        }}
-                    >
-                        Save Changes
-                    </Button>
-                </div>
-            </Form.Item>
-        </Form>
-    );
 
     // handle delete service
     const [deleteService] = useDeleteServiceMutation();
@@ -509,13 +181,11 @@ const ServiceTable = () => {
                 <AddServiceForm setModalOpen={setServiceModal} />
             </MyModal>
 
-            <CustomModal
-                open={editServiceModal}
-                setOpen={setEditServiceModal}
-                title="Edit Service"
-                width={500}
-                body={editServiceForm}
-            />
+            {/* edit service modal */}
+            <MyModal open={editServiceModal} setOpen={setEditServiceModal} width={500}>
+                <EditServiceForm defaultData={selectedService} setModalOpen={setEditServiceModal} />
+            </MyModal>
+
             <DeleteModal open={deleteServiceModal} setOpen={setDeleteServiceModal} action={handleDeleteService} />
         </div>
     );
