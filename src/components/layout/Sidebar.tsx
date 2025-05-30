@@ -1,8 +1,9 @@
 import { ConfigProvider, Layout, Menu, MenuProps } from 'antd';
 import sidebarItems from '../../utils/sidebarItems';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.jpg';
 import { useState } from 'react';
+import Cookies from 'js-cookie';
 
 const { Sider } = Layout;
 
@@ -17,26 +18,48 @@ export type TSidebarItem = {
 const Sidebar = () => {
     const location = useLocation();
     const [openKeys, setOpenKeys] = useState<string[]>([]);
+    const navigate = useNavigate();
 
     const handleOpenChange = (keys: string[]) => {
         setOpenKeys(keys);
     };
 
+    const handleLogout = () => {
+        Cookies.remove('accessToken');
+        Cookies.remove('refreshToken');
+        navigate('/login');
+    };
+
     const sidebarItemsGenerator = (items: TSidebarItem[]): MenuProps['items'] => {
         return items.map((item) => {
+            // collapsables button
             if (item.children) {
                 return {
                     key: item.key,
                     icon: item.icon,
                     label: item.label,
                     children: item.children.map((child) => ({
-                        key: `/${child.path}`, // Match with location.pathname
+                        key: `/${child.path}`,
                         icon: child.icon,
                         label: <Link to={`/${child.path}`}>{child.label}</Link>,
                     })),
                 };
             }
 
+            // logout button
+            if (item.path === 'login') {
+                return {
+                    key: `/${item.path}`,
+                    label: (
+                        <button onClick={handleLogout} className=" flex items-center justify-start gap-2 w-full">
+                            <span> {item.icon} </span>
+                            <span> {item.label} </span>
+                        </button>
+                    ),
+                };
+            }
+
+            // default buttons
             return {
                 key: `/${item.path}`,
                 icon: item.icon,
