@@ -6,6 +6,7 @@ import { useUpdateSubCategoryMutation } from '../../../../../redux/features/subC
 import toast from 'react-hot-toast';
 import { Option } from 'antd/es/mentions';
 import UploadImage from '../../../../../components/shared/UploadImage';
+import { Loader2 } from 'lucide-react';
 
 const EditSubCategoryForm = ({ setOpenModal, itemData }: { setOpenModal: any; itemData: any }) => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -33,7 +34,7 @@ const EditSubCategoryForm = ({ setOpenModal, itemData }: { setOpenModal: any; it
     }, [itemData]);
 
     // handle edit category form
-    const [editSubCategory] = useUpdateSubCategoryMutation();
+    const [editSubCategory, { isLoading }] = useUpdateSubCategoryMutation();
     const handleEditCategory = async (values: any) => {
         toast.loading('Updating sub-category...', { id: 'edit-sub-category' });
         const formData = new FormData();
@@ -101,8 +102,9 @@ const EditSubCategoryForm = ({ setOpenModal, itemData }: { setOpenModal: any; it
                             style={{
                                 height: 40,
                             }}
+                            disabled={isLoading}
                         >
-                            Edit Sub-category
+                            {isLoading ? <Loader2 className="animate-spin" /> : 'Save Changes'}
                         </Button>
                     </div>
                 </Form.Item>

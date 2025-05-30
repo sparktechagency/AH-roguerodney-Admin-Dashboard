@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { useGetAllCategoriesQuery } from '../../../../../redux/features/category/categoryApi';
 import { Option } from 'antd/es/mentions';
+import { Loader2 } from 'lucide-react';
 
 const AddSubCategoryForm = ({ setSubCategoryModal }: { setSubCategoryModal: any }) => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -14,7 +15,7 @@ const AddSubCategoryForm = ({ setSubCategoryModal }: { setSubCategoryModal: any 
     const categories = categoriesData?.data || [];
 
     // handle add category form
-    const [createSubCategory] = useCreateSubCategoryMutation();
+    const [createSubCategory, { isLoading }] = useCreateSubCategoryMutation();
     const handleAddCategory = async (values: any) => {
         toast.loading('Adding sub-category...', { id: 'add-sub-category' });
         const formData = new FormData();
@@ -88,8 +89,9 @@ const AddSubCategoryForm = ({ setSubCategoryModal }: { setSubCategoryModal: any 
                             style={{
                                 height: 40,
                             }}
+                            disabled={isLoading}
                         >
-                            Add Sub-category
+                            {isLoading ? <Loader2 className="animate-spin" /> : 'Add Sub-category'}
                         </Button>
                     </div>
                 </Form.Item>
