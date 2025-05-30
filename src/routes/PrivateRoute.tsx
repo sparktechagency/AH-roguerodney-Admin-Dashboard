@@ -1,3 +1,4 @@
+import Loader from '../components/ui/Loader';
 import { useGetProfileQuery } from '../redux/features/profile/profileApi';
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -7,7 +8,11 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
     console.log(userRole);
 
     if (isLoading) {
-        return <p className="text-center py-8">Loading...</p>;
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <Loader />
+            </div>
+        );
     }
 
     return <>{children}</>;

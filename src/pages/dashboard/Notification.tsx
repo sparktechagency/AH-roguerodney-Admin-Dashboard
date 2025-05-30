@@ -11,11 +11,17 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 import { io } from 'socket.io-client';
 import { useGetProfileQuery } from '../../redux/features/profile/profileApi';
+import Loader from '../../components/ui/Loader';
 
 const Notification = () => {
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState<any[]>([]);
-    const { data: notificationData, isFetching, refetch } = useGetAllNotificationQuery({ query: `?page=${page}` });
+    const {
+        data: notificationData,
+        isLoading,
+        isFetching,
+        refetch,
+    } = useGetAllNotificationQuery({ query: `?page=${page}` });
     const { data: profileData } = useGetProfileQuery(undefined);
 
     // infinite scroll
@@ -50,10 +56,7 @@ const Notification = () => {
     const [readNotification] = useReadAllNotificationMutation();
     const handleReadNotification = async () => {
         try {
-            const res = await readNotification({}).unwrap();
-            if (res?.success) {
-                console.log('Notification read successfully');
-            }
+            await readNotification({}).unwrap();
         } catch (error) {
             console.error(error);
         }
@@ -90,28 +93,34 @@ const Notification = () => {
                         <h1 className="text-2xl font-semibold text-primary">Notifications</h1>
                     </div>
                 </div>
-                <div className="overflow-y-scroll h-[75vh]" ref={observerRef}>
-                    {notifications?.map((item: any) => (
-                        <div className="w-full p-4 my-2 flex gap-4">
-                            <div className="p-3 bg-[#9558B726] text-primary h-fit rounded-full">
-                                <Bell />
-                            </div>
-                            <div className="grid gap-4">
-                                <p className={`${item?.isRead ? 'font-medium' : 'font-semibold'} text-[#555555]`}>
-                                    {item?.title}
-                                </p>
-                                <div className="flex items-center gap-5 text-[#A7A7A7]">
-                                    <span className="text-xs ">
-                                        {dayjs(new Date(item?.createdAt)).format('MMM D, YYYY')}
-                                    </span>
-                                    <span className="text-xs ">
-                                        {dayjs(new Date(item?.createdAt)).format('hh:mm A')}
-                                    </span>
+                {isLoading ? (
+                    <div className="flex justify-center items-center h-[75vh]">
+                        <Loader />
+                    </div>
+                ) : (
+                    <div className="overflow-y-scroll h-[75vh]" ref={observerRef}>
+                        {notifications?.map((item: any) => (
+                            <div className="w-full p-4 my-2 flex gap-4">
+                                <div className="p-3 bg-[#9558B726] text-primary h-fit rounded-full">
+                                    <Bell />
+                                </div>
+                                <div className="grid gap-4">
+                                    <p className={`${item?.isRead ? 'font-medium' : 'font-semibold'} text-[#555555]`}>
+                                        {item?.title}
+                                    </p>
+                                    <div className="flex items-center gap-5 text-[#A7A7A7]">
+                                        <span className="text-xs ">
+                                            {dayjs(new Date(item?.createdAt)).format('MMM D, YYYY')}
+                                        </span>
+                                        <span className="text-xs ">
+                                            {dayjs(new Date(item?.createdAt)).format('hh:mm A')}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
