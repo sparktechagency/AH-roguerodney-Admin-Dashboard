@@ -15,17 +15,19 @@ import { useGetProfileQuery } from '../../redux/features/profile/profileApi';
 const Notification = () => {
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState<any[]>([]);
-    const { data, isFetching, refetch } = useGetAllNotificationQuery({ query: `?page=${page}` });
+    const { data: notificationData, isFetching, refetch } = useGetAllNotificationQuery({ query: `?page=${page}` });
     const { data: profileData } = useGetProfileQuery(undefined);
 
     // infinite scroll
     const observerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (data?.data?.data) {
-            setNotifications((prev) => (page === 1 ? data.data.data : [...prev, ...data.data.data]));
+        if (notificationData?.data?.data) {
+            setNotifications((prev) =>
+                page === 1 ? notificationData.data.data : [...prev, ...notificationData.data.data],
+            );
         }
-    }, [data, page]);
+    }, [notificationData, page]);
 
     useEffect(() => {
         if (!observerRef.current) return;
@@ -35,14 +37,14 @@ const Notification = () => {
                 window.innerHeight + window.scrollY >=
                     observerRef.current.offsetTop + observerRef.current.offsetHeight - 100 &&
                 !isFetching &&
-                data?.pagination?.totalPages > page
+                notificationData?.pagination?.totalPage > page
             ) {
                 setPage((prev) => prev + 1);
             }
         };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [isFetching, data?.pagination?.totalPages, page]);
+        observerRef?.current?.addEventListener('scroll', handleScroll);
+        return () => observerRef?.current?.removeEventListener('scroll', handleScroll);
+    }, [isFetching, notificationData?.pagination?.totalPage, page]);
 
     // read notification
     const [readNotification] = useReadAllNotificationMutation();
@@ -69,8 +71,7 @@ const Notification = () => {
         const eventName = `get-notification::${profileData?.data?._id}`;
         if (!profileData?.data?._id) return;
 
-        const handleNotification = (data: any) => {
-            console.log('socket data', data);
+        const handleNotification = () => {
             refetch();
         };
 
@@ -89,7 +90,7 @@ const Notification = () => {
                         <h1 className="text-2xl font-semibold text-primary">Notifications</h1>
                     </div>
                 </div>
-                <div>
+                <div className="overflow-y-scroll h-[75vh]" ref={observerRef}>
                     {notifications?.map((item: any) => (
                         <div className="w-full p-4 my-2 flex gap-4">
                             <div className="p-3 bg-[#9558B726] text-primary h-fit rounded-full">

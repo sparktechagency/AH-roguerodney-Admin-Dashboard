@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useGetProfileQuery } from '../../redux/features/profile/profileApi';
 import { IMAGE_URL } from '../../redux/api/baseApi';
 import { useGetAllNotificationQuery } from '../../redux/features/notification/notificationApi';
+import { useEffect } from 'react';
+import { io } from 'socket.io-client';
 
 const { Header } = Layout;
 
@@ -10,8 +12,28 @@ const HeaderDashboard = () => {
     const { data } = useGetProfileQuery(undefined);
     const profileData = data?.data;
 
-    const { data: notificationData } = useGetAllNotificationQuery({ query: '' });
+    const { data: notificationData, refetch } = useGetAllNotificationQuery({ query: '' });
     const notificationUnreadCount = notificationData?.data?.unreadCount || 0;
+
+    // handle live notification
+    const socket = io(import.meta.env.VITE_SERVER_URL);
+    // socket.on('connect', () => {
+    //     console.log('Connected to socket');
+    // });
+    useEffect(() => {
+        const eventName = `get-notification::${profileData?._id}`;
+        if (!profileData?._id) return;
+
+        const handleNotification = () => {
+            refetch();
+        };
+
+        socket.on(eventName, handleNotification);
+
+        return () => {
+            socket.off(eventName, handleNotification);
+        };
+    }, [socket]);
 
     return (
         <Header

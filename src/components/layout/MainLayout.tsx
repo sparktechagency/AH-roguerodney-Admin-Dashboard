@@ -12,7 +12,7 @@ const MainLayout: React.FC = () => {
         token: { borderRadiusLG },
     } = theme.useToken();
 
-    return ( 
+    return (
         <Layout
             style={{
                 height: '100vh',
@@ -23,16 +23,14 @@ const MainLayout: React.FC = () => {
                 {/* header */}
 
                 <HeaderDashboard />
-                <Content style={{ margin: 10 }}  className=' overflow-y-auto'>
+                <Content style={{ margin: 10 }} className=" overflow-y-auto">
                     <div
                         style={{
                             padding: 0,
                             minHeight: '50vh',
                             width: '100%',
                             borderRadius: borderRadiusLG,
-                        }}  
-
-                       
+                        }}
                     >
                         <Outlet />
                     </div>
