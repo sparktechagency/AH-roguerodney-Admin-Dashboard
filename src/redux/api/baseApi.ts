@@ -45,6 +45,7 @@ export const baseApi = createApi({
         'Report',
         'Supports',
         'Support',
+        'Notifications',
     ],
 });
 

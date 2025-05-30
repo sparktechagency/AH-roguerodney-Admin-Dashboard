@@ -2,12 +2,17 @@ import { Layout } from 'antd';
 import { Link } from 'react-router-dom';
 import { useGetProfileQuery } from '../../redux/features/profile/profileApi';
 import { IMAGE_URL } from '../../redux/api/baseApi';
+import { useGetAllNotificationQuery } from '../../redux/features/notification/notificationApi';
 
 const { Header } = Layout;
 
 const HeaderDashboard = () => {
     const { data } = useGetProfileQuery(undefined);
     const profileData = data?.data;
+
+    const { data: notificationData } = useGetAllNotificationQuery({ query: '' });
+    const notificationUnreadCount = notificationData?.data?.unreadCount || 0;
+
     return (
         <Header
             style={{
@@ -26,7 +31,7 @@ const HeaderDashboard = () => {
                             <button className="py-4 px-1 relative border-2 border-transparent text-gray-800 rounded-full hover:text-gray-400 focus:outline-none focus:text-gray-500 transition duration-150 ease-in-out">
                                 <span className="absolute inset-0 -top-4  -mr-6">
                                     <div className="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-primary text-white">
-                                        6
+                                        {notificationUnreadCount}
                                     </div>
                                 </span>
                                 <svg
