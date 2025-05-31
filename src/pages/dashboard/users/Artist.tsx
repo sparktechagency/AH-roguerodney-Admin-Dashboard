@@ -1,13 +1,20 @@
 import { Table, Input, Select } from 'antd';
-import { Search } from 'lucide-react';
+import { Info, Search } from 'lucide-react';
 import { useGetAllUsersQuery, useUpdateUserMutation } from '../../../redux/features/user/userApi';
 import { useUpdateSearchParams } from '../../../utils/updateSearchParams';
 import { getSearchParams } from '../../../utils/getSearchParams';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
+import MyModal from '../../../components/shared/MyModal';
+import { IMAGE_URL } from '../../../redux/api/baseApi';
 
 const { Option } = Select;
 
 const Artists = () => {
+    const [modalOpen, setModalOpen] = useState(false);
+    const [activeItem, setActiveItem] = useState<any>(null);
+    console.log(activeItem);
+
     const { searchTerm = '', verified = '' } = getSearchParams();
     const updateSearchParams = useUpdateSearchParams();
 
@@ -54,21 +61,29 @@ const Artists = () => {
         {
             title: 'Action',
             key: 'action',
-            render: (item: any) => (
-                <div className="flex items-center gap-2">
-                    {/* <Link to={`/user-details/${item?._id}`}>
-                        <button className="text-primary font-semibold border  rounded-md w-24 h-[35px]">View</button>
-                    </Link> */}
-                    <Select
-                        value={item?.verified ? 'true' : 'false'}
-                        onSelect={(value) => handleUpdateUser(item?._id, value)}
-                        className="w-24 h-[35px]"
-                    >
-                        <Option value={'true'}>Active</Option>
-                        <Option value={'false'}>Inactive</Option>
-                    </Select>
-                </div>
-            ),
+            render: (item: any) => {
+                return (
+                    <div className="flex items-center gap-2">
+                        <Select
+                            value={item?.verified ? 'true' : 'false'}
+                            onSelect={(value) => handleUpdateUser(item?._id, value)}
+                            className="w-24 h-[35px]"
+                        >
+                            <Option value={'true'}>Active</Option>
+                            <Option value={'false'}>Inactive</Option>
+                        </Select>
+                        <button
+                            onClick={() => {
+                                setModalOpen(true);
+                                setActiveItem(item);
+                            }}
+                            className="text-primary font-semibold rounded-md h-[35px]"
+                        >
+                            <Info />
+                        </button>
+                    </div>
+                );
+            },
         },
     ];
 
@@ -130,6 +145,38 @@ const Artists = () => {
                 loading={isLoading}
                 rowClassName="hover:bg-gray-100"
             />
+            <MyModal open={modalOpen} setOpen={setModalOpen} width={500}>
+                <div className="text-base space-y-2">
+                    <div className="flex justify-center items-center gap-2">
+                        <img
+                            src={`${IMAGE_URL}${activeItem?.profile}`}
+                            alt="profile image"
+                            className="size-16 rounded-full"
+                        />
+                    </div>
+                    <p className="grid grid-cols-2 gap-2">
+                        <span>Name:</span> <span>{activeItem?.name}</span>
+                    </p>
+                    <p className="grid grid-cols-2 gap-2">
+                        <span>Email:</span> <span>{activeItem?.email}</span>
+                    </p>
+                    <p className="grid grid-cols-2 gap-2">
+                        <span>Date of birth:</span> <span>{activeItem?.dateOfBirth?.split('T')[0]}</span>
+                    </p>
+                    <p className="grid grid-cols-2 gap-2">
+                        <span>State:</span> <span>{activeItem?.state}</span>
+                    </p>
+                    <p className="grid grid-cols-2 gap-2">
+                        <span>City:</span> <span>{activeItem?.city}</span>
+                    </p>
+                    <p className="grid grid-cols-2 gap-2">
+                        <span>Zipcode:</span> <span>{activeItem?.zipCode}</span>
+                    </p>
+                    <p className="grid grid-cols-2 gap-2">
+                        <span>Street:</span> <span>{activeItem?.location}</span>
+                    </p>
+                </div>
+            </MyModal>
         </div>
     );
 };

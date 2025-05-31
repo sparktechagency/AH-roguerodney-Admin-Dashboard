@@ -1,10 +1,19 @@
 
 import { DollarSign, Package, Tag, User } from 'lucide-react';
 import { useGetSummuryQuery } from '../../../redux/features/analytics/analyticsApi';
+import Loader from '../../../components/ui/Loader';
 
 const DashboardStats = () => {
-    const { data } = useGetSummuryQuery(undefined);
+    const { data, isLoading } = useGetSummuryQuery(undefined);
     const summaryData = data?.data;
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <Loader />
+            </div>
+        );
+    }
 
     return (
         <div>

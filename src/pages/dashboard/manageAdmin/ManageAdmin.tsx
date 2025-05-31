@@ -18,7 +18,7 @@ const ManageAdmin = () => {
             </div>
             <AdminTable />
 
-            <MyModal open={addAdminModal} setOpen={setAddAdminModal}>
+            <MyModal open={addAdminModal} setOpen={setAddAdminModal} width={500}>
                 <AddAdminForm setModalOpen={setAddAdminModal} />
             </MyModal>
         </div>

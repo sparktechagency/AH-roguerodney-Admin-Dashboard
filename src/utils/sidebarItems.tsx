@@ -203,7 +203,7 @@ const sidebarItems: TSidebarItem[] = [
     {
         key: 'logout',
         label: 'Log Out',
-        path: 'login',
+        path: 'logout',
         icon: <LogOut size={24} />,
     },
 ];

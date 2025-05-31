@@ -2,6 +2,7 @@ import { Button, Form, Input, Select } from 'antd';
 import { Option } from 'antd/es/mentions';
 import toast from 'react-hot-toast';
 import { useCreateAdminMutation } from '../../../../redux/features/admin/adminApi';
+import sidebarItems from '../../../../utils/sidebarItems';
 
 const AddAdminForm = ({ setModalOpen }: { setModalOpen: (value: boolean) => void }) => {
     const [addAdmin] = useCreateAdminMutation();
@@ -22,6 +23,8 @@ const AddAdminForm = ({ setModalOpen }: { setModalOpen: (value: boolean) => void
             toast.error('Failed to add admin', { id: 'add-admin' });
         }
     };
+
+    const permissions = sidebarItems.map((item) => item.label);
 
     return (
         <div>
@@ -89,6 +92,28 @@ const AddAdminForm = ({ setModalOpen }: { setModalOpen: (value: boolean) => void
                         <Option value="AH Care Agent">AH Care Agent</Option>
                         <Option value="AH Mail Handler"> AH Mail Handler</Option>
                         <Option value="AH Executive"> AH Executive</Option>
+                    </Select>
+                </Form.Item>
+
+                <Form.Item
+                    label={<label className="font-medium">Permissions</label>}
+                    name="permissions"
+                    rules={[{ required: true, message: 'Please select a permission' }]}
+                >
+                    <Select
+                        mode="multiple"
+                        className="w-40 h-[42px]"
+                        optionLabelProp={undefined}
+                        maxTagCount={2}
+                        allowClear
+                        defaultValue={'Log Out'}
+                        placeholder="Select permission"
+                    >
+                        {permissions.map((item) => (
+                            <Option key={item} value={item}>
+                                {item}
+                            </Option>
+                        ))}
                     </Select>
                 </Form.Item>
 

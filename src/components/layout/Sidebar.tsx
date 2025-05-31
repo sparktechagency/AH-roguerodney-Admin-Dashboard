@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.jpg';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
+import { useGetProfileQuery } from '../../redux/features/profile/profileApi';
+import toast from 'react-hot-toast';
 
 const { Sider } = Layout;
 
@@ -17,8 +19,11 @@ export type TSidebarItem = {
 
 const Sidebar = () => {
     const location = useLocation();
-    const [openKeys, setOpenKeys] = useState<string[]>([]);
     const navigate = useNavigate();
+    const [openKeys, setOpenKeys] = useState<string[]>([]);
+    const { data } = useGetProfileQuery(undefined);
+    const userPermissions = data?.data?.permissions;
+    const userRole = data?.data?.role;
 
     const handleOpenChange = (keys: string[]) => {
         setOpenKeys(keys);
@@ -47,7 +52,7 @@ const Sidebar = () => {
             }
 
             // logout button
-            if (item.path === 'login') {
+            if (item.path === 'logout') {
                 return {
                     key: `/${item.path}`,
                     label: (
@@ -67,6 +72,17 @@ const Sidebar = () => {
             };
         });
     };
+
+    // authrized sidebar items
+    let authrizedSidebarItems = sidebarItems.filter((item) => userPermissions?.includes(item?.label));
+    if (userRole === 'SUPER_ADMIN') {
+        authrizedSidebarItems = sidebarItems;
+    }
+
+    // warnings for no permissions
+    if (authrizedSidebarItems.length < 1) {
+        toast.error('You do not have permission to access other pages');
+    }
 
     return (
         <ConfigProvider
@@ -99,7 +115,7 @@ const Sidebar = () => {
                     selectedKeys={[location.pathname]}
                     openKeys={openKeys}
                     onOpenChange={handleOpenChange}
-                    items={sidebarItemsGenerator(sidebarItems)}
+                    items={sidebarItemsGenerator(authrizedSidebarItems)}
                 />
             </Sider>
         </ConfigProvider>
