@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import login from '../../assets/login.png';
 import toast from 'react-hot-toast';
 import { useForgotPasswordMutation } from '../../redux/features/auth/authApi';
+import { Loader2 } from 'lucide-react';
 
 const ForgetPassword = () => {
     const navigate = useNavigate();
-    const [forgotPassword] = useForgotPasswordMutation();
+    const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
     const onFinish: FormProps<any>['onFinish'] = async (values) => {
         toast.loading('Loading...', {
@@ -89,8 +90,9 @@ const ForgetPassword = () => {
                                         fontWeight: 500,
                                     }}
                                     className="bg-primary hover:bg-opacity-80 rounded-lg"
+                                    disabled={isLoading}
                                 >
-                                    Send Code
+                                    {isLoading ? <Loader2 className="animate-spin" /> : 'Send OTP'}
                                 </Button>
                             </Form.Item>
                         </Form>

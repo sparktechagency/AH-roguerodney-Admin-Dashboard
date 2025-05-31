@@ -4,10 +4,11 @@ import loginImg from '../../assets/login.png';
 import { useLoginMutation } from '../../redux/features/auth/authApi';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import { Loader2 } from 'lucide-react';
 
 const Login = () => {
     const navigate = useNavigate();
-    const [login] = useLoginMutation();
+    const [login, { isLoading }] = useLoginMutation();
 
     // get form data if previeously saved to local storage
     const localFormData = JSON.parse(localStorage.getItem('loginFormData') || '{}');
@@ -140,8 +141,9 @@ const Login = () => {
                                         fontWeight: 500,
                                     }}
                                     className="bg-primary hover:bg-opacity-80"
+                                    disabled={isLoading}
                                 >
-                                    Sign In
+                                    {isLoading ? <Loader2 className="animate-spin" /> : 'Login'}
                                 </Button>
                             </Form.Item>
                         </Form>

@@ -9,7 +9,7 @@ const ResetPassword = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('auth') || '';
-    const [resetPassword] = useResetPasswordMutation();
+    const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
     const onFinish: FormProps<any>['onFinish'] = async (values) => {
         toast.loading('Loading...', {
@@ -126,8 +126,10 @@ const ResetPassword = () => {
                                         fontWeight: 500,
                                     }}
                                     className="bg-primary hover:bg-opacity-80"
+                                    loading={isLoading}
+                                    disabled={isLoading}
                                 >
-                                    Confirm
+                                    {isLoading ? 'Loading...' : 'Reset Password'}
                                 </Button>
                             </Form.Item>
                         </Form>

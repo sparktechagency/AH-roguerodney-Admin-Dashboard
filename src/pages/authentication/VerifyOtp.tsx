@@ -9,7 +9,7 @@ const VerifyOtp = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const email = searchParams.get('email') || '';
-    const [otpVerify] = useOtpVerifyMutation();
+    const [otpVerify, { isLoading }] = useOtpVerifyMutation();
     const [resendOtp] = useResendOtpMutation();
 
     // redirect if email is not found
@@ -114,8 +114,10 @@ const VerifyOtp = () => {
                                         fontWeight: 500,
                                     }}
                                     className="rounded-lg"
+                                    loading={isLoading}
+                                    disabled={isLoading}
                                 >
-                                    Confirm
+                                    {isLoading ? 'Verifying...' : 'Submit'}
                                 </Button>
                             </Form.Item>
                             <div className="text-center flex items-center justify-center gap-2">
