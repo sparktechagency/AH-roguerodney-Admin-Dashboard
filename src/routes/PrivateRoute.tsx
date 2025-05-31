@@ -1,11 +1,21 @@
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import Loader from '../components/ui/Loader';
 import { useGetProfileQuery } from '../redux/features/profile/profileApi';
+import { logout } from '../utils/logout';
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
+
+    // check if access token is available
+    const token = Cookies.get('accessToken');
+    if (!token) {
+        window.location.href = '/login';
+        return;
+    }
+
     const { data, isLoading } = useGetProfileQuery(undefined);
     const userRole = data?.data?.role;
-    console.log(userRole);
 
     if (isLoading) {
         return (
@@ -15,16 +25,14 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
         );
     }
 
-    return <>{children}</>;
+    // check if the user is admin or not
+    if (userRole === 'ADMIN' || userRole === 'SUPER_ADMIN') {
+        return <>{children}</>;
+    }
 
-    // verify if the user is admin or not
-    // if (userRole === 'ADMIN' || userRole === 'SUPER_ADMIN') {
-    //     return <>{children}</>;
-    // }
-
-    // toast.error('You are not authorized to access this page');
-    // logout();
-    // navigate('/login');
+    // denied access to unauthorized users
+    logout();
+    navigate('/login');
 };
 
 export default PrivateRoute;

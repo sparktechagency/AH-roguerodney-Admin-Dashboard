@@ -5,6 +5,7 @@ import { useLoginMutation } from '../../redux/features/auth/authApi';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { Loader2 } from 'lucide-react';
+import { logout } from '../../utils/logout';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -23,10 +24,6 @@ const Login = () => {
             const res = await login(values).unwrap();
 
             if (res?.success) {
-                toast.success(res?.message || 'Login successful', {
-                    id: 'login',
-                });
-
                 // set token to cookie
                 Cookies.set('accessToken', res?.data?.accessToken);
                 Cookies.set('refreshToken', res?.data?.refreshToken);
@@ -37,7 +34,15 @@ const Login = () => {
                 } else {
                     localStorage.removeItem('loginFormData');
                 }
-                navigate('/');
+
+                // redirect to dashboard if user is admin or super admin
+                if (res?.data?.role === 'ADMIN' || res?.data?.role === 'SUPER_ADMIN') {
+                    toast.success(res?.message || 'Login successful', { id: 'login' });
+                    navigate('/');
+                } else {
+                    toast.error('You are not authorized to access this page', { id: 'login' });
+                    logout();
+                }
             }
         } catch (error: any) {
             console.error(error);
