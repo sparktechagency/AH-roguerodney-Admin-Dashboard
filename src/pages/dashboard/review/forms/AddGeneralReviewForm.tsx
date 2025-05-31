@@ -4,8 +4,8 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { useUpdateGeneralReviewMutation } from '../../../../redux/features/review/reviewApi';
 import { Loader2 } from 'lucide-react';
 
-const AddReviewForm = ({ existingReviews, setOpen }: { existingReviews: string[]; setOpen: any }) => {
-    const [addReview, { isLoading }] = useUpdateGeneralReviewMutation();
+const AddGeneralReviewForm = ({ existingReviews, setOpen }: { existingReviews: string[]; setOpen: any }) => {
+    const [addReview, { isLoading: isPending }] = useUpdateGeneralReviewMutation();
     const [form] = Form.useForm();
 
     // handle add local review
@@ -27,7 +27,6 @@ const AddReviewForm = ({ existingReviews, setOpen }: { existingReviews: string[]
                 form.resetFields();
                 setOpen(false);
             }
-            toast.success('Review added successfully', { id: 'add-review' });
         } catch (error: any) {
             console.error(error);
             toast.error(error?.data?.message || 'Failed to add review', { id: 'add-review' });
@@ -57,9 +56,9 @@ const AddReviewForm = ({ existingReviews, setOpen }: { existingReviews: string[]
                             height: 40,
                         }}
                         type="primary"
-                        disabled={isLoading}
+                        disabled={isPending}
                     >
-                        {isLoading ? <Loader2 className="animate-spin" /> : 'Add Review'}
+                        {isPending ? <Loader2 className="animate-spin" /> : 'Add Review'}
                     </Button>
                 </Form.Item>
             </Form>
@@ -67,4 +66,4 @@ const AddReviewForm = ({ existingReviews, setOpen }: { existingReviews: string[]
     );
 };
 
-export default AddReviewForm;
+export default AddGeneralReviewForm;

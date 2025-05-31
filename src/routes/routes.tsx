@@ -5,7 +5,6 @@ import MakeAdmin from '../pages/dashboard/MakeAdmin';
 import Login from '../pages/authentication/Login';
 import ErrorPage from '../pages/error/ErrorPage';
 import Services from '../pages/dashboard/services/Services';
-import Review from '../pages/dashboard/Review';
 import TermsCondition from '../pages/dashboard/TermsCondition';
 import Notification from '../pages/dashboard/Notification';
 import ForgetPassword from '../pages/authentication/ForgetPassword';
@@ -80,7 +79,6 @@ const router = createBrowserRouter([
             { path: 'bonus-and-challenges', element: <BonusAndChallanges /> },
             { path: 'referral', element: <ReferralPage /> },
             { path: 'notification', element: <Notification /> },
-            { path: 'reviews', element: <Review /> },
             { path: 'make-admin', element: <MakeAdmin /> },
             { path: 'terms', element: <TermsCondition /> },
         ],

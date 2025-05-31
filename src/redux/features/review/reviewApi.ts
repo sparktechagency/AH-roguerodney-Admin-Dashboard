@@ -31,7 +31,7 @@ const reviewApi = baseApi.injectEndpoints({
             },
             providesTags: ['Review'],
         }),
-        createReview: builder.mutation({
+        updateReview: builder.mutation({
             query: ({ payload }) => {
                 return {
                     url: `/pre-review`,
@@ -54,7 +54,7 @@ const reviewApi = baseApi.injectEndpoints({
 });
 
 export const {
-    useCreateReviewMutation,
+    useUpdateReviewMutation,
     useDeleteReviewMutation,
     useGetReviewQuery,
     useUpdateGeneralReviewMutation,
