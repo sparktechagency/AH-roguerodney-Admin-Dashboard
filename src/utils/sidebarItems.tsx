@@ -6,6 +6,7 @@ import {
     ChartPie,
     CircleDollarSignIcon,
     Contact,
+    DollarSign,
     FileCheck,
     FileUser,
     Gem,
@@ -123,6 +124,12 @@ const sidebarItems: TSidebarItem[] = [
                 label: 'About Us',
                 path: 'settings/about-us',
                 icon: <Info size={20} />,
+            },
+            {
+                key: 'payout',
+                label: 'Payout',
+                path: 'settings/payout',
+                icon: <DollarSign size={20} />,
             },
             {
                 key: 'privacy-policy',

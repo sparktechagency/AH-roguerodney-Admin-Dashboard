@@ -37,6 +37,7 @@ import ReportPage from '../pages/dashboard/report/Report';
 import ReportDetailsPage from '../pages/dashboard/report/ReportDetails';
 import SupportPage from '../pages/dashboard/support/Support';
 import Reviews from '../pages/dashboard/review/Review';
+import Payout from '../pages/dashboard/settings/payout/Payout';
 
 const router = createBrowserRouter([
     {
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
             { path: 'settings/profile', element: <Profile /> },
             { path: 'settings/profile/edit-profile', element: <EditProfile /> },
             { path: 'settings/about-us', element: <AboutUs /> },
+            { path: 'settings/payout', element: <Payout /> },
             { path: 'settings/privacy-policy', element: <PrivacyPolicy /> },
             { path: 'settings/terms-of-service', element: <TermsOfService /> },
             { path: 'settings/faq', element: <Faq /> },
