@@ -17,7 +17,6 @@ import UserDetails from '../pages/dashboard/users/UserDetails';
 import BookingsPage from '../pages/dashboard/booking/Booking';
 import BookingDetailsPage from '../pages/dashboard/booking/BookingDetails';
 import PaymentPage from '../pages/dashboard/payment/Payment';
-import PaymentDetailsPage from '../pages/dashboard/payment/PaymentDetails';
 import ChangePassword from '../pages/dashboard/settings/ChangePassword';
 import EditProfile from '../pages/dashboard/settings/profile/EditProfile';
 import AboutUs from '../pages/dashboard/settings/about/AboutUs';
@@ -59,7 +58,6 @@ const router = createBrowserRouter([
             { path: 'bookings', element: <BookingsPage /> },
             { path: 'bookings/:id', element: <BookingDetailsPage /> },
             { path: 'payments', element: <PaymentPage /> },
-            { path: 'payments/:id', element: <PaymentDetailsPage /> },
             { path: 'reports', element: <ReportPage /> },
             { path: 'reports/:id', element: <ReportDetailsPage /> },
             { path: 'supports', element: <SupportPage /> },
