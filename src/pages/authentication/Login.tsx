@@ -1,5 +1,5 @@
 import { Button, Checkbox, ConfigProvider, Form, FormProps, Input } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import loginImg from '../../assets/login.png';
 import { useLoginMutation } from '../../redux/features/auth/authApi';
 import toast from 'react-hot-toast';
@@ -8,7 +8,6 @@ import { Loader2 } from 'lucide-react';
 import { logout } from '../../utils/logout';
 
 const Login = () => {
-    const navigate = useNavigate();
     const [login, { isLoading }] = useLoginMutation();
 
     // get form data if previeously saved to local storage
@@ -38,7 +37,7 @@ const Login = () => {
                 // redirect to dashboard if user is admin or super admin
                 if (res?.data?.role === 'ADMIN' || res?.data?.role === 'SUPER_ADMIN') {
                     toast.success(res?.message || 'Login successful', { id: 'login' });
-                    navigate('/');
+                    window.location.href = '/';
                 } else {
                     toast.error('You are not authorized to access this page', { id: 'login' });
                     logout();
