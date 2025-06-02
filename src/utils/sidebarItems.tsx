@@ -110,13 +110,13 @@ const sidebarItems: TSidebarItem[] = [
             {
                 key: 'change-password',
                 label: 'Change Password',
-                path: 'settings/change-password',
+                path: 'change-password',
                 icon: <LockKeyhole size={20} />,
             },
             {
                 key: 'profile',
                 label: 'Profile',
-                path: 'settings/profile',
+                path: 'profile',
                 icon: <UserRound size={20} />,
             },
             {
