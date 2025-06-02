@@ -25,4 +25,4 @@ dist-ssr
 *.sw?
 .vercel
 
-# vite.config.ts
+vite.config.ts

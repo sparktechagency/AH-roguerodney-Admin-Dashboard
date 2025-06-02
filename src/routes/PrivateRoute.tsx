@@ -34,7 +34,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
         return;
     }
 
-    const universalRoutes = ['profile', 'change-password'];
+    const universalRoutes = ['profile', 'change-password', 'notification', 'settings'];
 
     // role based access control
     const userPermissions = data?.data?.permissions;
