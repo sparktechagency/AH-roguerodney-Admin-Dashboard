@@ -4,6 +4,7 @@ import Loader from '../components/ui/Loader';
 import { useGetProfileQuery } from '../redux/features/profile/profileApi';
 import { logout } from '../utils/logout';
 import sidebarItems from '../utils/sidebarItems';
+import UnauthorizedPage from '../pages/authentication/UnauthorizedPage';
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
@@ -50,11 +51,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
     if (userRole !== 'SUPER_ADMIN') {
         // allow everything for super admin
         if (!allowedRoutes.includes(pathname)) {
-            return (
-                <h1 className="text-2xl font-semibold text-center my-12">
-                    You are not authorized to access this page <br /> Please contact admin or site owner.
-                </h1>
-            );
+            return <UnauthorizedPage />;
         }
     }
 
