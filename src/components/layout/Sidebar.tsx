@@ -5,7 +5,6 @@ import logo from '../../assets/logo.jpg';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useGetProfileQuery } from '../../redux/features/profile/profileApi';
-import toast from 'react-hot-toast';
 
 const { Sider } = Layout;
 
@@ -77,11 +76,6 @@ const Sidebar = () => {
     let authrizedSidebarItems = sidebarItems.filter((item) => userPermissions?.includes(item?.label));
     if (userRole === 'SUPER_ADMIN') {
         authrizedSidebarItems = sidebarItems;
-    }
-
-    // warnings for no permissions
-    if (authrizedSidebarItems.length < 1) {
-        toast.error('You do not have permission to access other pages');
     }
 
     return (
