@@ -8,6 +8,8 @@ import sidebarItems from '../utils/sidebarItems';
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
     const pathname = window.location.pathname.split('/')[1];
+    const fullPath = window.location.pathname;
+    console.log('pathname', pathname);
 
     // check if access token is available
     const token = Cookies.get('accessToken');
@@ -16,6 +18,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
         return;
     }
 
+    // load profile data and show loader while fetching data
     const { data, isLoading } = useGetProfileQuery(undefined);
     const userRole = data?.data?.role;
 
@@ -34,15 +37,19 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
         return;
     }
 
-    const universalRoutes = ['profile', 'change-password', 'notification', 'settings'];
+    // allow for universal routes
+    const universalRoutes = ['/profile', '/profile/edit-profile', '/profile/change-password', '/notification'];
+    if (universalRoutes.includes(fullPath)) {
+        return <>{children}</>;
+    }
 
     // role based access control
     const userPermissions = data?.data?.permissions;
     const allowedRoutes = sidebarItems.filter((item) => userPermissions?.includes(item.label)).map((item) => item.path);
-    console.log(pathname);
 
     if (userRole !== 'SUPER_ADMIN') {
-        if (!allowedRoutes.includes(pathname) && !universalRoutes.includes(pathname)) {
+        // allow everything for super admin
+        if (!allowedRoutes.includes(pathname)) {
             return (
                 <h1 className="text-2xl font-semibold text-center my-12">
                     You are not authorized to access this page <br /> Please contact admin or site owner.
@@ -51,8 +58,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
-
-    // allow access to the user
+    // finally allow access to the user
     return <>{children}</>;
 };
 

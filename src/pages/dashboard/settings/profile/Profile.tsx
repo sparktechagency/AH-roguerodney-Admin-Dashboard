@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Input } from 'antd';
-import { Pencil } from 'lucide-react';
+import { Key, Pencil } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useGetProfileQuery } from '../../../../redux/features/profile/profileApi';
 import { IMAGE_URL } from '../../../../redux/api/baseApi';
@@ -40,8 +40,8 @@ const Profile: React.FC = () => {
                     <h1 className="text-3xl font-semibold whitespace-nowrap">{profileData?.name}</h1>
                 </div>
 
-                <div className="flex justify-end mb-4">
-                    <Link to={'/settings/profile/edit-profile'}>
+                <div className="flex justify-end gap-4 mb-4">
+                    <Link to={'/profile/edit-profile'}>
                         <Button
                             style={{
                                 height: 48,
@@ -54,6 +54,21 @@ const Profile: React.FC = () => {
                             className="text-primary font-semibold rounded-xl"
                         >
                             <Pencil size={16} /> Edit profile
+                        </Button>
+                    </Link>
+                    <Link to={'/profile/change-password'}>
+                        <Button
+                            style={{
+                                height: 48,
+                                padding: '4px 32px',
+                                fontSize: 16,
+                                backgroundColor: '#eae1ef',
+                                fontWeight: 900,
+                            }}
+                            type="default"
+                            className="text-primary font-semibold rounded-xl"
+                        >
+                            <Key size={16} /> Change Password
                         </Button>
                     </Link>
                 </div>

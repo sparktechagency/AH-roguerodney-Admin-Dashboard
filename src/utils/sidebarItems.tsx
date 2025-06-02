@@ -13,7 +13,6 @@ import {
     Gift,
     Handshake,
     Info,
-    LockKeyhole,
     LogOut,
     MessageCircleQuestion,
     MessageCircleWarning,
@@ -22,7 +21,6 @@ import {
     ShieldCheck,
     ShieldUser,
     Star,
-    UserRound,
     Users,
     WalletMinimal,
 } from 'lucide-react';
@@ -44,6 +42,7 @@ const sidebarItems: TSidebarItem[] = [
     {
         key: 'users',
         label: 'Users',
+        path: 'users',
         icon: <Users size={24} />,
         children: [
             {
@@ -105,20 +104,9 @@ const sidebarItems: TSidebarItem[] = [
     {
         key: 'settings',
         label: 'Settings',
+        path: 'settings',
         icon: <Settings size={24} />,
         children: [
-            {
-                key: 'change-password',
-                label: 'Change Password',
-                path: 'change-password',
-                icon: <LockKeyhole size={20} />,
-            },
-            {
-                key: 'profile',
-                label: 'Profile',
-                path: 'profile',
-                icon: <UserRound size={20} />,
-            },
             {
                 key: 'about-us',
                 label: 'About Us',

@@ -100,11 +100,11 @@ const HeaderDashboard = () => {
                             style={{
                                 width: '44px',
                                 height: '44px',
-                                // borderRadius: '50%',
-                                // borderColor: '#DBB162',
-                                // borderWidth: 2,
+                                borderRadius: '50%',
+                                borderColor: '#DBB162',
+                                borderWidth: 2,
                             }}
-                            alt=""
+                            alt="profile-image"
                         />
                         <h2
                             style={{
