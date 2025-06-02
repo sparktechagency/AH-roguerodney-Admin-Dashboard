@@ -84,7 +84,7 @@ const HeaderDashboard = () => {
                     {/* profile */}
 
                     <Link
-                        to={'/settings/profile'}
+                        to={'/profile'}
                         style={{
                             height: '42px',
                             cursor: 'pointer',

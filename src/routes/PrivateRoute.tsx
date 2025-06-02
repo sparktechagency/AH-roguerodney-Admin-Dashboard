@@ -34,12 +34,14 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
         return;
     }
 
+    const universalRoutes = ['profile', 'change-password'];
+
     // role based access control
     const userPermissions = data?.data?.permissions;
     const allowedRoutes = sidebarItems.filter((item) => userPermissions?.includes(item.label)).map((item) => item.path);
-    console.log(allowedRoutes);
+    console.log(pathname);
 
-    if (!allowedRoutes.includes(pathname)) {
+    if (!allowedRoutes.includes(pathname) && !universalRoutes.includes(pathname) && userRole !== 'SUPER_ADMIN') {
         return (
             <h1 className="text-2xl font-semibold text-center my-12">
                 You are not authorized to access this page <br /> Please contact admin or site owner.
