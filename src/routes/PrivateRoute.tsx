@@ -41,13 +41,16 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
     const allowedRoutes = sidebarItems.filter((item) => userPermissions?.includes(item.label)).map((item) => item.path);
     console.log(pathname);
 
-    if (!allowedRoutes.includes(pathname) && !universalRoutes.includes(pathname) && userRole !== 'SUPER_ADMIN') {
-        return (
-            <h1 className="text-2xl font-semibold text-center my-12">
-                You are not authorized to access this page <br /> Please contact admin or site owner.
-            </h1>
-        );
+    if (userRole !== 'SUPER_ADMIN') {
+        if (!allowedRoutes.includes(pathname) && !universalRoutes.includes(pathname)) {
+            return (
+                <h1 className="text-2xl font-semibold text-center my-12">
+                    You are not authorized to access this page <br /> Please contact admin or site owner.
+                </h1>
+            );
+        }
     }
+
 
     // allow access to the user
     return <>{children}</>;
