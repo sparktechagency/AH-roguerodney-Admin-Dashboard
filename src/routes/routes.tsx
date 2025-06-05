@@ -39,6 +39,7 @@ import SupportPage from '../pages/dashboard/support/Support';
 import Reviews from '../pages/dashboard/review/Review';
 import Payout from '../pages/dashboard/settings/payout/Payout';
 import DeleteAccount from '../pages/public/DeleteAccount';
+import ReadPrivacyPolicy from '../pages/public/PrivacyPolicy';
 
 const router = createBrowserRouter([
     {
@@ -89,6 +90,7 @@ const router = createBrowserRouter([
     { path: '/verify-otp', element: <VerifyOtp /> },
     { path: '/reset-password', element: <ResetPassword /> },
     { path: '/delete-account', element: <DeleteAccount /> },
+    { path: '/privacy-policy', element: <ReadPrivacyPolicy /> },
 ]);
 
 export default router;
