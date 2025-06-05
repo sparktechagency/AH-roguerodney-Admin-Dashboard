@@ -46,12 +46,12 @@ const DeleteAccount = () => {
                 },
             }}
         >
-            <div className="grid grid-cols-2  items-center">
-                <div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
+                <div className="hidden lg:block">
                     <img src={loginImg} alt="" className="w-full object-cover h-screen" />
                 </div>
 
-                <div className=" flex items-center justify-center bg-[#F1F1F1] min-h-screen">
+                <div className=" flex items-center justify-center bg-[#F1F1F1] min-h-screen px-4 lg:px-6">
                     <div className=" ">
                         <div className="text-primaryText space-y-3 text-center pb-6">
                             <h1 className="text-2xl text-[#111111] font-semibold text-center mt-2 ">

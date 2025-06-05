@@ -5,7 +5,7 @@ const ReadPrivacyPolicy = () => {
     const privacyPolicy = data?.data?.content;
 
     return (
-        <div className="max-w-screen-xl mx-auto">
+        <div className="max-w-screen-xl mx-auto py-16">
             <div dangerouslySetInnerHTML={{ __html: privacyPolicy || '' }}></div>
         </div>
     );

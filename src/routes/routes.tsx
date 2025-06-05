@@ -40,6 +40,7 @@ import Reviews from '../pages/dashboard/review/Review';
 import Payout from '../pages/dashboard/settings/payout/Payout';
 import DeleteAccount from '../pages/public/DeleteAccount';
 import ReadPrivacyPolicy from '../pages/public/PrivacyPolicy';
+import ReadTermsAndConditions from '../pages/public/TermsAndConditions';
 
 const router = createBrowserRouter([
     {
@@ -91,6 +92,7 @@ const router = createBrowserRouter([
     { path: '/reset-password', element: <ResetPassword /> },
     { path: '/delete-account', element: <DeleteAccount /> },
     { path: '/privacy-policy', element: <ReadPrivacyPolicy /> },
+    { path: '/terms-and-conditions', element: <ReadTermsAndConditions /> },
 ]);
 
 export default router;
