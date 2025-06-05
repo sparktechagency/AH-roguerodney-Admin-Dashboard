@@ -38,6 +38,7 @@ import ReportDetailsPage from '../pages/dashboard/report/ReportDetails';
 import SupportPage from '../pages/dashboard/support/Support';
 import Reviews from '../pages/dashboard/review/Review';
 import Payout from '../pages/dashboard/settings/payout/Payout';
+import DeleteAccount from '../pages/public/DeleteAccount';
 
 const router = createBrowserRouter([
     {
@@ -87,6 +88,7 @@ const router = createBrowserRouter([
     { path: '/forget-password', element: <ForgetPassword /> },
     { path: '/verify-otp', element: <VerifyOtp /> },
     { path: '/reset-password', element: <ResetPassword /> },
+    { path: '/delete-account', element: <DeleteAccount /> },
 ]);
 
 export default router;
