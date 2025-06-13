@@ -34,7 +34,7 @@ const AddChallengeForm = ({ setModalOpen }: any) => {
                 layout="vertical"
                 onFinish={handleAddChallenge}
             >
-                <Form.Item label={<label>Name</label>} name="name">
+                <Form.Item label={<label>Name</label>} name="name" rules={[{ required: true }]}>
                     <Input
                         style={{
                             height: 42,
@@ -55,7 +55,7 @@ const AddChallengeForm = ({ setModalOpen }: any) => {
                 </Form.Item>
 
                 <div className="grid grid-cols-2 gap-2 w-full">
-                    <Form.Item label={<label>Start Date</label>} name="startDate">
+                    <Form.Item label={<label>Start Date</label>} name="startDate" rules={[{ required: true }]}>
                         <DatePicker
                             style={{
                                 height: 40,
@@ -65,7 +65,7 @@ const AddChallengeForm = ({ setModalOpen }: any) => {
                         />
                     </Form.Item>
 
-                    <Form.Item label={<label>End Date</label>} name="endDate">
+                    <Form.Item label={<label>End Date</label>} name="endDate" rules={[{ required: true }]}>
                         <DatePicker
                             style={{
                                 height: 40,
@@ -76,7 +76,7 @@ const AddChallengeForm = ({ setModalOpen }: any) => {
                     </Form.Item>
                 </div>
 
-                <Form.Item label={<label>Required Number</label>} name="number">
+                <Form.Item label={<label>Required Number</label>} name="number" rules={[{ required: true }]}>
                     <Input
                         type="number"
                         style={{
@@ -87,7 +87,7 @@ const AddChallengeForm = ({ setModalOpen }: any) => {
                     />
                 </Form.Item>
 
-                <Form.Item label={<label className="font-medium">Type</label>} name="type">
+                <Form.Item label={<label className="font-medium">Type</label>} name="type" rules={[{ required: true }]}>
                     <Select placeholder="Select type" className="w-40 h-[42px]">
                         <Option value="subscription">Subscription</Option>
                         <Option value="booking">Booking</Option>
@@ -95,14 +95,18 @@ const AddChallengeForm = ({ setModalOpen }: any) => {
                     </Select>
                 </Form.Item>
 
-                <Form.Item label={<label className="font-medium">Role</label>} name="role">
+                <Form.Item label={<label className="font-medium">Role</label>} name="role" rules={[{ required: true }]}>
                     <Select placeholder="Select role" className="w-40 h-[42px]">
                         <Option value="USER">Client</Option>
                         <Option value="ARTIST">Artist</Option>
                     </Select>
                 </Form.Item>
 
-                <Form.Item label={<label className="font-medium">Recipient </label>} name="recipient">
+                <Form.Item
+                    label={<label className="font-medium">Recipient </label>}
+                    name="recipient"
+                    rules={[{ required: true }]}
+                >
                     <Select placeholder="Select recipient" className="w-40 h-[42px]">
                         <Option value="ALL">All Users</Option>
                         <Option value="SUBSCRIBER">Subscribed Users</Option>
@@ -110,7 +114,7 @@ const AddChallengeForm = ({ setModalOpen }: any) => {
                     </Select>
                 </Form.Item>
 
-                <Form.Item label={<label>Bonus Amount</label>} name="amount">
+                <Form.Item label={<label>Bonus Amount</label>} name="amount" rules={[{ required: true }]}>
                     <Input
                         type="number"
                         style={{
