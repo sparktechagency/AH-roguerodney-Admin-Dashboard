@@ -13,7 +13,6 @@ const { Option } = Select;
 const Artists = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [activeItem, setActiveItem] = useState<any>(null);
-    console.log(activeItem);
 
     const { searchTerm = '', verified = '' } = getSearchParams();
     const updateSearchParams = useUpdateSearchParams();
