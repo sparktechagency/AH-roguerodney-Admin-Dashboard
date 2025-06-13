@@ -111,8 +111,8 @@ const EditChallengeForm = ({ setModalOpen, itemData }: { setModalOpen: any; item
                     </Select>
                 </Form.Item>
 
-                <Form.Item label={<label className="font-medium">Recipint</label>} name="recipint">
-                    <Select placeholder="Select recipint" className="w-40 h-[42px]">
+                <Form.Item label={<label className="font-medium">Recipient</label>} name="recipient">
+                    <Select placeholder="Select recipient" className="w-40 h-[42px]">
                         <Option value="ALL">All Users</Option>
                         <Option value="SUBSCRIBER">Subscribed Users</Option>
                         <Option value="UNSUBSCRIBER">Unsubscribed Users</Option>
