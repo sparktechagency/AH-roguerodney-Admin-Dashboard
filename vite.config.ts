@@ -8,8 +8,6 @@ export default defineConfig({
         host: '31.97.133.34',
     },
     preview: {
-        port: 3000,
-        host: '31.97.133.34',
-        allowedHosts: ['31.97.133.34'],
+        allowedHosts: ['oohahplatform.com', 'web.oohahplatform.com'],
     },
 });
