@@ -41,6 +41,7 @@ import Payout from '../pages/dashboard/settings/payout/Payout';
 import DeleteAccount from '../pages/public/DeleteAccount';
 import ReadPrivacyPolicy from '../pages/public/PrivacyPolicy';
 import ReadTermsAndConditions from '../pages/public/TermsAndConditions';
+import PaymentSuccess from '../pages/public/PaymentSuccess';
 
 const router = createBrowserRouter([
     {
@@ -93,6 +94,7 @@ const router = createBrowserRouter([
     { path: '/delete-account', element: <DeleteAccount /> },
     { path: '/privacy-policy', element: <ReadPrivacyPolicy /> },
     { path: '/terms-and-conditions', element: <ReadTermsAndConditions /> },
+    { path: '/payment-success', element: <PaymentSuccess /> },
 ]);
 
 export default router;
