@@ -102,7 +102,7 @@ const AddChallengeForm = ({ setModalOpen }: any) => {
                     </Select>
                 </Form.Item>
 
-                <Form.Item label={<label className="font-medium">Recipient </label>} name="recipient">
+                <Form.Item label={<label className="font-medium">Recipient</label>} name="recipint">
                     <Select placeholder="Select recipient" className="w-40 h-[42px]">
                         <Option value="ALL">All Users</Option>
                         <Option value="SUBSCRIBER">Subscribed Users</Option>
