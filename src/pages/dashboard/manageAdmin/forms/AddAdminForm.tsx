@@ -88,7 +88,7 @@ const AddAdminForm = ({ setModalOpen }: { setModalOpen: (value: boolean) => void
                     rules={[{ required: true, message: 'Please select a role' }]}
                 >
                     <Select defaultValue="Select role" className="w-40 h-[42px]">
-                        <Option value="AH Engagement Strategist">AH Engagement Strategist</Option>
+                        <Option value="AH Engagement">AH Engagement Strategist</Option>
                         <Option value="AH Care Agent">AH Care Agent</Option>
                         <Option value="AH Mail Handler"> AH Mail Handler</Option>
                         <Option value="AH Executive"> AH Executive</Option>
