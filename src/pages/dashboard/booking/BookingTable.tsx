@@ -62,7 +62,9 @@ const columns = [
     {
         title: 'Appt. Time',
         key: 'apptTime',
-        render: (_: any, item: any, index: number) => <p key={index}>{new Date(item?.createdAt).toLocaleString()}</p>,
+        render: (_: any, item: any, index: number) => (
+            <p key={index}>{new Date(item?.service_date).toLocaleString()}</p>
+        ),
     },
 
     {

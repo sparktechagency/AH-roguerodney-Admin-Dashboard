@@ -39,7 +39,7 @@ const BookingDetailsPage = () => {
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Booking Date</span>
                                 <span>:</span>
-                                <span>{booking?.createdAt?.split('T')[0]}</span>
+                                <span>{booking?.service_date?.split('T')[0]}</span>
                             </p>
                             <p className="grid grid-cols-3 gap-2">
                                 <span>Subscription plan</span>
