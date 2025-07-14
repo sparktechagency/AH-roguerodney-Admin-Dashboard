@@ -26,3 +26,4 @@ dist-ssr
 *.sw?
 .vercel
 yarn.lock
+package-lock.json
