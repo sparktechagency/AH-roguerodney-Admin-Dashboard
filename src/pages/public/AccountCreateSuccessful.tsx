@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const PaymentSuccess = () => {
+const AccountCreateSuccess = () => {
     const [countdown, setCountdown] = useState(3);
-    const deepLinkURL = 'myapp://payment/success'; // Your custom URL scheme
+    const deepLinkURL = 'accountcreatesuccess://account/create/success'; // Your custom URL scheme
     const fallbackURL = '../error/ErrorPage.tsx'; // Fallback if app not installed
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -40,7 +40,7 @@ const PaymentSuccess = () => {
     return (
         <div style={styles.container}>
             <div style={styles.card}>
-                <div style={styles.success}>✅ Payment Successful!</div>
+                <div style={styles.success}>✅ Account Create Successful!</div>
 
                 {/* Manual button fallback with user gesture */}
                 <button onClick={openAppWithFallback} style={styles.button}>
@@ -108,4 +108,4 @@ const styles = {
     },
 };
 
-export default PaymentSuccess;
+export default AccountCreateSuccess;

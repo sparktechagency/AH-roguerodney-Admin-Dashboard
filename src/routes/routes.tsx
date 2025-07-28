@@ -42,6 +42,9 @@ import DeleteAccount from '../pages/public/DeleteAccount';
 import ReadPrivacyPolicy from '../pages/public/PrivacyPolicy';
 import ReadTermsAndConditions from '../pages/public/TermsAndConditions';
 import PaymentSuccess from '../pages/public/PaymentSuccess';
+import PaymentFail from '../pages/public/PaymentFail';
+import AccountCreateSuccess from '../pages/public/AccountCreateSuccessful';
+import AccountCreateFail from '../pages/public/AccountCreateFail';
 
 const router = createBrowserRouter([
     {
@@ -95,6 +98,9 @@ const router = createBrowserRouter([
     { path: '/privacy-policy', element: <ReadPrivacyPolicy /> },
     { path: '/terms-and-conditions', element: <ReadTermsAndConditions /> },
     { path: '/payment-success', element: <PaymentSuccess /> },
+    { path: '/payment-fail', element: <PaymentFail /> },
+    { path: '/account-create-success', element: <AccountCreateSuccess /> },
+    { path: '/account-create-fail', element: <AccountCreateFail /> },
 ]);
 
 export default router;
